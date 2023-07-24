@@ -5,7 +5,6 @@
 
 <div class="flex">
   <Navbar />
-  <div class="p-7">
-    <slot />
-  </div>
+
+  <slot />
 </div>

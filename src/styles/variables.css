@@ -2,10 +2,12 @@
   --border: #d7dde4;
   --bgPrimary: #ffffff;
   --bgSecondary: #f8f9fa;
+
+  --soft-gray: #dcdcdc;
 }
 
-:root.dark {
+/* :root.dark {
   --border: #333333;
   --bgPrimary: #000000;
   --bgSecondary: #111111;
-}
+} */

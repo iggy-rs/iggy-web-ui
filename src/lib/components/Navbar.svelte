@@ -3,6 +3,7 @@
   import type { iconType } from './Icon.svelte';
   import { page } from '$app/stores';
   import { twMerge } from 'tailwind-merge';
+  import logo from '$lib/assets/logo.png';
 
   const navItems: { name: string; icon: iconType; href: string }[] = [
     {
@@ -29,7 +30,7 @@
 </script>
 
 <nav class="h-screen px-3 py-7 border-r flex flex-col items-center">
-  <img src="logo.png" class="h-[60px] mb-10" alt="iggy" />
+  <img src={logo} class="h-[60px] mb-10" alt="iggy" />
   <ul class="flex flex-col gap-7">
     {#each navItems as { name, icon, href }}
       <li class=" ">
@@ -40,7 +41,7 @@
             $page.url.pathname.includes(href) && 'ring-black'
           )}
         >
-          <Icon name={icon} className="w-[30px] h-[30px]" />
+          <Icon name={icon} className="w-[27px] h-[27px]" />
         </a>
       </li>
     {/each}
