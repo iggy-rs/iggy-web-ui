@@ -1,12 +1,14 @@
 <script lang="ts">
   import Icon from '$lib/components/Icon.svelte';
   import { onMount } from 'svelte';
-  import type { Stream } from '../../types/Stream';
+  import type { Stream } from '../../lib/types/Stream';
   import { goto } from '$app/navigation';
 
   import { browser } from '$app/environment';
   import { twMerge } from 'tailwind-merge';
   import { page } from '$app/stores';
+  import { openModal } from '$lib/components/Modals/AppModals.svelte';
+  // import { openModal } from '$lib/components/Modals/AppModals.svelte';
 
   const query = '';
 
@@ -57,6 +59,7 @@
   </ul>
 
   <button
+    on:click={() => openModal('addStreamModal', { test: 'asd' })}
     class="flex gap-2 m-4 mt-7 rounded-[4px] border-black border-2 px-5 py-2 items-center justify-center text-sm font-semibold transition-colors hover:bg-gray-200"
   >
     <Icon name="plus" className="w-[16px] h-[16px]" strokeWidth={2} />
