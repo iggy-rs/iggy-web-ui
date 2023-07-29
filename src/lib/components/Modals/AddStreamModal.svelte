@@ -1,10 +1,13 @@
 <script lang="ts">
-  export let close: () => void;
-  export let test: string;
+  import Input from '../Input.svelte';
+
+  export let closeModal: () => void;
 </script>
 
-<div class="bg-white">
+<div class="bg-white debug h-full flex-1">
   <h2>Add stream</h2>
 
-  <button on:click={close}>close</button>
+  <Input />
+
+  <button on:click={closeModal}> close modal </button>
 </div>

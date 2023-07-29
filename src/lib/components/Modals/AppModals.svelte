@@ -14,7 +14,7 @@
 
   type ModalProps<T extends keyof typeof modals> = Omit<
     ComponentProps<InstanceType<(typeof modals)[T]>>,
-    'close'
+    'closeModal'
   >;
 
   const openedModal = writable<{ modal: keyof typeof modals; props: any } | undefined>();
@@ -54,15 +54,15 @@
 
   <div
     transition:modalTransition
-    class="fixed left-1/2 top-1/2 shadow-lg -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white z-[600] min-h-[50vh] w-[400px] p-10"
+    class="fixed left-1/2 top-1/2 shadow-lg -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white z-[600] min-h-[50vh] w-[400px] p-10 flex flex-col"
   >
     <button
       on:click={closeModal}
-      class="bg-gray-200 w-[45px] h-[45px] rounded-full text-primary20 flex items-center justify-center transition-colors hover:bg-gray-300 absolute top-5 right-5"
+      class="bg-gray-200 w-[45px] h-[45px] rounded-full flex items-center justify-center transition-colors hover:bg-gray-300 absolute top-5 right-5"
     >
       <Icon name="close" strokeWidth={2.3} />
     </button>
 
-    <svelte:component this={modals[$openedModal.modal]} {...$openedModal.props} {close} />
+    <svelte:component this={modals[$openedModal.modal]} {...$openedModal.props} {closeModal} />
   </div>
 {/if}
