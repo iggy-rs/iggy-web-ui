@@ -1,13 +1,8 @@
-<script context="module" lang="ts">
-  import { writable } from 'svelte/store';
+<script lang="ts">
+  import { dataRefetchIntervalS, isAnyQueryLoading } from '$lib/stores/dataFetchingStore';
   import Icon from './Icon.svelte';
   import { twMerge } from 'tailwind-merge';
 
-  export const dataRefetchIntervalS = writable(10);
-  export const isAnyQueryLoading = writable(false);
-</script>
-
-<script lang="ts">
   let isSpinnerSpinning = false;
   let timer: number | undefined;
 

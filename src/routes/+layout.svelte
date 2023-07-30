@@ -5,7 +5,6 @@
   import Navbar from '$lib/components/Navbar.svelte';
   import '../styles/app.css';
   import RefetchIntervalToggler from '$lib/components/RefetchIntervalToggler.svelte';
-  import Icon from '$lib/components/Icon.svelte';
 
   const queryClient = new QueryClient({
     defaultOptions: {

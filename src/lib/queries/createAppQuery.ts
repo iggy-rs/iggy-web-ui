@@ -1,7 +1,4 @@
-import {
-  dataRefetchIntervalS,
-  isAnyQueryLoading
-} from '$lib/components/RefetchIntervalToggler.svelte';
+import { dataRefetchIntervalS, isAnyQueryLoading } from '$lib/stores/dataFetchingStore';
 import { createQuery } from '@tanstack/svelte-query';
 import { derived } from 'svelte/store';
 
