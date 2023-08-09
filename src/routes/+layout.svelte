@@ -1,18 +1,30 @@
 <script>
   import { browser } from '$app/environment';
-  import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
+  import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/svelte-query';
   import AppModals from '$lib/components/Modals/AppModals.svelte';
   import Navbar from '$lib/components/Navbar.svelte';
   import '../styles/app.css';
-  import RefetchIntervalToggler from '$lib/components/RefetchIntervalToggler.svelte';
+  import RefetchIntervalToggler, {
+    dataRefetchIntervalS
+  } from '$lib/components/RefetchIntervalToggler.svelte';
 
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        enabled: browser
+        enabled: browser,
+        refetchInterval: $dataRefetchIntervalS * 1000
       }
     }
   });
+
+  $: {
+    queryClient.setDefaultOptions({
+      queries: {
+        ...queryClient.getDefaultOptions().queries,
+        refetchInterval: $dataRefetchIntervalS * 1000
+      }
+    });
+  }
 </script>
 
 <QueryClientProvider client={queryClient}>

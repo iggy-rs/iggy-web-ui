@@ -6,7 +6,7 @@
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import { getStreamsQuery } from '$lib/queries/getStreamsQuery';
 
-  const streamsQuery = getStreamsQuery();
+  $: streamsQuery = getStreamsQuery();
   $: ({ data, status } = $streamsQuery);
 </script>
 
