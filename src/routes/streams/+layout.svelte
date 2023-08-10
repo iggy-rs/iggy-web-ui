@@ -5,6 +5,7 @@
   import { page } from '$app/stores';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import { getStreamsQuery } from '$lib/queries/getStreamsQuery';
+  import Button from '$lib/components/Button.svelte';
 
   $: streamsQuery = getStreamsQuery();
   $: ({ data, status } = $streamsQuery);
@@ -21,33 +22,35 @@
           <li>
             <button
               class={twMerge(
-                'flex w-full flex-col border-b gap-1 px-5 py-2 transition-colors hover:bg-gray-200',
+                'flex w-full flex-col border-b gap-1 px-5 py-2 transition-colors hover:bg-gray-200 outline-none',
                 $page.params.id === id.toString() && 'bg-gray-200'
               )}
               on:click={() => {
                 goto(`/streams/${id}/`);
               }}
             >
-              <span class="font-semibold text-base">{name}</span>
-              <div class="flex flex-col items-start text-gray-600">
-                <span class="text-xs">Topics: {topicsCount}</span>
-                <span class="text-xs">Size: {sizeBytes}</span>
-                <span class="text-xs">Messages: {messagesCount}</span>
-                <span class="text-xs">
-                  Id: {id}
-                </span>
+              <span class="font-semibold text-base text-gray-600">{name}</span>
+              <div class="flex gap-14">
+                <div class="flex flex-col items-start">
+                  <span class="text-xs">Topics: {topicsCount}</span>
+                  <span class="text-xs">Messages: {messagesCount}</span>
+                </div>
+
+                <div class="flex flex-col items-start">
+                  <span class="text-xs">
+                    Id: {id}
+                  </span>
+                  <span class="text-xs">Size: {sizeBytes}</span>
+                </div>
               </div>
             </button>
           </li>
         {/each}
       </ul>
-      <button
-        on:click={() => openModal('addStreamModal', {})}
-        class="flex gap-2 m-4 rounded-[4px] border-black border-2 px-5 py-2 items-center justify-center text-sm font-semibold transition-colors hover:bg-gray-200"
-      >
+      <Button variant="outlined" class="m-4" on:click={() => openModal('addStreamModal')}>
         <Icon name="plus" className="w-[16px] h-[16px]" strokeWidth={2} />
         New stream
-      </button>
+      </Button>
     </div>
   {/if}
 
@@ -55,3 +58,6 @@
     <slot />
   </div>
 </div>
+
+<!-- 
+on:click={() => openModal('addStreamModal', {})} -->

@@ -1,20 +1,16 @@
 <script lang="ts">
+  import type { StreamDetails } from '$lib/domain/StreamDetails';
   import Button from '../Button.svelte';
-  import Input from '../Input.svelte';
   import ModalBase from './ModalBase.svelte';
-
+  export let stream: StreamDetails;
   export let closeModal: () => void;
 </script>
 
-<ModalBase {closeModal} title="Add Stream">
-  <form class="flex flex-col h-[300px] gap-4">
-    <Input label="Stream Id" name="streamId" />
-
-    <Input label="Name" name="name" />
-
+<ModalBase {closeModal} title="Stream settings {stream.name}">
+  <div class="h-[300px]">
     <div class="flex justify-end gap-3 mt-auto">
       <Button variant="text" class="w-2/5" on:click={closeModal}>Cancel</Button>
-      <Button type="submit" variant="contained" class="w-2/5">Create</Button>
+      <Button type="submit" variant="contained" class="w-2/5">Save</Button>
     </div>
-  </form>
+  </div>
 </ModalBase>
