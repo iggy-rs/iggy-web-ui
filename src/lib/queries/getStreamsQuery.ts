@@ -1,5 +1,5 @@
 import { PUBLIC_API_KEY } from '$env/static/public';
-import { streamMapper } from '$lib/domain/Stream';
+import { streamMapper, type Stream } from '$lib/domain/Stream';
 import { createQuery, useQueryClient } from '@tanstack/svelte-query';
 
 export function getStreamsQuery() {
@@ -8,7 +8,7 @@ export function getStreamsQuery() {
     queryFn: async () => {
       const res = await fetch(`${PUBLIC_API_KEY}/streams`);
       const data = await res.json();
-      return data.map(streamMapper);
+      return data.map(streamMapper) as Stream[];
     }
   });
 }

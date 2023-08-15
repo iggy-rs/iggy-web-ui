@@ -1,16 +1,18 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import Loader from '$lib/components/Loader.svelte';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
+  import Table from '$lib/components/Table.svelte';
   import { getStreamDetailsQuery } from '$lib/queries/getStreamDetailsQuery';
 
   $: streamDetailsQuery = getStreamDetailsQuery(+$page.params.id);
   $: ({ data: stream, isLoading } = $streamDetailsQuery);
 
   const openStreamSettingModal = () => openModal('streamSettingsModal', { stream: stream! });
-  const openAddTopicModal = () => openModal('addTopicModal', {});
+  const openAddTopicModal = () => openModal('addTopicModal', { streamDetails: stream! });
 </script>
 
 {#if isLoading}
@@ -46,7 +48,23 @@
       </Button>
     </div>
 
-    <div class="p-7" />
+    {#if stream.topicsCount === 0}
+      <div class="flex items-center justify-center text-gray-400 mt-7">
+        <em>This stream has no topics yet.</em>
+      </div>
+    {:else}
+      <Table
+        data={stream.topics}
+        onRowClick={(id) => goto(`${$page.url.pathname}/${id}`)}
+        colNames={{
+          id: 'Id',
+          name: 'Name',
+          messagesCount: 'Messages count',
+          partitionsCount: 'Partitions count',
+          sizeBytes: 'Size (Bytes)'
+        }}
+      />
+    {/if}
   </div>
 {/if}
 

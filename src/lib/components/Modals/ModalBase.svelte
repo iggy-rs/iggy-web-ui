@@ -4,6 +4,7 @@
   import Icon from '../Icon.svelte';
   import type { TransitionConfig } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
+  import Button from '../Button.svelte';
 
   function modalTransition(node: Element): TransitionConfig {
     const style = getComputedStyle(node);
@@ -41,12 +42,13 @@
   )}
 >
   <div class="h-[15%]">
-    <button
+    <Button
+      variant="rounded"
       on:click={closeModal}
-      class="bg-gray-200 w-[45px] h-[45px] rounded-full flex items-center justify-center transition-colors hover:bg-gray-300 absolute top-5 right-5"
+      class="transition-colors   absolute top-5 right-5 p-2"
     >
       <Icon name="close" strokeWidth={2.3} />
-    </button>
+    </Button>
 
     {#if title}
       <h2 class="text-xl font-semibold mb-7">{title}</h2>

@@ -5,14 +5,14 @@
 <div class="flex items-baseline text-gray-400">
   <span class=" text-2xl mr-1">Loading {name} </span>
 
-  {#each [0, 150, 300] as delay}
+  {#each [0, 200, 400] as delay}
     <span class="loader-animation text-2xl" style="animation-delay:{delay}ms">.</span>
   {/each}
 </div>
 
 <style lang="postcss">
   .loader-animation {
-    animation: dots-animation 600ms infinite alternate;
+    animation: dots-animation 700ms infinite alternate;
   }
 
   @keyframes dots-animation {

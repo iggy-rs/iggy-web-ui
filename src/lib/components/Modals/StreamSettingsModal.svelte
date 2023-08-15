@@ -1,9 +1,11 @@
 <script lang="ts">
   import type { StreamDetails } from '$lib/domain/StreamDetails';
+  import type { CloseModalFn } from '$lib/types/utilTypes';
   import Button from '../Button.svelte';
   import ModalBase from './ModalBase.svelte';
+
   export let stream: StreamDetails;
-  export let closeModal: () => void;
+  export let closeModal: CloseModalFn;
 </script>
 
 <ModalBase {closeModal} title="Stream settings {stream.name}">

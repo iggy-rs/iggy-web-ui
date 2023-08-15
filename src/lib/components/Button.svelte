@@ -7,7 +7,7 @@
 
   const variants = {
     rounded:
-      'w-[35px] h-[35px] rounded-full  transition-transform  flex items-center justify-center',
+      'w-[40px] h-[40px] rounded-full  transition-all  flex items-center justify-center hover:bg-gray-200 ',
     outlined: twMerge(baseClass, 'border-black border-2 bg-transparent hover:bg-gray-200'),
     contained: twMerge(baseClass, 'bg-black text-white hover:shadow-lg'),
     text: twMerge(baseClass, 'bg-transparent hover:bg-gray-200')

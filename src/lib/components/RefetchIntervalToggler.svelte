@@ -21,7 +21,7 @@
 
     timer = setTimeout(() => {
       if ($fetchingQueriesCount === 0) isSpinnerSpinning = false;
-    }, 500);
+    }, 300);
   }
 </script>
 
@@ -42,12 +42,12 @@
 
 <style lang="postcss">
   .spin {
-    animation: spin 1s linear infinite;
+    animation: spin 0.3s linear infinite;
   }
 
   @keyframes spin {
     100% {
-      transform: rotate(-360deg);
+      transform: rotate(-180deg);
     }
   }
 </style>
