@@ -9,7 +9,7 @@
   export let closeModal: CloseModalFn;
 
   const schema = z.object({
-    id: z.coerce.number().min(1).max(255).default(1),
+    id: z.coerce.number().min(1).max(255).default(0),
     name: z
       .string()
       .min(1, 'Name must contain at least 1 character')
@@ -17,24 +17,21 @@
       .default('')
   });
 
-  const { form, errors, enhance, constraints, reset } = superForm(
-    superValidateSync(schema, { id: (Math.random() + 1).toString(36).substring(7) }),
-    {
-      SPA: true,
-      validators: schema,
-      taintedMessage: null,
-      onError: () => {
-        console.log('on error');
-      },
-      onUpdate({ form }) {
-        console.log('on update');
-        if (form.valid) {
-          console.log('form is valid');
-          // TODO: Do something with the validated form.data
-        }
+  const { form, errors, enhance, constraints } = superForm(superValidateSync(schema), {
+    SPA: true,
+    validators: schema,
+    taintedMessage: false,
+    onError: () => {
+      console.log('on error');
+    },
+    onUpdate({ form }) {
+      console.log('on update');
+      if (form.valid) {
+        console.log('form is valid');
+        // TODO: Do something with the validated form.data
       }
     }
-  );
+  });
 </script>
 
 <!-- <SuperDebug data={$form} /> -->

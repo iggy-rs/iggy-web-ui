@@ -20,8 +20,8 @@
 </script>
 
 <div class="flex h-full">
-  {#if data}
-    <div class="w-[300px] flex flex-col h-full bg-white border-r">
+  {#if data && !$page.url.pathname.includes('topics')}
+    <div class="w-[260px] flex flex-col h-full bg-white border-r">
       <input
         bind:value={searchQuery}
         placeholder="Search streams..."
@@ -34,7 +34,7 @@
             <button
               class={twMerge(
                 'flex w-full flex-col border-b gap-1 px-5 py-2 transition-colors hover:bg-gray-200 outline-none',
-                $page.params.id === id.toString() && 'bg-gray-200'
+                $page.params.streamId === id.toString() && 'bg-gray-200'
               )}
               on:click={() => goto(`/streams/${id}/`)}
             >

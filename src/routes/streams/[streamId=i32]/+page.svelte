@@ -8,7 +8,7 @@
   import Table from '$lib/components/Table.svelte';
   import { getStreamDetailsQuery } from '$lib/queries/getStreamDetailsQuery';
 
-  $: streamDetailsQuery = getStreamDetailsQuery(+$page.params.id);
+  $: streamDetailsQuery = getStreamDetailsQuery(+$page.params.streamId);
   $: ({ data: stream, isLoading } = $streamDetailsQuery);
 
   const openStreamSettingModal = () => openModal('streamSettingsModal', { stream: stream! });
@@ -17,7 +17,7 @@
 
 {#if isLoading}
   <div class="p-7 h-full flex items-center justify-center">
-    <Loader name="stream {$page.params.id}" />
+    <Loader name="stream {$page.params.streamId}" />
   </div>
 {/if}
 
@@ -55,7 +55,7 @@
     {:else}
       <Table
         data={stream.topics}
-        onRowClick={(id) => goto(`${$page.url.pathname}/${id}`)}
+        onRowClick={(topic) => goto(`/streams/${$page.params.streamId}/topics/${topic.id}`)}
         colNames={{
           id: 'Id',
           name: 'Name',
@@ -67,9 +67,3 @@
     {/if}
   </div>
 {/if}
-
-<style lang="postcss">
-  .chip {
-    @apply bg-gray-300 rounded-3xl px-3 py-1 whitespace-nowrap;
-  }
-</style>
