@@ -20,7 +20,9 @@
     arrowLeft: `<path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l14 0"></path><path d="M5 12l6 6"></path><path d="M5 12l6 -6"></path>`,
     // chevronLeft: `<path stroke="none" d="M0 0h24v24H0z" fill="none"></path><polyline points="15 6 9 12 15 18"></polyline>`,
     // chevronDown: ` <path stroke="none" d="M0 0h24v24H0z" fill="none"></path><polyline points="6 9 12 15 18 9"></polyline>`,
-    arrowRight: `<path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l14 0"></path><path d="M13 18l6 -6"></path><path d="M13 6l6 6"></path>`
+    arrowRight: `<path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l14 0"></path><path d="M13 18l6 -6"></path><path d="M13 6l6 6"></path>`,
+    arrowUp: `<path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M18 11l-6 -6"></path><path d="M6 11l6 -6"></path>`,
+    arrowDown: ` <path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M18 13l-6 6"></path><path d="M6 13l6 6"></path>`
     // verticalDots: `<path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle><circle cx="12" cy="5" r="1"></circle>`,
     // trash: `<path stroke="none" d="M0 0h24v24H0z" fill="none"></path><line x1="4" y1="7" x2="20" y2="7"></line><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>`,
     // circle: '<circle cx="12" cy="12" r="4"/>',
@@ -32,6 +34,8 @@
 </script>
 
 <script lang="ts">
+  import { twMerge } from 'tailwind-merge';
+
   export let strokeWidth = 1.7;
   export let name: iconType;
   export let className = '';
@@ -41,9 +45,7 @@
 <svg
   viewBox="0 0 24 24"
   stroke-width={strokeWidth}
-  class="w-[24px] h-[24px] {className}"
-  stroke="currentColor"
-  fill={fill ? 'currentColor' : 'none'}
+  class={twMerge('w-[24px] h-[24px] fill-none stroke-current', className)}
   stroke-linecap="round"
   stroke-linejoin="round"
 >

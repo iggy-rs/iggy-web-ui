@@ -41,10 +41,10 @@
     <Table
       data={topic.partitions}
       colNames={{
-        id: 'Id',
-        currentOffset: 'Current offset',
-        segmentsCount: 'Segments count',
-        sizeBytes: 'Size (Bytes)'
+        id: 'ID',
+        currentOffset: 'Offset',
+        segmentsCount: 'Segments',
+        sizeBytes: 'Size'
       }}
     />
   </div>

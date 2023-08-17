@@ -57,11 +57,11 @@
         data={stream.topics}
         onRowClick={(topic) => goto(`/streams/${$page.params.streamId}/topics/${topic.id}`)}
         colNames={{
-          id: 'Id',
+          id: 'ID',
           name: 'Name',
-          messagesCount: 'Messages count',
-          partitionsCount: 'Partitions count',
-          sizeBytes: 'Size (Bytes)'
+          messagesCount: 'Messages',
+          partitionsCount: 'Partitions',
+          sizeBytes: 'Size'
         }}
       />
     {/if}
