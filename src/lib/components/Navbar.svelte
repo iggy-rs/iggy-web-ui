@@ -29,19 +29,27 @@
   ];
 </script>
 
-<nav class="h-screen px-3 py-7 border-r flex flex-col items-center">
-  <img src={logo} class="h-[60px] mb-10" alt="iggy" />
+<nav
+  class="h-screen px-3 pb-7 pt-4 border-r flex flex-col items-center bg-shadeL300 dark:bg-shadeD1000"
+>
+  <a href="/overview" class="flex flex-col items-center gap-5">
+    <span class="font-extrabold text-xl tracking-wide text-black dark:text-white"> IGGY </span>
+    <img src={logo} class="h-[60px] mb-10" alt="iggy" />
+  </a>
+
   <ul class="flex flex-col gap-7">
     {#each navItems as { name, icon, href }}
-      <li class=" ">
+      {@const isActive = $page.url.pathname.includes(href)}
+      <li>
         <a
           {href}
           class={twMerge(
-            'p-2 block rounded-xl transition-colors hover:bg-slate-200 ring-2 ring-transparent',
-            $page.url.pathname.includes(href) && 'ring-black'
+            'p-2 block rounded-xl transition-colors  ring-2 ring-transparent',
+            isActive && 'ring-black dark:ring-white',
+            !isActive && 'dark:hover:bg-shadeD300'
           )}
         >
-          <Icon name={icon} className="w-[27px] h-[27px]" />
+          <Icon name={icon} className="w-[27px] h-[27px] text-black dark:text-white" />
         </a>
       </li>
     {/each}

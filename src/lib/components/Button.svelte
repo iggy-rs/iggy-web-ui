@@ -7,10 +7,20 @@
 
   const variants = {
     rounded:
-      'w-[40px] h-[40px] rounded-full  transition-all  flex items-center justify-center hover:bg-gray-200 ',
-    outlined: twMerge(baseClass, 'border-black border-2 bg-transparent hover:bg-gray-200'),
-    contained: twMerge(baseClass, 'bg-black text-white hover:shadow-lg'),
-    text: twMerge(baseClass, 'bg-transparent hover:bg-gray-200')
+      'w-[40px] h-[40px] rounded-full dark:text-white flex items-center justify-center dark:hover:bg-shadeD300 hover:bg-gray-200 ',
+    outlined: twMerge(
+      baseClass,
+      'border-black dark:border-white dark:text-white border-2 bg-transparent dark:hover:bg-shadeD400'
+    ),
+    contained: twMerge(
+      baseClass,
+      'bg-black text-white dark:bg-white dark:text-black dark:text-black  hover:shadow-lg'
+    ),
+    text: twMerge(baseClass, 'bg-transparent hover:bg-gray-200'),
+    delete: twMerge(
+      baseClass,
+      'border-2 border-red-300 text-red-300 hover:text-red-400 hover:border-red-400'
+    )
   };
 
   interface $$Props extends HTMLButtonAttributes {

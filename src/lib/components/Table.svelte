@@ -32,14 +32,14 @@
   $: orderedData = ordering.key ? orderData(data, ordering.key, ordering.asc!) : data;
 </script>
 
-<table class="w-full px-10">
-  <thead class="px-7">
+<table class="w-full px-10 dark:text-white">
+  <thead class="px-7 dark:text-shadeD100">
     <tr class="border-b">
       {#each colDefs as { colName, fieldName } (fieldName)}
         <th
           on:click={() =>
             (ordering = { key: fieldName, asc: ordering.key !== fieldName ? true : !ordering.asc })}
-          class=" hover:bg-neutral-200 cursor-pointer transition-all rounded-t-md py-5 text-sm text-gray-500 px-5 whitespace-nowrap font-semibold"
+          class=" hover:bg-neutral-200 dark:hover:bg-shadeD300 cursor-pointer transition-all rounded-t-md py-5 text-sm px-5 whitespace-nowrap font-semibold"
         >
           <div class="flex items-center justify-between w-full">
             <span>
@@ -62,7 +62,7 @@
   <tbody>
     {#each orderedData as item (item.id)}
       <tr
-        class="border-b transition-all hover:bg-gray-200 cursor-pointer"
+        class="border-b transition-all dark:hover:bg-shadeD300 hover:bg-gray-200 cursor-pointer"
         on:click={() => onRowClick && onRowClick(item)}
       >
         {#each colDefs as { fieldName } (fieldName)}

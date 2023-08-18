@@ -1,6 +1,6 @@
 import { PUBLIC_API_KEY } from '$env/static/public';
 import { streamMapper, type Stream } from '$lib/domain/Stream';
-import { createQuery, useQueryClient } from '@tanstack/svelte-query';
+import { createQuery } from '@tanstack/svelte-query';
 
 export function getStreamsQuery() {
   return createQuery({

@@ -24,10 +24,10 @@
 {#if stream}
   <div class="h-full bg-bgSecondary">
     <div class="h-[80px] flex text-xs items-center px-7">
-      <h1 class="font-semibold text-xl">Stream {stream.name}</h1>
+      <h1 class="font-semibold text-xl dark:text-white">Stream {stream.name}</h1>
 
       <Button variant="rounded" class="ml-3" on:click={openStreamSettingModal}>
-        <Icon name="settings" />
+        <Icon name="settings" className="dark:text-white" />
       </Button>
 
       <div class="flex gap-3 ml-7">

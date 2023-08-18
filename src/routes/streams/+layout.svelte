@@ -21,25 +21,32 @@
 
 <div class="flex h-full">
   {#if data && !$page.url.pathname.includes('topics')}
-    <div class="w-[260px] flex flex-col h-full bg-white border-r">
+    <div class="w-[260px] flex flex-col h-full border-r bg-shadeL200 dark:bg-shadeD900">
       <input
         bind:value={searchQuery}
         placeholder="Search streams..."
-        class="outline-none p-7 py-6 border-b text-sm"
+        class="outline-none p-7 py-6 border-b text-sm bg-transparent dark:text-white"
       />
 
       <ul class="overflow-auto">
         {#each filteredData as { name, id, topicsCount, messagesCount, sizeBytes } (id)}
+          {@const isActive = $page.params.streamId === id.toString()}
           <li>
             <button
               class={twMerge(
-                'flex w-full flex-col border-b gap-1 px-5 py-2 transition-colors hover:bg-gray-200 outline-none',
-                $page.params.streamId === id.toString() && 'bg-gray-200'
+                'flex w-full flex-col border-b gap-1 px-5 py-2 transition-colors  outline-none dark:text-white',
+                isActive && 'bg-shadeL500 dark:bg-shadeD300',
+                !isActive && 'dark:hover:bg-shadeD500 text-gra'
               )}
               on:click={() => goto(`/streams/${id}/`)}
             >
-              <span class="font-semibold text-base text-gray-600">{name}</span>
-              <div class="flex gap-14">
+              <span
+                class={twMerge(
+                  'font-semibold text-base',
+                  isActive ? 'text-black dark:text-white' : 'text-shadeL1000  dark:text-shadeD100'
+                )}>{name}</span
+              >
+              <div class="grid grid-cols-2 w-full">
                 <div class="flex flex-col items-start">
                   <span class="text-xs">
                     Id: {id}
@@ -70,7 +77,7 @@
     </div>
   {/if}
 
-  <div class="flex-1">
+  <div class="flex-1 dark:bg-shadeD700">
     <slot />
   </div>
 </div>

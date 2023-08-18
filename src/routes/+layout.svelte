@@ -7,6 +7,7 @@
   import RefetchIntervalToggler, {
     dataRefetchIntervalS
   } from '$lib/components/RefetchIntervalToggler.svelte';
+  import ThemeToggler from '$lib/components/ThemeToggler.svelte';
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -33,10 +34,14 @@
   <div class="flex w-full max-h-screen">
     <Navbar />
     <div class="flex-1 flex flex-col">
-      <header class="h-[55px] min-h-[55px] max-h-[55px] border-b">
+      <header
+        class="h-[55px] min-h-[55px] max-h-[55px] border-b px-4 flex items-center justify-between bg-shadeL200 dark:bg-shadeD900"
+      >
         <RefetchIntervalToggler />
+
+        <ThemeToggler />
       </header>
-      <main class="h-[calc(100vh-55px)]">
+      <main class="h-[calc(100vh-55px)] bg-shadeL100 dark:bg-shadeD900">
         <slot />
       </main>
     </div>

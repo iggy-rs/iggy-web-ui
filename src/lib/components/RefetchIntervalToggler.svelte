@@ -8,6 +8,8 @@
 </script>
 
 <script lang="ts">
+  import Button from './Button.svelte';
+
   const fetchingQueriesCount = useIsFetching();
 
   const queryClient = useQueryClient();
@@ -25,20 +27,11 @@
   }
 </script>
 
-<div class="ml-auto">
-  <button
-    class={twMerge(isSpinnerSpinning && 'spin')}
-    on:click={() => queryClient.refetchQueries({ type: 'active' })}
-  >
+<Button variant="rounded" on:click={() => queryClient.refetchQueries({ type: 'active' })}>
+  <div class={twMerge(isSpinnerSpinning && 'spin')}>
     <Icon name="refresh" />
-  </button>
-
-  <div>
-    Refresh every: 10 seconds
-    <!-- <input type="number" bind:value={$dataRefetchIntervalS} class="w-[40px]" />
-    seconds {$dataRefetchIntervalS} -->
   </div>
-</div>
+</Button>
 
 <style lang="postcss">
   .spin {
