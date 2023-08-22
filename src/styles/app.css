@@ -24,4 +24,8 @@
   .chip {
     @apply bg-gray-300 dark:bg-shadeD300 dark:text-white rounded-3xl px-3 py-1 whitespace-nowrap;
   }
+
+  .text-color {
+    @apply text-black dark:text-white;
+  }
 }

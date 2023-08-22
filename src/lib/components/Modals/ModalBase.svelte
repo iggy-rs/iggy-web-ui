@@ -37,7 +37,7 @@
   {...rest}
   transition:modalTransition
   class={twMerge(
-    'fixed left-1/2 top-1/2 shadow-lg -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white z-[600]  max-h-[90vh] overflow-auto min-w-[min(90vw,400px)] p-7 pb-5 flex flex-col',
+    'fixed left-1/2 top-1/2 shadow-lg -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white dark:bg-shadeD700 z-[600]  max-h-[90vh] overflow-auto min-w-[min(90vw,400px)] p-7 pb-5 flex flex-col',
     className
   )}
 >
@@ -51,7 +51,7 @@
     </Button>
 
     {#if title}
-      <h2 class="text-xl font-semibold mb-7">{title}</h2>
+      <h2 class="text-xl text-color font-semibold mb-7">{title}</h2>
     {/if}
   </div>
 

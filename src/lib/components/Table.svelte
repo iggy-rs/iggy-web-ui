@@ -32,9 +32,10 @@
   $: orderedData = ordering.key ? orderData(data, ordering.key, ordering.asc!) : data;
 </script>
 
-<table class="w-full px-10 dark:text-white">
-  <thead class="px-7 dark:text-shadeD100">
-    <tr class="border-b">
+<table class="px-5 w-full dark:text-white">
+  <thead class="dark:text-shadeD100">
+    <tr class="border-b px-5">
+      <th class="w-2" />
       {#each colDefs as { colName, fieldName } (fieldName)}
         <th
           on:click={() =>
@@ -65,6 +66,7 @@
         class="border-b transition-all dark:hover:bg-shadeD300 hover:bg-gray-200 cursor-pointer"
         on:click={() => onRowClick && onRowClick(item)}
       >
+        <td class="w-2" />
         {#each colDefs as { fieldName } (fieldName)}
           <td class="px-5 py-3">
             {item[fieldName]}

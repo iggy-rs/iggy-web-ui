@@ -77,7 +77,7 @@
     </div>
   {/if}
 
-  <div class="flex-1 dark:bg-shadeD700">
+  <div class="flex-1">
     <slot />
   </div>
 </div>

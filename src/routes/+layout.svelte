@@ -41,7 +41,7 @@
 
         <ThemeToggler />
       </header>
-      <main class="h-[calc(100vh-55px)] bg-shadeL100 dark:bg-shadeD900">
+      <main class="h-[calc(100vh-55px)] bg-shadeL100 dark:bg-shadeD700">
         <slot />
       </main>
     </div>

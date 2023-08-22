@@ -31,6 +31,6 @@
 <svelte:window on:keydown={(e) => e.key === 'Escape' && closeModal()} />
 
 {#if $openedModal}
-  <div transition:fade={{ duration: 100 }} class="fixed inset-0 bg-gray-800/40 z-[500]" />
+  <div transition:fade={{ duration: 100 }} class="fixed inset-0 bg-black/40 z-[500]" />
   <svelte:component this={modals[$openedModal.modal]} {...$openedModal.props} {closeModal} />
 {/if}
