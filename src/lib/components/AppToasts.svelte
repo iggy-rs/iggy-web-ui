@@ -71,16 +71,14 @@
     duration = 10000,
     delay = 0
   }: ShowToastOptions) => {
-    if (delay) {
-      setTimeout(() => {
-        toasts.add({
-          title,
-          description,
-          duration,
-          type
-        });
-      }, delay);
-    }
+    setTimeout(() => {
+      toasts.add({
+        title,
+        description,
+        duration,
+        type
+      });
+    }, delay);
   };
 </script>
 

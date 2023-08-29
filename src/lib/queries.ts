@@ -10,9 +10,9 @@ export function getStatsQuery() {
     queryKey: ['stats'],
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    queryFn: async () => {
-      const result = await apiClient.get({ path: '/stats', throwError: true });
 
+    queryFn: async () => {
+      const result = await apiClient.get({ path: '/stats', throwOnError: true });
       return statsMapper((result as any).data);
     }
   });
@@ -24,7 +24,8 @@ export function getStreamDetailsQuery(id: number) {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     queryFn: async () => {
-      const result = await apiClient.get({ path: `/streams/${id}`, throwError: true });
+      const result = await apiClient.get({ path: `/streams/${id}`, throwOnError: true });
+
       return streamDetailsMapper((result as any).data);
     }
   });
@@ -34,7 +35,7 @@ export function getStreamsQuery() {
   return createQuery({
     queryKey: ['streams'],
     queryFn: async () => {
-      const res = await apiClient.get({ path: '/streams', throwError: true });
+      const res = await apiClient.get({ path: '/streams', throwOnError: true });
       return (res as any).data.map(streamMapper) as Stream[];
     }
   });
@@ -46,7 +47,7 @@ export function getTopicDetailsQuery(streamId: number, topicId: number) {
     queryFn: async () => {
       const result = await apiClient.get({
         path: `/streams/${streamId}/topics/${topicId}`,
-        throwError: true
+        throwOnError: true
       });
 
       return topicDetailsMapper((result as any).data);

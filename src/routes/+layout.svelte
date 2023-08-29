@@ -14,8 +14,8 @@
     defaultOptions: {
       mutations: {},
       queries: {
-        enabled: browser,
-        refetchInterval: $dataRefetchIntervalS * 1000
+        enabled: browser
+        // refetchInterval: $dataRefetchIntervalS * 1000
       }
     }
   });

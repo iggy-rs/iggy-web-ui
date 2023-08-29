@@ -11,8 +11,6 @@
   $: ({ data: topic, isLoading } = $topicDetailsQuery);
 
   $: prevPage = $page.url.pathname.split('/').slice(0, 3).join('/') + '/';
-
-  $: console.log($page);
 </script>
 
 {#if isLoading}
@@ -44,6 +42,7 @@
     </div>
 
     <Table
+      noDataMessage="This topic has no partitions yet."
       data={topic.partitions}
       colNames={{
         id: 'ID',

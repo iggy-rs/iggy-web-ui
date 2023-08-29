@@ -1,7 +1,12 @@
 import { PUBLIC_API_KEY } from '$env/static/public';
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
-type Path = '/streams' | `/streams/${number}` | `/streams/${number}/topics/${number}` | '/stats';
+type Path =
+  | '/streams'
+  | `/streams/${number}`
+  | `/streams/${number}/topics`
+  | `/streams/${number}/topics/${number}`
+  | '/stats';
 
 type FetchResult =
   | {
@@ -19,12 +24,12 @@ type FetchResult =
 
 type Query = {
   path: Path;
-  throwError?: boolean;
+  throwOnError?: boolean;
 };
 type Mutation = Query & { body: unknown };
 
 const fetchApi = async (payload: Mutation | Query, method: Method): Promise<FetchResult> => {
-  const { path, throwError = false } = payload;
+  const { path, throwOnError = false } = payload;
 
   const getJson = async (res: Response) => {
     const text = await res.text();
@@ -57,7 +62,7 @@ const fetchApi = async (payload: Mutation | Query, method: Method): Promise<Fetc
       };
     }
 
-    if (throwError) {
+    if (throwOnError) {
       throw Error(`${path}, method: ${method} threw error`, {
         cause: JSON.stringify({ status: res.status, statusText: res.statusText, json: json || {} })
       });
@@ -70,7 +75,7 @@ const fetchApi = async (payload: Mutation | Query, method: Method): Promise<Fetc
       error: json || {}
     };
   } catch (e: unknown) {
-    if (throwError)
+    if (throwOnError)
       throw Error(`${path}, method: ${method} threw error`, { cause: JSON.stringify(e) });
     return { success: false, status: 500, statusText: JSON.stringify(e), error: {} };
   }

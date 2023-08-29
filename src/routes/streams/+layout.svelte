@@ -61,8 +61,8 @@
             >
               <span
                 class={twMerge(
-                  'font-semibold text-base',
-                  isActive ? 'text-black dark:text-white' : 'text-shadeL1000  dark:text-shadeD100'
+                  'font-semibold text-base truncate',
+                  isActive ? 'text-black dark:text-white' : 'text-shadeL1000  dark:text-shadeD100 '
                 )}>{name}</span
               >
               <div class="grid grid-cols-2 w-full">
