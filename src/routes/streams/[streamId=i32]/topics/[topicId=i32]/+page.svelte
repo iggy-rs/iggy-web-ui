@@ -1,16 +1,18 @@
 <script>
-  import { getTopicDetailsQuery } from '$lib/queries/getTopicDetailsQuery';
   import { page } from '$app/stores';
   import Loader from '$lib/components/Loader.svelte';
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import Table from '$lib/components/Table.svelte';
   import { goto } from '$app/navigation';
+  import { getTopicDetailsQuery } from '$lib/queries';
 
   $: topicDetailsQuery = getTopicDetailsQuery(+$page.params.streamId, +$page.params.topicId);
   $: ({ data: topic, isLoading } = $topicDetailsQuery);
 
   $: prevPage = $page.url.pathname.split('/').slice(0, 3).join('/') + '/';
+
+  $: console.log($page);
 </script>
 
 {#if isLoading}

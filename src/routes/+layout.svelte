@@ -8,9 +8,11 @@
     dataRefetchIntervalS
   } from '$lib/components/RefetchIntervalToggler.svelte';
   import ThemeToggler from '$lib/components/ThemeToggler.svelte';
+  import AppToasts from '$lib/components/AppToasts.svelte';
 
   const queryClient = new QueryClient({
     defaultOptions: {
+      mutations: {},
       queries: {
         enabled: browser,
         refetchInterval: $dataRefetchIntervalS * 1000
@@ -18,18 +20,19 @@
     }
   });
 
-  $: {
-    queryClient.setDefaultOptions({
-      queries: {
-        ...queryClient.getDefaultOptions().queries,
-        refetchInterval: $dataRefetchIntervalS * 1000
-      }
-    });
-  }
+  // $: {
+  //   queryClient.setDefaultOptions({
+  //     queries: {
+  //       ...queryClient.getDefaultOptions().queries,
+  //       refetchInterval: $dataRefetchIntervalS * 1000
+  //     }
+  //   });
+  // }
 </script>
 
 <QueryClientProvider client={queryClient}>
   <AppModals />
+  <AppToasts />
 
   <div class="flex w-full max-h-screen">
     <Navbar />

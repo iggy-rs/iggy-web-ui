@@ -1,44 +1,63 @@
+<script lang="ts" context="module">
+  export const onStreamAdded = () => {};
+</script>
+
 <script lang="ts">
   import Icon from '$lib/components/Icon.svelte';
   import { goto } from '$app/navigation';
   import { twMerge } from 'tailwind-merge';
   import { page } from '$app/stores';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
-  import { getStreamsQuery } from '$lib/queries/getStreamsQuery';
+  import { getStreamsQuery } from '$lib/queries';
   import Button from '$lib/components/Button.svelte';
+  import { tick } from 'svelte';
 
   $: streamsQuery = getStreamsQuery();
   $: ({ data } = $streamsQuery);
 
-  let searchQuery = '';
+  let streamsList: HTMLUListElement;
 
+  let searchQuery = '';
+  // $: orderedData = (data || []).sort((a, b) => a.id - b.id);
   $: filteredData = (data || []).filter((stream) => stream.name.includes(searchQuery));
 
   $: if (data && data.length > 0 && $page.url.pathname === '/streams') {
     goto(`/streams/${data[0].id}`);
   }
+
+  let filteredDataLength = 0;
+
+  $: (async function () {
+    if (!streamsList || filteredData.length === 0) return;
+    if (filteredData.length === filteredDataLength + 1) {
+      await tick();
+      streamsList.scroll({ top: streamsList.scrollHeight, behavior: 'smooth' });
+    }
+
+    filteredDataLength = filteredData.length;
+  })();
 </script>
 
 <div class="flex h-full">
   {#if data && !$page.url.pathname.includes('topics')}
-    <div class="w-[260px] flex flex-col h-full border-r bg-shadeL200 dark:bg-shadeD900">
+    <div class="w-[290px] flex flex-col h-full border-r bg-shadeL200 dark:bg-shadeD900">
       <input
         bind:value={searchQuery}
         placeholder="Search streams..."
         class="outline-none p-7 py-6 border-b text-sm bg-transparent dark:text-white"
       />
 
-      <ul class="overflow-auto">
+      <ul class="overflow-auto" bind:this={streamsList}>
         {#each filteredData as { name, id, topicsCount, messagesCount, sizeBytes } (id)}
           {@const isActive = $page.params.streamId === id.toString()}
-          <li>
-            <button
+          <li class="last:mb-14">
+            <a
+              href="/streams/{id}/"
               class={twMerge(
                 'flex w-full flex-col border-b gap-1 px-5 py-2 transition-colors  outline-none dark:text-white',
                 isActive && 'bg-shadeL500 dark:bg-shadeD300',
-                !isActive && 'dark:hover:bg-shadeD500 text-gra'
+                !isActive && 'dark:hover:bg-shadeD500'
               )}
-              on:click={() => goto(`/streams/${id}/`)}
             >
               <span
                 class={twMerge(
@@ -59,7 +78,7 @@
                   <span class="text-xs">Messages: {messagesCount}</span>
                 </div>
               </div>
-            </button>
+            </a>
           </li>
         {/each}
       </ul>

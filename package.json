@@ -35,7 +35,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@tanstack/svelte-query": "^5.0.0-beta.15",
+    "@tanstack/svelte-query": "^5.0.0-beta.18",
     "tailwind-merge": "^1.14.0"
   }
 }

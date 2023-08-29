@@ -1,16 +1,20 @@
 <script lang="ts">
   import type { CloseModalFn } from '$lib/types/utilTypes';
-  import { superForm, superValidateSync } from 'sveltekit-superforms/client';
+  import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
   import { z } from 'zod';
   import Button from '../Button.svelte';
   import Input from '../Input.svelte';
   import ModalBase from './ModalBase.svelte';
-  import { createStreamMutation } from '$lib/mutations/createStreamMutation';
+  import { apiClient } from '$lib/utils/apiClient';
+  import { showToast } from '../AppToasts.svelte';
+  import { useQueryClient } from '@tanstack/svelte-query';
 
   export let closeModal: CloseModalFn;
 
+  const clientQuery = useQueryClient();
+
   const schema = z.object({
-    id: z.coerce.number().min(1).max(255).default(0).transform(String),
+    stream_id: z.coerce.number().min(1).max(255).default(0).transform(String),
     name: z
       .string()
       .min(1, 'Name must contain at least 1 character')
@@ -18,46 +22,53 @@
       .default('')
   });
 
-  const mutation = createStreamMutation();
-  $: ({ data, isSuccess, error, variables, mutateAsync, isPending } = $mutation);
-
-  $: console.log({ data, isSuccess, error, variables });
-
-  const { form, errors, enhance, constraints } = superForm(superValidateSync(schema), {
+  const { form, errors, enhance, constraints, submitting } = superForm(superValidateSync(schema), {
     SPA: true,
     validators: schema,
     taintedMessage: false,
-    onError: () => {
-      console.log('on error');
-    },
     async onUpdate({ form }) {
-      console.log('on update');
-      if (form.valid) {
-        const data = await mutateAsync({ id: +form.data.id, name: form.data.name });
+      if (!form.valid) return;
 
-        console.log(data);
+      const result = await apiClient.post({
+        path: '/streams',
+        body: { stream_id: +form.data.stream_id, name: form.data.name }
+      });
+
+      if (result.success) {
+        await clientQuery.refetchQueries({ queryKey: ['streams'] });
+        closeModal();
+        showToast({
+          type: 'success',
+          title: 'Success',
+          description: 'Stream added successfully',
+          delay: 250
+        });
+        return;
+      }
+
+      const { error } = result;
+      if ('field' in error && 'reason' in error) {
+        setError(form, error.field as any, error.reason as any);
       }
     }
   });
 </script>
-
-<!-- <SuperDebug data={$form} /> -->
 
 <ModalBase {closeModal} title="Add new stream">
   <form method="POST" class="flex flex-col h-[300px] gap-4" use:enhance>
     <Input
       label="Id"
       id="id"
-      bind:value={$form.id}
+      bind:value={$form.stream_id}
       type="number"
-      {...$constraints.id}
-      error={$errors.id?.join(',')}
+      {...$constraints.stream_id}
+      error={$errors.stream_id?.join(',')}
     />
     <Input label="Name" id="name" bind:value={$form.name} error={$errors.name?.join(',')} />
 
     <div class="flex justify-end gap-3 mt-auto">
       <Button type="button" variant="text" class="w-2/5" on:click={closeModal}>Cancel</Button>
-      <Button type="submit" variant="contained" disabled={isPending} class="w-2/5">Create</Button>
+      <Button type="submit" variant="contained" disabled={$submitting} class="w-2/5">Create</Button>
     </div>
   </form>
 </ModalBase>

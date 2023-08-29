@@ -6,7 +6,7 @@
   import Loader from '$lib/components/Loader.svelte';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import Table from '$lib/components/Table.svelte';
-  import { getStreamDetailsQuery } from '$lib/queries/getStreamDetailsQuery';
+  import { getStreamDetailsQuery } from '$lib/queries';
 
   $: streamDetailsQuery = getStreamDetailsQuery(+$page.params.streamId);
   $: ({ data: stream, isLoading } = $streamDetailsQuery);

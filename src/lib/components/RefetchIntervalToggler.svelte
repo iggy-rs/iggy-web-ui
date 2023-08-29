@@ -12,6 +12,8 @@
 
   const fetchingQueriesCount = useIsFetching();
 
+  $: console.log(fetchingQueriesCount);
+
   const queryClient = useQueryClient();
 
   let isSpinnerSpinning = false;

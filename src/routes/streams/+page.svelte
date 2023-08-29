@@ -1,6 +1,6 @@
 <script lang="ts">
   import Loader from '$lib/components/Loader.svelte';
-  import { getStreamsQuery } from '$lib/queries/getStreamsQuery';
+  import { getStreamsQuery } from '$lib/queries';
 
   const streamsQuery = getStreamsQuery();
   $: ({ data, status } = $streamsQuery);
