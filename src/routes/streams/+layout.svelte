@@ -96,7 +96,7 @@
     </div>
   {/if}
 
-  <div class="flex-1">
+  <div class="flex-1 h-[calc(100vh-55px)]">
     <slot />
   </div>
 </div>

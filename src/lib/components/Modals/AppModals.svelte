@@ -5,11 +5,13 @@
   import AddStreamModal from './AddStreamModal.svelte';
   import AddTopicModal from './AddTopicModal.svelte';
   import StreamSettingsModal from './StreamSettingsModal.svelte';
+  import TopicSettingsModal from './TopicSettingsModal.svelte';
 
   const modals = {
     addTopicModal: AddTopicModal,
     addStreamModal: AddStreamModal,
-    streamSettingsModal: StreamSettingsModal
+    streamSettingsModal: StreamSettingsModal,
+    topicSettingsModal: TopicSettingsModal
   };
 
   type ModalProps<T extends keyof typeof modals> = Omit<

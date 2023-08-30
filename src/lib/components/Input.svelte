@@ -26,7 +26,7 @@
     {id}
     class={twMerge(
       'rounded-md border border-gray-300 dark:border-none outline-none dark:bg-shadeD400 text-color px-3 py-2 w-full',
-      error && 'border-red-600 text-red-600 border-[1px] outline-red-600',
+      error && 'border-red-600 text-red-600 border-none outline-red-600',
       $$restProps.class
     )}
   />
