@@ -22,7 +22,7 @@
 {/if}
 
 {#if stream}
-  <div class="h-full bg-bgSecondary">
+  <div class="h-full overflow-auto pb-10">
     <div class="h-[80px] flex text-xs items-center px-7">
       <h1 class="font-semibold text-xl dark:text-white max-w-[380px] break-words line-clamp-3">
         Stream {stream.name}

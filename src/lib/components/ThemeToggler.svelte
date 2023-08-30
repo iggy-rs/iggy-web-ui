@@ -9,14 +9,18 @@
   const setDarkMode = () => {
     darkMode = true;
     localStorage.setItem('appTheme', 'dark');
-    document.documentElement.classList.remove('light');
+    document.body.classList.add('transitions-disabled');
     document.documentElement.classList.add('dark');
+    const _ = window.getComputedStyle(document.body).opacity;
+    document.body.classList.remove('transitions-disabled');
   };
   const setLightMode = () => {
     darkMode = false;
-    localStorage.setItem('appTheme', 'light');
+    localStorage.removeItem('appTheme');
+    document.body.classList.add('transitions-disabled');
     document.documentElement.classList.remove('dark');
-    document.documentElement.classList.add('light');
+    const _ = window.getComputedStyle(document.body).opacity;
+    document.body.classList.remove('transitions-disabled');
   };
 
   const setAppTheme = () => {
@@ -25,15 +29,10 @@
     if (localStorage.getItem('appTheme') === 'dark') {
       setDarkMode();
       return;
-    } else if (localStorage.getItem('appTheme') === 'light') {
-      setLightMode();
-      return;
     }
 
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setDarkMode();
-    } else {
-      setLightMode();
     }
   };
 
