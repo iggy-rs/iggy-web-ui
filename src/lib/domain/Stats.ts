@@ -106,7 +106,7 @@ export function statsMapper(apiStats: any): Stats {
 
     hostName: {
       name: 'Host',
-      value: apiStats.host_name
+      value: apiStats.hostname
     },
     osName: {
       name: 'System',
@@ -118,7 +118,7 @@ export function statsMapper(apiStats: any): Stats {
       value: apiStats.os_version
     },
     kernelVersion: {
-      name: 'Kernvel version',
+      name: 'Kernel version',
       value: apiStats.kernel_version
     }
   };
