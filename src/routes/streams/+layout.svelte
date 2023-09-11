@@ -50,7 +50,7 @@
       <ul class="overflow-auto" bind:this={streamsList}>
         {#each filteredData as { name, id, topicsCount, messagesCount, sizeBytes } (id)}
           {@const isActive = $page.params.streamId === id.toString()}
-          <li class="last:mb-14">
+          <li class="last:mb-10">
             <a
               href="/streams/{id}/"
               class={twMerge(

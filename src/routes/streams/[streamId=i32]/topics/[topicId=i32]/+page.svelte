@@ -7,6 +7,7 @@
   import { goto } from '$app/navigation';
   import { getTopicDetailsQuery } from '$lib/queries';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
+  import DeletePartitionsModal from '$lib/components/Modals/DeletePartitionsModal.svelte';
 
   $: topicDetailsQuery = getTopicDetailsQuery(+$page.params.streamId, +$page.params.topicId);
   $: ({ data: topic, isLoading } = $topicDetailsQuery);
@@ -14,6 +15,8 @@
   $: prevPage = $page.url.pathname.split('/').slice(0, 3).join('/') + '/';
 
   const openTopicDetailsModal = () => openModal('topicSettingsModal', { topic: topic! });
+  const openAddPartitionsModal = () => openModal('addPartitionsModal');
+  const openDeletePartitionsModal = () => openModal('deletePartitionsModal');
 </script>
 
 {#if isLoading}
@@ -33,6 +36,7 @@
 
       <Button variant="rounded" class="ml-3" on:click={openTopicDetailsModal}>
         <Icon name="settings" className="dark:text-white" />
+        <div slot="tooltip">Settings</div>
       </Button>
 
       <div class="flex gap-3 ml-7">
@@ -46,6 +50,15 @@
           <span>Partitions: {topic.partitionsCount}</span>
         </div>
       </div>
+
+      <div class="flex gap-2 ml-auto">
+        {#if topic.partitions.length > 0}
+          <Button variant="outlinedRed" on:click={openDeletePartitionsModal}
+            >Delete partitions</Button
+          >
+        {/if}
+        <Button variant="contained" on:click={openAddPartitionsModal}>Add partitions</Button>
+      </div>
     </div>
 
     <Table
@@ -55,7 +68,8 @@
         id: 'ID',
         currentOffset: 'Offset',
         segmentsCount: 'Segments',
-        sizeBytes: 'Size'
+        sizeBytes: 'Size',
+        createdAt: 'Created at'
       }}
     />
   </div>

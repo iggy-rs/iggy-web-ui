@@ -1,9 +1,12 @@
+import { formatDate } from '$lib/utils/dateFormatter';
+
 export type Topic = {
   id: number;
   name: string;
   sizeBytes: number;
   messagesCount: number;
   partitionsCount: number;
+  createdAt: string;
 };
 
 export function topicMapper(item: any): Topic {
@@ -12,6 +15,7 @@ export function topicMapper(item: any): Topic {
     name: item.name,
     sizeBytes: item.size_bytes,
     messagesCount: item.messages_count,
-    partitionsCount: item.partitions_count
+    partitionsCount: item.partitions_count,
+    createdAt: formatDate(item.created_at)
   };
 }

@@ -12,8 +12,6 @@
 
   const fetchingQueriesCount = useIsFetching();
 
-  $: console.log(fetchingQueriesCount);
-
   const queryClient = useQueryClient();
 
   let isSpinnerSpinning = false;
@@ -33,6 +31,7 @@
   <div class={twMerge(isSpinnerSpinning && 'spin')}>
     <Icon name="refresh" />
   </div>
+  <div slot="tooltip">Refresh</div>
 </Button>
 
 <style lang="postcss">

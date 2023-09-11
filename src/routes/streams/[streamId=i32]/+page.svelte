@@ -30,6 +30,7 @@
 
       <Button variant="rounded" class="ml-3" on:click={openStreamSettingModal}>
         <Icon name="settings" className="dark:text-white" />
+        <div slot="tooltip">Settings</div>
       </Button>
 
       <div class="flex gap-3 ml-7">
@@ -59,7 +60,8 @@
         name: 'Name',
         messagesCount: 'Messages',
         partitionsCount: 'Partitions',
-        sizeBytes: 'Size'
+        sizeBytes: 'Size',
+        createdAt: 'Created'
       }}
     />
   </div>

@@ -15,7 +15,7 @@
         <Button variant="text" class="w-2/5" on:click={closeModal}>Cancel</Button>
         <Button type="submit" variant="contained" class="w-2/5">Save</Button>
       </div> -->
-    <Button variant="delete" class="w-[120px] mx-auto mt-auto">
+    <Button variant="containedRed" class="w-[120px] mx-auto mt-auto">
       <Icon name="trash" />
       Delete</Button
     >

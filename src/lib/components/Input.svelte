@@ -23,6 +23,7 @@
   <input
     bind:value
     {...$$restProps}
+    autocomplete="off"
     {id}
     class={twMerge(
       'rounded-md border border-gray-300 dark:border-none outline-none dark:bg-shadeD400 text-color px-3 py-2 w-full',

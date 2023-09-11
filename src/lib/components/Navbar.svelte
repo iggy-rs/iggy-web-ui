@@ -4,6 +4,7 @@
   import { page } from '$app/stores';
   import { twMerge } from 'tailwind-merge';
   import logo from '$lib/assets/logo.png';
+  import { tooltip } from '$lib/actions/tooltip';
 
   const navItems: { name: string; icon: iconType; href: string }[] = [
     {
@@ -48,7 +49,11 @@
             isActive && 'ring-black dark:ring-white',
             !isActive && 'dark:hover:bg-shadeD300'
           )}
+          use:tooltip={{ placement: 'right' }}
         >
+          <div class="tooltip">
+            {name}
+          </div>
           <Icon name={icon} className="w-[27px] h-[27px] text-black dark:text-white" />
         </a>
       </li>
