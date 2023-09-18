@@ -5,27 +5,24 @@
   import Icon from '$lib/components/Icon.svelte';
   import Table from '$lib/components/Table.svelte';
   import { goto } from '$app/navigation';
-  import { getTopicDetailsQuery } from '$lib/queries';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
-  import DeletePartitionsModal from '$lib/components/Modals/DeletePartitionsModal.svelte';
 
-  $: topicDetailsQuery = getTopicDetailsQuery(+$page.params.streamId, +$page.params.topicId);
-  $: ({ data: topic, isLoading } = $topicDetailsQuery);
+  export let data;
+
+  // let isLoading = true; // to reset when data updates
+  // $: (async () => {
+  //   await data.streamed.topic;
+  //   isLoading = false;
+  // })();
 
   $: prevPage = $page.url.pathname.split('/').slice(0, 3).join('/') + '/';
-
-  const openTopicDetailsModal = () => openModal('topicSettingsModal', { topic: topic! });
-  const openAddPartitionsModal = () => openModal('addPartitionsModal');
-  const openDeletePartitionsModal = () => openModal('deletePartitionsModal');
 </script>
 
-{#if isLoading}
+{#await data.streamed.topic}
   <div class="p-7 h-full flex items-center justify-center">
     <Loader name="topic {$page.params.topicId}" />
   </div>
-{/if}
-
-{#if topic}
+{:then topic}
   <div class="h-full">
     <div class="h-[80px] flex text-xs items-center pl-2 pr-5">
       <Button variant="rounded" class="mr-5" on:click={() => goto(prevPage)}>
@@ -34,8 +31,12 @@
 
       <h1 class="font-semibold text-xl text-color">Topic {topic.name}</h1>
 
-      <Button variant="rounded" class="ml-3" on:click={openTopicDetailsModal}>
-        <Icon name="settings" className="dark:text-white" />
+      <Button
+        variant="rounded"
+        class="ml-3"
+        on:click={() => openModal('topicSettingsModal', { topic })}
+      >
+        <Icon name="settings" />
         <div slot="tooltip">Settings</div>
       </Button>
 
@@ -53,11 +54,13 @@
 
       <div class="flex gap-2 ml-auto">
         {#if topic.partitions.length > 0}
-          <Button variant="outlinedRed" on:click={openDeletePartitionsModal}
+          <Button variant="outlinedRed" on:click={() => openModal('deletePartitionsModal')}
             >Delete partitions</Button
           >
         {/if}
-        <Button variant="contained" on:click={openAddPartitionsModal}>Add partitions</Button>
+        <Button variant="contained" on:click={() => openModal('addPartitionsModal')}
+          >Add partitions</Button
+        >
       </div>
     </div>
 
@@ -73,4 +76,4 @@
       }}
     />
   </div>
-{/if}
+{/await}

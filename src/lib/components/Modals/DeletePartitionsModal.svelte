@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { CloseModalFn } from '$lib/types/utilTypes';
-  import { useQueryClient } from '@tanstack/svelte-query';
+
   import Input from '../Input.svelte';
   import { z } from 'zod';
   import ModalBase from './ModalBase.svelte';
@@ -10,10 +10,8 @@
 
   export let closeModal: CloseModalFn;
 
-  const clientQuery = useQueryClient();
-
   const schema = z.object({
-    partitions_count: z.coerce.number().min(1).default(1)
+    partitionsCount: z.coerce.number().min(1).default(1)
   });
 
   const { form, errors, enhance, constraints, submitting } = superForm(superValidateSync(schema), {
@@ -58,11 +56,11 @@
     <form method="POST" class="flex flex-col h-[300px] gap-4" use:enhance>
       <Input
         label="Partitions count"
-        id="partitions_count"
-        bind:value={$form.partitions_count}
+        idAndName="partitionsCount"
+        bind:value={$form.partitionsCount}
         type="number"
-        {...$constraints.partitions_count}
-        error={$errors.partitions_count?.join(',')}
+        {...$constraints.partitionsCount}
+        error={$errors.partitionsCount?.join(',')}
       />
 
       <div class="flex justify-end gap-3 mt-auto">

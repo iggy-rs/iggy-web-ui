@@ -1,13 +1,9 @@
 <script lang="ts">
   import Loader from '$lib/components/Loader.svelte';
-  import { getStreamsQuery } from '$lib/queries';
-
-  const streamsQuery = getStreamsQuery();
-  $: ({ data, status } = $streamsQuery);
 </script>
 
 <div class="flex items-center justify-center h-full">
-  {#if status === 'pending'}
+  <!-- {#if status === 'pending'}
     <Loader name="streams" />
-  {/if}
+  {/if} -->
 </div>

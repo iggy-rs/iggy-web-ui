@@ -1,5 +1,4 @@
 <script lang="ts" context="module">
-  import { useIsFetching, useQueryClient } from '@tanstack/svelte-query';
   import Icon from './Icon.svelte';
   import { twMerge } from 'tailwind-merge';
   import { writable } from 'svelte/store';
@@ -10,24 +9,20 @@
 <script lang="ts">
   import Button from './Button.svelte';
 
-  const fetchingQueriesCount = useIsFetching();
-
-  const queryClient = useQueryClient();
-
   let isSpinnerSpinning = false;
   let timer: number | undefined;
 
-  $: if ($fetchingQueriesCount > 0) {
-    if (timer) clearTimeout(timer);
-    isSpinnerSpinning = true;
+  // $: if ($fetchingQueriesCount > 0) {
+  //   if (timer) clearTimeout(timer);
+  //   isSpinnerSpinning = true;
 
-    timer = setTimeout(() => {
-      if ($fetchingQueriesCount === 0) isSpinnerSpinning = false;
-    }, 300);
-  }
+  //   timer = setTimeout(() => {
+  //     if ($fetchingQueriesCount === 0) isSpinnerSpinning = false;
+  //   }, 300);
+  // }
 </script>
 
-<Button variant="rounded" on:click={() => queryClient.refetchQueries({ type: 'active' })}>
+<Button variant="rounded" on:click={() => {}}>
   <div class={twMerge(isSpinnerSpinning && 'spin')}>
     <Icon name="refresh" />
   </div>

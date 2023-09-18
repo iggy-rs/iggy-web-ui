@@ -6,7 +6,7 @@
   import ModalBase from './ModalBase.svelte';
   import type { CloseModalFn } from '$lib/types/utilTypes';
   import type { StreamDetails } from '$lib/domain/StreamDetails';
-  import { apiClient } from '$lib/utils/apiClient';
+
   import { useQueryClient } from '@tanstack/svelte-query';
   import { showToast } from '../AppToasts.svelte';
 
@@ -16,8 +16,8 @@
   const clientQuery = useQueryClient();
 
   const schema = z.object({
-    topic_id: z.coerce.number().min(1).max(255).default(0),
-    name: z
+    topicId: z.coerce.number().min(1).max(255).default(0),
+    topicName: z
       .string()
       .min(1, 'Name must contain at least 1 character')
       .max(255, 'Name must not exceed 255 characters')
@@ -33,32 +33,32 @@
     async onUpdate({ form }) {
       if (!form.valid) return;
 
-      const result = await apiClient.post({
-        path: `/streams/${streamDetails.id}/topics`,
-        body: {
-          topic_id: +form.data.topic_id,
-          name: form.data.name,
-          partitions_count: +form.data.partitionsCount
-        }
-      });
+      // const result = await apiClient.post({
+      //   path: `/streams/${streamDetails.id}/topics`,
+      //   body: {
+      //     topic_id: +form.data.topicId,
+      //     name: form.data.topicName,
+      //     partitions_count: +form.data.partitionsCount
+      //   }
+      // });
 
-      if (result.success) {
-        await clientQuery.refetchQueries({
-          queryKey: ['streamDetails', streamDetails.id]
-        });
-        closeModal();
-        showToast({
-          type: 'success',
-          title: 'Success',
-          description: 'Topic added successfully'
-        });
-        return;
-      }
+      // if (result.success) {
+      //   await clientQuery.refetchQueries({
+      //     queryKey: ['streamDetails', streamDetails.id]
+      //   });
+      //   closeModal();
+      //   showToast({
+      //     type: 'success',
+      //     title: 'Success',
+      //     description: 'Topic added successfully'
+      //   });
+      //   return;
+      // }
 
-      const { error } = result;
-      if ('field' in error && 'reason' in error) {
-        setError(form, error.field as any, error.reason as any);
-      }
+      // const { error } = result;
+      // if ('field' in error && 'reason' in error) {
+      //   setError(form, error.field as any, error.reason as any);
+      // }
     }
   });
 </script>
@@ -67,18 +67,23 @@
   <form method="POST" class="flex flex-col h-[450px] gap-4" use:enhance>
     <Input
       label="Id"
-      id="id"
+      idAndName="topicId"
       type="number"
-      bind:value={$form.topic_id}
-      {...$constraints.topic_id}
-      error={$errors.topic_id?.join(',')}
+      bind:value={$form.topicId}
+      {...$constraints.topicId}
+      error={$errors.topicId?.join(',')}
     />
-    <Input label="Name" id="name" bind:value={$form.name} error={$errors.name?.join(',')} />
+    <Input
+      idAndName="topicName"
+      label="Name"
+      bind:value={$form.topicName}
+      error={$errors.topicName?.join(',')}
+    />
 
     <Input
       label="Partitions count"
       type="number"
-      id="partitionsCount"
+      idAndName="partitionsCount"
       bind:value={$form.partitionsCount}
       {...$constraints.partitionsCount}
       error={$errors.partitionsCount?.join(',')}
@@ -87,7 +92,7 @@
     <Input
       label="Message expiry"
       type="number"
-      id="messageExpiry"
+      idAndName="messageExpiry"
       bind:value={$form.messageExpiry}
       {...$constraints.messageExpiry}
       error={$errors.messageExpiry?.join(',')}

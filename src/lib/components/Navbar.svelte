@@ -5,27 +5,28 @@
   import { twMerge } from 'tailwind-merge';
   import logo from '$lib/assets/logo.png';
   import { tooltip } from '$lib/actions/tooltip';
+  import { typedRoute } from '$lib/types/appRoutes';
 
   const navItems: { name: string; icon: iconType; href: string }[] = [
     {
       name: 'Overview',
       icon: 'home',
-      href: '/overview'
+      href: typedRoute('/dashboard/overview')
     },
     {
       name: 'Streams',
       icon: 'stream',
-      href: '/streams'
+      href: typedRoute('/dashboard/streams')
     },
     {
       name: 'Clients',
       icon: 'clients',
-      href: '/clients'
+      href: typedRoute('/dashboard/clients')
     },
     {
       name: 'Logs',
       icon: 'logs',
-      href: '/logs'
+      href: typedRoute('/dashboard/logs')
     }
   ];
 </script>
@@ -33,7 +34,7 @@
 <nav
   class="h-screen px-3 pb-7 pt-4 border-r flex flex-col items-center bg-shadeL300 dark:bg-shadeD1000"
 >
-  <a href="/overview" class="flex flex-col items-center gap-5">
+  <a href={typedRoute('/dashboard/overview')} class="flex flex-col items-center gap-5">
     <span class="font-extrabold text-xl tracking-wide text-black dark:text-white"> IGGY </span>
     <img src={logo} class="h-[60px] mb-10" alt="iggy" />
   </a>
@@ -59,4 +60,17 @@
       </li>
     {/each}
   </ul>
+
+  <form method="POST" action="/auth/logout" class="mt-auto">
+    <button
+      type="submit"
+      class={twMerge(
+        'p-2  mt-auto rounded-xl transition-colors  ring-2 ring-transparent dark:hover:bg-shadeD300'
+      )}
+      use:tooltip={{ placement: 'right' }}
+    >
+      <div class="tooltip">Logout</div>
+      <Icon name={'logout'} className="w-[27px] h-[27px] text-black dark:text-white" />
+    </button>
+  </form>
 </nav>

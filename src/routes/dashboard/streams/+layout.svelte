@@ -1,28 +1,33 @@
-<script lang="ts" context="module">
-  export const onStreamAdded = () => {};
-</script>
-
 <script lang="ts">
   import Icon from '$lib/components/Icon.svelte';
   import { goto } from '$app/navigation';
   import { twMerge } from 'tailwind-merge';
   import { page } from '$app/stores';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
-  import { getStreamsQuery } from '$lib/queries';
+
   import Button from '$lib/components/Button.svelte';
   import { tick } from 'svelte';
+  import type { Stream } from '$lib/domain/Stream';
+  import { typedRoute } from '$lib/types/appRoutes.js';
 
-  $: streamsQuery = getStreamsQuery();
-  $: ({ data } = $streamsQuery);
+  export let data;
+
+  let isLoading = true;
+  let streams: Stream[] | undefined;
+
+  $: (async () => {
+    streams = await data.streamed.streams;
+    isLoading = false;
+  })();
 
   let streamsList: HTMLUListElement;
 
   let searchQuery = '';
-  // $: orderedData = (data || []).sort((a, b) => a.id - b.id);
-  $: filteredData = (data || []).filter((stream) => stream.name.includes(searchQuery));
+  $: orderedData = (streams || []).sort((a, b) => a.id - b.id);
+  $: filteredData = (streams || []).filter((stream) => stream.name.includes(searchQuery));
 
-  $: if (data && data.length > 0 && $page.url.pathname === '/streams') {
-    goto(`/streams/${data[0].id}`);
+  $: if (streams && streams.length > 0 && $page.url.pathname === '/streams') {
+    goto(`/streams/${streams[0].id}`);
   }
 
   let filteredDataLength = 0;
@@ -52,7 +57,7 @@
           {@const isActive = $page.params.streamId === id.toString()}
           <li class="last:mb-10">
             <a
-              href="/streams/{id}/"
+              href={typedRoute(`/dashboard/streams/${id}`)}
               class={twMerge(
                 'flex w-full flex-col border-b gap-1 px-5 py-2 transition-colors  outline-none dark:text-white',
                 isActive && 'bg-shadeL500 dark:bg-shadeD300',
@@ -93,6 +98,12 @@
         <Icon name="plus" className="w-[16px] h-[16px]" strokeWidth={2} />
         New stream
       </Button>
+
+      <button
+        on:click={() => {
+          throw Error('test error');
+        }}>throw</button
+      >
     </div>
   {/if}
 
