@@ -12,6 +12,7 @@ export const load: LayoutServerLoad = async () => {
 
     return (result.data as any).map(streamMapper) as Stream[];
   };
+
   return {
     streamed: {
       streams: streamsPromise()

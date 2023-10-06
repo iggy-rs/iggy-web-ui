@@ -12,12 +12,22 @@
 </script>
 
 <script lang="ts" generics="T extends GenericExtends">
+  import DropdownMenu from './DropdownMenu.svelte';
+
+  import type { ComponentProps } from 'svelte';
+
+  import Icon, { type iconType } from './Icon.svelte';
+
+  import Button from './Button.svelte';
+
   import { twMerge } from 'tailwind-merge';
-  import Icon from './Icon.svelte';
+
   export let data: T[];
   export let colNames: Record<keyof T, string>;
   export let noDataMessage: string;
-  export let onRowClick: ((item: T) => void) | undefined = undefined;
+  export let actions: ComponentProps<InstanceType<typeof DropdownMenu>>['itemGroups'] | undefined =
+    undefined;
+  export let rowHref: ((item: T) => string) | undefined = undefined;
 
   $: colDefs = Object.entries(colNames).map(([key, value]) => ({
     colName: value,
@@ -48,7 +58,7 @@
                 key: fieldName,
                 asc: ordering.key !== fieldName ? true : !ordering.asc
               })}
-            class=" hover:bg-neutral-200 dark:hover:bg-shadeD300 cursor-pointer transition-all rounded-t-md py-5 text-sm px-5 whitespace-nowrap font-semibold"
+            class=" hoverable cursor-pointer transition-all rounded-t-md py-5 text-sm px-5 whitespace-nowrap font-semibold"
           >
             <div class="flex items-center justify-between w-full">
               <span>
@@ -70,19 +80,28 @@
     </thead>
     <tbody>
       {#each orderedData as item (item.id)}
-        <tr
-          class="border-b transition-all dark:hover:bg-shadeD300 hover:bg-gray-200 cursor-pointer"
-          on:click={() => onRowClick && onRowClick(item)}
-        >
-          <td class="w-2" />
+        <tr class="border-b transition-all hoverable cursor-pointer relative">
+          <td class="w-2">
+            {#if rowHref}
+              <a href={rowHref(item)} class="absolute top-0 right-0 bottom-0 left-0" />
+            {/if}
+          </td>
           {#each colDefs as { fieldName } (fieldName)}
             <td class="px-5 py-3">
               {item[fieldName]}
             </td>
           {/each}
           <td class="px-5 pr-10 py-3 flex justify-end">
-            {#if onRowClick}
+            {#if rowHref}
               <Icon className="w-[20px]" name="arrowRight" />
+            {/if}
+
+            {#if actions}
+              <DropdownMenu itemGroups={actions} placement="left-start">
+                <Button variant="rounded" class="p-5">
+                  <Icon name="verticalDots" />
+                </Button>
+              </DropdownMenu>
             {/if}
           </td>
         </tr>

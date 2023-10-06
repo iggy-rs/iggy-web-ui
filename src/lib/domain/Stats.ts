@@ -1,17 +1,20 @@
+import { bytesFormatter } from '$lib/utils/bytesFormatter';
+import { intervalToDuration, formatDuration } from 'date-fns';
+
 type StatsStringItem = { name: string; value: string };
 type StatsNumberItem = { name: string; value: number };
 
 export type Stats = {
   processId: StatsNumberItem;
-  cpuUsage: StatsNumberItem;
-  memoryUsage: StatsNumberItem;
-  totalMemory: StatsNumberItem;
-  availableMemory: StatsNumberItem;
-  runTime: StatsNumberItem;
+  cpuUsage: StatsStringItem;
+  memoryUsage: StatsStringItem;
+  totalMemory: StatsStringItem;
+  availableMemory: StatsStringItem;
+  runTime: StatsStringItem;
   startTime: StatsNumberItem;
-  readBytes: StatsNumberItem;
-  writtenBytes: StatsNumberItem;
-  messagesSizeBytes: StatsNumberItem;
+  readBytes: StatsStringItem;
+  writtenBytes: StatsStringItem;
+  messagesSizeBytes: StatsStringItem;
   streamsCount: StatsNumberItem;
   topicsCount: StatsNumberItem;
   partitionsCount: StatsNumberItem;
@@ -25,101 +28,112 @@ export type Stats = {
   kernelVersion: StatsStringItem;
 };
 
-export function statsMapper(apiStats: any): Stats {
+export function statsMapper(item: any): Stats {
+  const formattedRuntime = formatDuration(
+    intervalToDuration({ start: 0, end: item.run_time * 1000 }),
+    {
+      format: ['hours', 'minutes', 'seconds'],
+      zero: true,
+      delimiter: ':',
+      locale: {
+        formatDistance: (_token, count) => String(count).padStart(2, '0')
+      }
+    }
+  );
+
   return {
     processId: {
       name: 'Process ID',
-      value: apiStats.process_id
+      value: item.process_id
     },
     cpuUsage: {
       name: 'CPU usage',
-      value: apiStats.cpu_usage
+      value: `${item.cpu_usage.toFixed(2)} %`
     },
     memoryUsage: {
-      value: apiStats.memory_usage,
+      value: bytesFormatter(item.memory_usage),
       name: 'Memory usage'
     },
     totalMemory: {
       name: 'Total memory',
-      value: apiStats.total_memory
+      value: bytesFormatter(item.total_memory)
     },
     availableMemory: {
       name: 'Available memory',
-      value: apiStats.available_memory
+      value: bytesFormatter(item.available_memory)
     },
     runTime: {
       name: 'Run time',
-      value: apiStats.run_time
+      value: formattedRuntime
     },
-
     startTime: {
       name: 'Start time',
-      value: apiStats.start_time
+      value: item.start_time
     },
 
     readBytes: {
-      name: 'Read bytes',
-      value: apiStats.read_bytes
+      name: 'Read',
+      value: bytesFormatter(item.read_bytes)
     },
 
     writtenBytes: {
-      name: 'Written Bytes',
-      value: apiStats.written_bytes
+      name: 'Written',
+      value: bytesFormatter(item.written_bytes)
     },
     messagesSizeBytes: {
       name: 'Messages Size',
-      value: apiStats.messages_size_bytes
+      value: bytesFormatter(item.messages_size_bytes)
     },
     streamsCount: {
       name: 'Streams',
-      value: apiStats.streams_count
+      value: item.streams_count
     },
 
     topicsCount: {
       name: 'Topics',
-      value: apiStats.topics_count
+      value: item.topics_count
     },
 
     partitionsCount: {
       name: 'Partitions',
-      value: apiStats.partitions_count
+      value: item.partitions_count
     },
 
     segmentsCount: {
       name: 'Segments',
-      value: apiStats.segments_count
+      value: item.segments_count
     },
 
     messagesCount: {
       name: 'Messages',
-      value: apiStats.messages_count
+      value: item.messages_count
     },
 
     clientsCount: {
       name: 'Clients',
-      value: apiStats.clients_count
+      value: item.clients_count
     },
     consumerGroupsCount: {
       name: 'Consumer Groups',
-      value: apiStats.consumer_groups_count
+      value: item.consumer_groups_count
     },
 
     hostName: {
       name: 'Host',
-      value: apiStats.hostname
+      value: item.hostname
     },
     osName: {
       name: 'System',
-      value: apiStats.os_name
+      value: item.os_name
     },
 
     osVersion: {
       name: 'System version',
-      value: apiStats.os_version
+      value: item.os_version
     },
     kernelVersion: {
       name: 'Kernel version',
-      value: apiStats.kernel_version
+      value: item.kernel_version
     }
   };
 }

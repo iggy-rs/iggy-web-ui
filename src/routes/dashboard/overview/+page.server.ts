@@ -1,7 +1,7 @@
 import { fetchApi } from '$lib/api/fetchApi';
 import { statsMapper } from '$lib/domain/Stats';
 
-export const load = async ({ params }) => {
+export const load = async () => {
   const statsPromise = async () => {
     const result = await fetchApi({
       method: 'GET',

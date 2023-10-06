@@ -19,6 +19,10 @@
   ::after {
     @apply border-shadeL500 dark:border-shadeD300;
   }
+
+  .hoverable {
+    @apply dark:hover:bg-shadeD300 hover:bg-shadeL300;
+  }
 }
 
 @layer components {
@@ -36,6 +40,10 @@
 
   .text-color {
     @apply text-black dark:text-white;
+  }
+
+  .text-color-gray {
+    @apply text-shadeL900;
   }
 
   .card-shadow {

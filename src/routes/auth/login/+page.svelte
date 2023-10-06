@@ -1,22 +1,27 @@
 <script lang="ts">
+  import { updated } from '$app/stores';
   import Button from '$lib/components/Button.svelte';
   import Checkbox from '$lib/components/Checkbox.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import Input from '$lib/components/Input.svelte';
   import { typedRoute } from '$lib/types/appRoutes.js';
+
+  import { writable } from 'svelte/store';
   import { superForm } from 'sveltekit-superforms/client';
 
   export let data;
   const { form, constraints, errors, message } = superForm(data.form);
 
   let rememberMe = true;
+
+  // const loginData = persisted('loginData', { rememberMe: true });
 </script>
 
 <form
   method="POST"
-  class="min-w-[350px] max-w-[400px] bg-white p-5 rounded-2xl card-shadow flex flex-col gap-5"
+  class="min-w-[350px] max-w-[400px] bg-white dark:bg-shadeD700 text-color p-5 rounded-2xl card-shadow dark:shadow-lg flex flex-col gap-5"
 >
-  <span class="mx-auto">Admin sign in</span>
+  <span class="mx-auto font-semibold">Admin sign in</span>
 
   <Input
     label="Name"
@@ -40,7 +45,7 @@
 
   <div class="flex justify-between items-center">
     <label class="flex gap-1 items-center w-fit">
-      <Checkbox bind:checked={rememberMe} />
+      <!-- <Checkbox bind:checked={$loginData.rememberMe} /> -->
       <span class="text-xs font-light">Remember me</span>
     </label>
 

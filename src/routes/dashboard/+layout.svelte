@@ -7,27 +7,14 @@
   } from '$lib/components/RefetchIntervalToggler.svelte';
   import ThemeToggler from '$lib/components/ThemeToggler.svelte';
   import AppToasts from '$lib/components/AppToasts.svelte';
-
-  // const queryClient = new QueryClient({
-  //   defaultOptions: {
-  //     mutations: {},
-  //     queries: {
-  //       enabled: browser
-  //       // refetchInterval: $dataRefetchIntervalS * 1000
-  //     }
-  //   }
-  // });
-
-  // $: {
-  //   queryClient.setDefaultOptions({
-  //     queries: {
-  //       ...queryClient.getDefaultOptions().queries,
-  //       refetchInterval: $dataRefetchIntervalS * 1000
-  //     }
-  //   });
-  // }
+  import Icon from '$lib/components/Icon.svelte';
+  import Button from '$lib/components/Button.svelte';
+  import DropdownMenu from '$lib/components/DropdownMenu.svelte';
+  import { typedRoute } from '$lib/types/appRoutes';
+  import { goto } from '$app/navigation';
 </script>
 
+<div id="popupsRoot" />
 <AppModals />
 <AppToasts />
 
@@ -39,9 +26,30 @@
     >
       <RefetchIntervalToggler />
 
-      <ThemeToggler />
+      <DropdownMenu
+        placement="bottom-end"
+        itemGroups={[
+          [{ label: 'Spetz', icon: 'user', className: 'font-semibold' }],
+          [
+            {
+              label: 'Logout',
+              action: async () => {
+                await fetch(typedRoute('/auth/logout'), { method: 'POST', body: new FormData() });
+                goto(typedRoute('/auth/login'));
+              },
+              icon: 'logout'
+            }
+          ]
+        ]}
+      >
+        <Button variant="rounded" class="p-5">
+          <Icon name="userCircle" className="w-[32px] h-[32px]" strokeWidth={1} />
+        </Button>
+      </DropdownMenu>
     </header>
-    <main class="max-h-[calc(100vh-55px)] bg-shadeL100 dark:bg-shadeD700">
+    <main
+      class="h-[calc(100vh-55px)] max-h-[calc(100vh-55px)] overflow-hidden bg-shadeL100 dark:bg-shadeD700"
+    >
       <slot />
     </main>
   </div>

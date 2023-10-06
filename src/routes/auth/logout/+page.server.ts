@@ -9,7 +9,9 @@ export const actions = {
       expires: new Date(0)
     });
 
+    console.log('deleting cookie');
+
     // redirect the user
-    throw redirect(302, typedRoute('/auth/login'));
+    throw redirect(307, typedRoute('/auth/login'));
   }
 };

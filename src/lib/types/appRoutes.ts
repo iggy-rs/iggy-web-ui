@@ -4,7 +4,8 @@ type DashboardRoutes = `/dashboard/${
   | `streams/${number}`
   | `streams/${number}/topics/${number}`
   | 'clients'
-  | 'logs'}`;
-type AuthRoutes = '/auth/login' | '/auth/register' | '/auth/reset-password';
+  | 'logs'
+  | 'settings'}`;
+type AuthRoutes = '/auth/login' | '/auth/logout' | '/auth/register' | '/auth/reset-password';
 
 export const typedRoute = (route: DashboardRoutes | AuthRoutes) => route;

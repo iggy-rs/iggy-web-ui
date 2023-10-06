@@ -1,5 +1,6 @@
 .tooltip {
-  @apply bg-white text-color dark:bg-black  p-2 rounded-md text-xs fixed duration-200 transition-all shadow-md font-normal border;
+  transition-property: opacity, transform;
+  @apply bg-white hidden text-color z-20 dark:bg-black  p-2 rounded-md text-xs fixed duration-200  shadow-md font-normal border;
 }
 
 .tooltip[data-placement^='top'] {

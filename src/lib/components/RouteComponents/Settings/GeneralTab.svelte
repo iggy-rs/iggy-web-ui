@@ -1,4 +1,4 @@
 <script lang="ts">
 </script>
 
-dashboard/streams
+<p>General Tab</p>

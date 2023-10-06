@@ -7,13 +7,10 @@
   import type { CloseModalFn } from '$lib/types/utilTypes';
   import type { StreamDetails } from '$lib/domain/StreamDetails';
 
-  import { useQueryClient } from '@tanstack/svelte-query';
   import { showToast } from '../AppToasts.svelte';
 
   export let closeModal: CloseModalFn;
   export let streamDetails: StreamDetails;
-
-  const clientQuery = useQueryClient();
 
   const schema = z.object({
     topicId: z.coerce.number().min(1).max(255).default(0),

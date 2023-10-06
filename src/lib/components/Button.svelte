@@ -33,29 +33,28 @@
     variant: keyof typeof variants;
     tooltipPlacement?: Placement;
     size?: keyof typeof sizes;
-    disabled?: boolean;
   }
 
   export let variant: keyof typeof variants;
   export let tooltipPlacement: Placement = 'right';
   export let size: keyof typeof sizes = 'md';
-  export let disabled: boolean = false;
 
   const { class: className, ...rest } = $$restProps as $$Props;
 </script>
 
-<button
-  use:tooltip={{ placement: tooltipPlacement }}
-  on:click
-  {disabled}
-  class={twMerge(baseClasses, disabledClasses, variants[variant], sizes[size], className)}
-  {...rest}
->
-  <slot />
+<div use:tooltip={{ placement: tooltipPlacement }}>
+  <button
+    on:click
+    data-trigger
+    class={twMerge(baseClasses, disabledClasses, variants[variant], sizes[size], className)}
+    {...rest}
+  >
+    <slot />
+  </button>
 
   {#if $$slots.tooltip}
     <div role="tooltip" class="tooltip">
       <slot name="tooltip" />
     </div>
   {/if}
-</button>
+</div>

@@ -7,10 +7,6 @@
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import Table from '$lib/components/Table.svelte';
   import { typedRoute } from '$lib/types/appRoutes.js';
-  // import { getStreamDetailsQuery } from '$lib/queries';
-
-  // $: streamDetailsQuery = getStreamDetailsQuery(+$page.params.streamId);
-  // $: ({ data: stream, isLoading } = $streamDetailsQuery);
 
   export let data;
 </script>
@@ -60,8 +56,8 @@
     <Table
       noDataMessage="This stream has no topics yet."
       data={streamDetails.topics}
-      onRowClick={(topic) =>
-        goto(typedRoute(`/dashboard/streams/${+$page.params.streamId}/topics/${topic.id}`))}
+      rowHref={(topic) =>
+        typedRoute(`/dashboard/streams/${+$page.params.streamId}/topics/${topic.id}`)}
       colNames={{
         id: 'ID',
         name: 'Name',

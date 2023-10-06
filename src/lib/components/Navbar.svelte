@@ -27,6 +27,11 @@
       name: 'Logs',
       icon: 'logs',
       href: typedRoute('/dashboard/logs')
+    },
+    {
+      name: 'Settings',
+      icon: 'settings',
+      href: typedRoute('/dashboard/settings')
     }
   ];
 </script>
@@ -36,32 +41,36 @@
 >
   <a href={typedRoute('/dashboard/overview')} class="flex flex-col items-center gap-5">
     <span class="font-extrabold text-xl tracking-wide text-black dark:text-white"> IGGY </span>
-    <img src={logo} class="h-[60px] mb-10" alt="iggy" />
+    <div class="w-[50px] h-[60px] mb-5">
+      <img src={logo} class="w-[50px]" alt="iggy" />
+    </div>
   </a>
 
   <ul class="flex flex-col gap-7">
     {#each navItems as { name, icon, href }}
       {@const isActive = $page.url.pathname.includes(href)}
       <li>
-        <a
-          {href}
-          class={twMerge(
-            'p-2 block rounded-xl transition-colors  ring-2 ring-transparent',
-            isActive && 'ring-black dark:ring-white',
-            !isActive && 'dark:hover:bg-shadeD300'
-          )}
-          use:tooltip={{ placement: 'right' }}
-        >
+        <div use:tooltip={{ placement: 'right' }}>
+          <a
+            {href}
+            data-trigger
+            class={twMerge(
+              'p-2 block rounded-xl transition-colors  ring-2 ring-transparent',
+              isActive && 'ring-black dark:ring-white',
+              !isActive && 'hoverable'
+            )}
+          >
+            <Icon name={icon} className="w-[27px] h-[27px] text-black dark:text-white" />
+          </a>
           <div class="tooltip">
             {name}
           </div>
-          <Icon name={icon} className="w-[27px] h-[27px] text-black dark:text-white" />
-        </a>
+        </div>
       </li>
     {/each}
   </ul>
 
-  <form method="POST" action="/auth/logout" class="mt-auto">
+  <!-- <form method="POST" action="/auth/logout" class="mt-auto">
     <button
       type="submit"
       class={twMerge(
@@ -72,5 +81,5 @@
       <div class="tooltip">Logout</div>
       <Icon name={'logout'} className="w-[27px] h-[27px] text-black dark:text-white" />
     </button>
-  </form>
+  </form> -->
 </nav>
