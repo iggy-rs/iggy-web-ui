@@ -26,7 +26,7 @@
   $: isTooltipOpen ? startCountingDown() : clearCounterState();
 </script>
 
-<div bind:this={wrapperRef} use:tooltip={{ placement: 'top', isOpen: isTooltipOpen }}>
+<div bind:this={wrapperRef} use:tooltip={{ placement: 'top' }}>
   <Button variant="containedRed" on:click={() => (isTooltipOpen = true)}>Delete</Button>
 
   <div class="tooltip">

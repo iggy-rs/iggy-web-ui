@@ -37,7 +37,7 @@
 </script>
 
 <nav
-  class="h-screen px-3 pb-7 pt-4 border-r flex flex-col items-center bg-shadeL300 dark:bg-shadeD1000"
+  class="h-screen min-w-[90px] max-w-[90px] pb-7 pt-4 border-r flex flex-col items-center bg-shadeL300 dark:bg-shadeD1000"
 >
   <a href={typedRoute('/dashboard/overview')} class="flex flex-col items-center gap-5">
     <span class="font-extrabold text-xl tracking-wide text-black dark:text-white"> IGGY </span>

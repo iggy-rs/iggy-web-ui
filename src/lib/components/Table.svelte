@@ -1,5 +1,7 @@
 <script lang="ts" context="module">
-  type GenericExtends = { id: string | number };
+  type TableItem = {
+    id: string | number;
+  } & Record<string, { value: string | number; component: ComponentType; props: unknown }>;
   type Ordering<T> = { key: keyof T; asc: boolean } | { key: undefined; asc: undefined };
 
   function orderData<T>(data: T[], key: keyof T, asc: boolean) {
@@ -11,16 +13,13 @@
   }
 </script>
 
-<script lang="ts" generics="T extends GenericExtends">
+<script lang="ts" generics="T extends TableItem">
   import DropdownMenu from './DropdownMenu.svelte';
-
-  import type { ComponentProps } from 'svelte';
-
+  import type { ComponentProps, ComponentType } from 'svelte';
   import Icon, { type iconType } from './Icon.svelte';
-
   import Button from './Button.svelte';
-
   import { twMerge } from 'tailwind-merge';
+  import Checkbox from './Checkbox.svelte';
 
   export let data: T[];
   export let colNames: Record<keyof T, string>;
@@ -28,6 +27,10 @@
   export let actions: ComponentProps<InstanceType<typeof DropdownMenu>>['itemGroups'] | undefined =
     undefined;
   export let rowHref: ((item: T) => string) | undefined = undefined;
+  export let onCheckedChange: ((checked: Record<string | number, boolean>) => void) | undefined =
+    undefined;
+
+  $: areRowsSelectable = onCheckedChange !== undefined;
 
   $: colDefs = Object.entries(colNames).map(([key, value]) => ({
     colName: value,
@@ -40,6 +43,25 @@
   };
 
   $: orderedData = ordering.key ? orderData(data, ordering.key, ordering.asc!) : data;
+
+  const handleRowClick = (item: T) => {
+    if (areRowsSelectable && !rowHref) {
+      const itemId = `${item.id}`;
+
+      if (checkedItems.includes(itemId)) {
+        checkedItems = checkedItems.filter((id) => id !== itemId);
+      } else {
+        checkedItems = [...checkedItems, itemId];
+      }
+    }
+  };
+
+  let checkedItems: string[] = [];
+
+  const toggleAll = (e: Event) => {
+    const { checked } = e.target as HTMLInputElement;
+    checkedItems = checked ? data.map((item) => `${item.id}`) : [];
+  };
 </script>
 
 {#if orderedData.length === 0}
@@ -49,49 +71,64 @@
 {:else}
   <table class="px-5 w-full dark:text-white">
     <thead class="dark:text-shadeD100">
-      <tr class="border-b px-5">
-        <th class="w-2" />
+      <tr class="border-b">
+        {#if areRowsSelectable}
+          <!-- <TableHeader className="flex items-center justify-center w-[100px] ">
+            <Checkbox
+              on:change={toggleAll}
+              checked={checkedItems.length === data.length}
+              value="all"
+              name="checkAll"
+            />
+          </TableHeader> -->
+        {/if}
+
         {#each colDefs as { colName, fieldName } (fieldName)}
-          <th
+          <!-- <TableHeader
             on:click={() =>
               (ordering = {
                 key: fieldName,
                 asc: ordering.key !== fieldName ? true : !ordering.asc
               })}
-            class=" hoverable cursor-pointer transition-all rounded-t-md py-5 text-sm px-5 whitespace-nowrap font-semibold"
+            hasIcon={ordering.key === fieldName}
+            iconName={ordering.asc ? 'arrowUp' : 'arrowDown'}
           >
-            <div class="flex items-center justify-between w-full">
-              <span>
-                {colName}
-              </span>
-
-              <Icon
-                className={twMerge(
-                  ordering.key === fieldName ? 'visible' : 'invisible',
-                  'w-[19px] h-[19px]'
-                )}
-                name={ordering.asc ? 'arrowUp' : 'arrowDown'}
-              />
-            </div>
-          </th>
+            <span>{colName}</span>
+          </TableHeader> -->
         {/each}
-        <th class="w-[100px] min-[2000px]:w-[300px]" />
+
+        <!-- <TableHeader className="w-[100px] min-[2000px]:w-[300px]">Actions</TableHeader> -->
       </tr>
     </thead>
     <tbody>
       {#each orderedData as item (item.id)}
-        <tr class="border-b transition-all hoverable cursor-pointer relative">
-          <td class="w-2">
-            {#if rowHref}
-              <a href={rowHref(item)} class="absolute top-0 right-0 bottom-0 left-0" />
-            {/if}
-          </td>
-          {#each colDefs as { fieldName } (fieldName)}
-            <td class="px-5 py-3">
-              {item[fieldName]}
+        <tr
+          class="border-b transition-all hoverable relative"
+          on:click={() => handleRowClick(item)}
+        >
+          {#if areRowsSelectable}
+            <td class="w-[100px]">
+              <div class="flex items-center justify-center">
+                <Checkbox
+                  name={`${item.id}`}
+                  value={item.id.toString()}
+                  bind:bindGroup={checkedItems}
+                />
+              </div>
             </td>
+          {/if}
+          {#each colDefs as { fieldName }, idx (fieldName)}
+            <!-- <TableCell item={item[fieldName]}>
+              {item[fieldName]}
+              {#if rowHref && idx === 0}
+                <a
+                  href={rowHref(item)}
+                  class="absolute top-0 right-0 bottom-0 left-0 bg-orange-400"
+                />
+              {/if}
+            </TableCell> -->
           {/each}
-          <td class="px-5 pr-10 py-3 flex justify-end">
+          <td class="px-5 pr-10 py-3 flex justify-end debug">
             {#if rowHref}
               <Icon className="w-[20px]" name="arrowRight" />
             {/if}

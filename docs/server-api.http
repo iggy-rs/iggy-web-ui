@@ -1,0 +1,44 @@
+@url = http://localhost:3000
+###
+
+GET {{url}}
+
+###
+POST {{url}}/users
+Content-Type: application/json
+
+{
+    "username":"t123wdgw",
+    "password":"test3",
+    "status":"inactive",
+    "permissions":null
+}
+
+### Create stream
+POST {{url}}/streams
+Content-Type: application/json
+
+{
+    "stream_id": 30,
+    "name":"stream30"
+}
+
+### Create topic
+POST {{url}}/streams/30/topics
+Content-Type: application/json
+
+{
+  "topic_id": 31,
+  "name": "topic30",
+  "partitions_count": 3,
+  "message_expiry": 0
+}
+
+ 
+### Create partitions
+POST {{url}}/streams/3/topics/3/partitions
+Content-Type: application/json
+
+{
+  "partitions_count": 45
+}

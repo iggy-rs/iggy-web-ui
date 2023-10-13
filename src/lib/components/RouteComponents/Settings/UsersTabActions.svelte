@@ -2,13 +2,35 @@
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import Input from '$lib/components/Input.svelte';
+  import { openModal } from '$lib/components/Modals/AppModals.svelte';
+  import { searchQuery, usersCount } from './UsersTab.svelte';
 </script>
 
 <div class="flex gap-5 items-center">
-  <span class="text-sm text-color-gray"> 12 users </span>
-  <Input placeholder="Search" idAndName="searchUser" class="w-[145px]" leadingIcon="search" />
-  <Button variant="contained">
-    <Icon name="plus" />
-    Add user
-  </Button>
+  <div class="mr-10 flex gap-2">
+    <!-- <Button variant="containedRed">
+      <Icon name="trash" />
+      Delete selected</Button
+    >
+    <Button variant="contained">
+      <Icon name="shieldLock" />
+      Change permissions</Button
+    > -->
+  </div>
+
+  {#if $usersCount}
+    <span class="text-sm text-color-gray"> {$usersCount} users </span>
+
+    <Input
+      bind:value={$searchQuery}
+      placeholder="Search"
+      idAndName="searchUser"
+      class="w-[165px]"
+      leadingIcon="search"
+    />
+    <Button variant="contained" on:click={() => openModal('addUserModal')}>
+      <Icon name="plus" />
+      Add user
+    </Button>
+  {/if}
 </div>

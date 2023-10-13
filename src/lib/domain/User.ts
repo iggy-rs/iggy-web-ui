@@ -8,7 +8,6 @@ export type User = {
 };
 
 export function userMapper(item: any): User {
-  console.log('userMapper', item);
   return {
     id: item.id,
     createdAt: formatDate(item.created_at),

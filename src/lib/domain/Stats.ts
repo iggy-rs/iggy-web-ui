@@ -1,7 +1,7 @@
 import { bytesFormatter } from '$lib/utils/bytesFormatter';
 import { intervalToDuration, formatDuration } from 'date-fns';
 
-type StatsStringItem = { name: string; value: string };
+type StatsStringItem = { name: string; value: string; rawValue: string | number };
 type StatsNumberItem = { name: string; value: number };
 
 export type Stats = {
@@ -11,7 +11,7 @@ export type Stats = {
   totalMemory: StatsStringItem;
   availableMemory: StatsStringItem;
   runTime: StatsStringItem;
-  startTime: StatsNumberItem;
+  startTime: StatsStringItem;
   readBytes: StatsStringItem;
   writtenBytes: StatsStringItem;
   messagesSizeBytes: StatsStringItem;
@@ -41,6 +41,18 @@ export function statsMapper(item: any): Stats {
     }
   );
 
+  const formattedStartTime = formatDuration(
+    intervalToDuration({ start: 0, end: item.start_time * 1000 }),
+    {
+      format: ['hours', 'minutes', 'seconds'],
+      zero: true,
+      delimiter: ':',
+      locale: {
+        formatDistance: (_token, count) => String(count).padStart(2, '0')
+      }
+    }
+  );
+
   return {
     processId: {
       name: 'Process ID',
@@ -48,41 +60,50 @@ export function statsMapper(item: any): Stats {
     },
     cpuUsage: {
       name: 'CPU usage',
-      value: `${item.cpu_usage.toFixed(2)} %`
+      value: `${item.cpu_usage.toFixed(2)} %`,
+      rawValue: item.cpu_usage
     },
     memoryUsage: {
       value: bytesFormatter(item.memory_usage),
-      name: 'Memory usage'
+      name: 'Memory usage',
+      rawValue: item.memory_usage
     },
     totalMemory: {
       name: 'Total memory',
-      value: bytesFormatter(item.total_memory)
+      value: bytesFormatter(item.total_memory),
+      rawValue: item.total_memory
     },
     availableMemory: {
       name: 'Available memory',
-      value: bytesFormatter(item.available_memory)
+      value: bytesFormatter(item.available_memory),
+      rawValue: item.available_memory
     },
     runTime: {
       name: 'Run time',
-      value: formattedRuntime
+      value: formattedRuntime,
+      rawValue: item.run_time
     },
     startTime: {
       name: 'Start time',
-      value: item.start_time
+      value: formattedStartTime,
+      rawValue: item.start_time
     },
 
     readBytes: {
       name: 'Read',
-      value: bytesFormatter(item.read_bytes)
+      value: bytesFormatter(item.read_bytes),
+      rawValue: item.read_bytes
     },
 
     writtenBytes: {
       name: 'Written',
-      value: bytesFormatter(item.written_bytes)
+      value: bytesFormatter(item.written_bytes),
+      rawValue: item.written_bytes
     },
     messagesSizeBytes: {
       name: 'Messages Size',
-      value: bytesFormatter(item.messages_size_bytes)
+      value: bytesFormatter(item.messages_size_bytes),
+      rawValue: item.messages_size_bytes
     },
     streamsCount: {
       name: 'Streams',
@@ -120,20 +141,24 @@ export function statsMapper(item: any): Stats {
 
     hostName: {
       name: 'Host',
-      value: item.hostname
+      value: item.hostname,
+      rawValue: item.hostName
     },
     osName: {
       name: 'System',
-      value: item.os_name
+      value: item.os_name,
+      rawValue: item.os_name
     },
 
     osVersion: {
       name: 'System version',
-      value: item.os_version
+      value: item.os_version,
+      rawValue: item.os_version
     },
     kernelVersion: {
       name: 'Kernel version',
-      value: item.kernel_version
+      value: item.kernel_version,
+      rawValue: item.kernel_version
     }
   };
 }

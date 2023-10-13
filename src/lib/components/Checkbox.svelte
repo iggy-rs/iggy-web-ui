@@ -1,27 +1,36 @@
 <script lang="ts">
-  import type { HTMLInputAttributes } from 'svelte/elements';
   import { twMerge } from 'tailwind-merge';
 
-  interface $$Props extends HTMLInputAttributes {
-    checked: boolean;
-    onChange?: (
-      e: Event & {
-        currentTarget: EventTarget & HTMLInputElement;
-      }
-    ) => void;
-  }
-
-  export let checked: $$Props['checked'];
-  export let onChange: $$Props['onChange'] = undefined;
-
+  export let checked: boolean | undefined = undefined;
   let isMouseDown = false;
+  export let value: string;
+  export let name: string | undefined = undefined;
+  export let bindGroup: string[] | undefined = undefined;
+
+  function onChange(e: Event) {
+    const { value: checkboxValue, checked: checkboxChecked } = e.target as HTMLInputElement;
+    if (bindGroup) {
+      if (checkboxChecked) {
+        bindGroup = [...bindGroup, checkboxValue];
+      } else {
+        bindGroup = bindGroup.filter((item) => item !== value);
+      }
+    }
+
+    if (checked) {
+      checked = checkboxChecked;
+    }
+  }
 </script>
 
 <div class="relative w-8 h-8">
   <input
     type="checkbox"
-    bind:checked
+    checked={bindGroup?.includes(value) || checked}
+    {name}
+    {value}
     on:change={onChange}
+    on:change
     on:mousedown={() => (isMouseDown = true)}
     on:mouseup={() => (isMouseDown = false)}
     on:mouseleave={() => (isMouseDown = false)}
@@ -59,6 +68,10 @@
 <style lang="postcss">
   input[type='checkbox'] {
     @apply cursor-pointer appearance-none m-0 absolute inset-0;
+  }
+
+  input[type='checkbox'] + div {
+    @apply bg-shadeL100;
   }
 
   input[type='checkbox']:hover:not(:checked) + div {

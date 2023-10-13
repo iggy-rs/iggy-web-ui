@@ -35,7 +35,9 @@ export function tooltip(
 
   if (clickable) trigger.addEventListener('click', toggleOpen);
 
-  node.addEventListener('closeTooltip', () => {});
+  node.addEventListener('closeTooltip', () => {
+    console.log('close tooltip event');
+  });
 
   const onOutsideClick = (e: MouseEvent) => {
     if (!tooltip.contains(e.target as HTMLElement)) {

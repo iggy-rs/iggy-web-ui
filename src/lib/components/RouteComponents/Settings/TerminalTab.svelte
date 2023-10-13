@@ -1,1 +1,2 @@
-terminal tab
+<script lang="ts">
+</script>

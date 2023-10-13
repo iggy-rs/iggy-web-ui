@@ -48,7 +48,7 @@
       </DropdownMenu>
     </header>
     <main
-      class="h-[calc(100vh-55px)] max-h-[calc(100vh-55px)] overflow-hidden bg-shadeL100 dark:bg-shadeD700"
+      class="h-[calc(100vh-55px)] max-h-[calc(100vh-55px)] max-w-[calc(100vw-90px)] overflow-hidden bg-shadeL100 dark:bg-shadeD700 flex flex-col"
     >
       <slot />
     </main>

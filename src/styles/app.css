@@ -21,7 +21,7 @@
   }
 
   .hoverable {
-    @apply dark:hover:bg-shadeD300 hover:bg-shadeL300;
+    @apply dark:hover:bg-shadeD300 hover:bg-shadeL300 hover:cursor-pointer transition-colors;
   }
 }
 

@@ -4,6 +4,9 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
+      transitionTimingFunction: {
+        'in-expo': 'cubic-bezier(0.95, 0.05, 0.795, 0.035)'
+      },
       colors: {
         shadeD100: 'var(--shadeD100)',
         shadeD200: 'var(--shadeD200)',
@@ -26,7 +29,13 @@ export default {
         shadeL700: 'var(--shadeL700)',
         shadeL800: 'var(--shadeL800)',
         shadeL900: 'var(--shadeL900)',
-        shadeL1000: 'var(--shadeL1000)'
+        shadeL1000: 'var(--shadeL1000)',
+
+        green500: 'var(--green500)',
+        green400: 'var(--green400)',
+        green300: 'var(--green300)',
+        green200: 'var(--green200)',
+        green100: 'var(--green100)'
       }
     }
   },

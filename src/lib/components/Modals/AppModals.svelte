@@ -8,6 +8,7 @@
   import TopicSettingsModal from './TopicSettingsModal.svelte';
   import AddPartitionsModal from './AddPartitionsModal.svelte';
   import DeletePartitionsModal from './DeletePartitionsModal.svelte';
+  import AddUserModal from './AddUserModal.svelte';
 
   const modals = {
     addTopicModal: AddTopicModal,
@@ -15,7 +16,8 @@
     streamSettingsModal: StreamSettingsModal,
     topicSettingsModal: TopicSettingsModal,
     addPartitionsModal: AddPartitionsModal,
-    deletePartitionsModal: DeletePartitionsModal
+    deletePartitionsModal: DeletePartitionsModal,
+    addUserModal: AddUserModal
   };
 
   type ModalProps<T extends keyof typeof modals> = Omit<

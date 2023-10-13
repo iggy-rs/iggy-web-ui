@@ -5,10 +5,10 @@
   import { twMerge } from 'tailwind-merge';
 
   const baseClasses =
-    'flex items-center justify-center font-semibold transition-all gap-2 rounded-[4px] ';
+    'flex items-center justify-center font-semibold transition-all gap-2 w-full rounded-[4px] ';
 
   const disabledClasses =
-    'disabled:bg-zinc-600 disabled:opacity-60 disabled:text-zinc-800 disabled:pointer-events-none';
+    'disabled:bg-zinc-400 disabled:opacity-60 disabled:text-zinc-700 disabled:pointer-events-none';
 
   const variants = {
     rounded:
@@ -33,21 +33,22 @@
     variant: keyof typeof variants;
     tooltipPlacement?: Placement;
     size?: keyof typeof sizes;
+    class?: string;
   }
 
   export let variant: keyof typeof variants;
   export let tooltipPlacement: Placement = 'right';
   export let size: keyof typeof sizes = 'md';
-
-  const { class: className, ...rest } = $$restProps as $$Props;
+  let className = '';
+  export { className as class };
 </script>
 
-<div use:tooltip={{ placement: tooltipPlacement }}>
+<div use:tooltip={{ placement: tooltipPlacement }} class={className}>
   <button
     on:click
     data-trigger
-    class={twMerge(baseClasses, disabledClasses, variants[variant], sizes[size], className)}
-    {...rest}
+    class={twMerge(baseClasses, disabledClasses, variants[variant], sizes[size])}
+    {...$$restProps}
   >
     <slot />
   </button>
