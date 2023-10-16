@@ -43,7 +43,7 @@
   export { className as class };
 </script>
 
-<div use:tooltip={{ placement: tooltipPlacement }} class={className}>
+<div use:tooltip={{ placement: tooltipPlacement }} class={twMerge('', className)}>
   <button
     on:click
     data-trigger

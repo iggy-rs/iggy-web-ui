@@ -12,6 +12,11 @@
   import DropdownMenu from '$lib/components/DropdownMenu.svelte';
   import { typedRoute } from '$lib/types/appRoutes';
   import { goto } from '$app/navigation';
+  import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+
+  export let data;
+
+  $: console.log('layout data', data);
 </script>
 
 <div id="popupsRoot" />
@@ -24,7 +29,8 @@
     <header
       class="h-[55px] min-h-[55px] max-h-[55px] border-b px-4 flex items-center justify-between bg-shadeL200 dark:bg-shadeD900"
     >
-      <RefetchIntervalToggler />
+      <!-- <RefetchIntervalToggler /> -->
+      <Breadcrumbs />
 
       <DropdownMenu
         placement="bottom-end"

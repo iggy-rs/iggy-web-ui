@@ -1,7 +1,8 @@
 <script lang="ts">
   import { page } from '$app/stores';
+
   import Button from '$lib/components/Button.svelte';
-  import DataOrEmptyMessage from '$lib/components/DataOrEmptyMessage.svelte';
+
   import Icon from '$lib/components/Icon.svelte';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import PromiseLoader from '$lib/components/PromiseLoader.svelte';
@@ -14,6 +15,9 @@
 <PromiseLoader
   promise={data.streamed.streamDetails}
   let:resolvedData={streamDetails}
+  onData={(streamDetails) => {
+    console.log('onData');
+  }}
   loadingMessage="stream {$page.params.streamId}"
 >
   <div class="h-[80px] flex flex-row text-xs items-center px-7">
@@ -55,20 +59,19 @@
     </Button>
   </div>
 
-  <DataOrEmptyMessage data={streamDetails.topics} noDataMessage="This stream has no topics.">
-    <SortableList
-      rowClass="grid grid-cols-[150px_3fr_2fr_2fr_2fr_3fr]"
-      data={streamDetails.topics}
-      hrefBuilder={(topic) =>
-        typedRoute(`/dashboard/streams/${+$page.params.streamId}/topics/${topic.id}`)}
-      colNames={{
-        id: 'ID',
-        name: 'Name',
-        messagesCount: 'Messages',
-        partitionsCount: 'Partitions',
-        sizeBytes: 'Size',
-        createdAt: 'Created'
-      }}
-    />
-  </DataOrEmptyMessage>
+  <SortableList
+    emptyDataMessage="This stream has no topics."
+    rowClass="grid grid-cols-[150px_3fr_2fr_2fr_2fr_3fr]"
+    data={streamDetails.topics}
+    hrefBuilder={(topic) =>
+      typedRoute(`/dashboard/streams/${+$page.params.streamId}/topics/${topic.id}`)}
+    colNames={{
+      id: 'ID',
+      name: 'Name',
+      messagesCount: 'Messages',
+      partitionsCount: 'Partitions',
+      sizeBytes: 'Size',
+      createdAt: 'Created'
+    }}
+  />
 </PromiseLoader>

@@ -61,6 +61,7 @@
   </div>
 
   <SortableList
+    emptyDataMessage="No partitions found."
     rowClass="grid grid-cols-[150px_1fr_1fr_1fr_1fr]"
     data={topic.partitions}
     colNames={{

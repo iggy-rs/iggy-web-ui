@@ -28,11 +28,18 @@
 <PromiseLoader promise={data.streamed.streams} onData={onStreamsLoaded} loadingMessage="streams">
   <div class="flex h-full flex-row">
     <div class="w-[290px] border-r h-full bg-shadeL200 dark:bg-shadeD900 flex flex-col">
-      <input
-        bind:value={searchQuery}
-        placeholder="Search streams..."
-        class="outline-none p-7 py-5 border-b text-sm bg-transparent dark:text-white"
-      />
+      <div class="p-7 pl-9 py-5 border-b flex gap-2 relative">
+        <Icon
+          name="search"
+          className="absolute text-gray-400 left-3 top-1/2 -translate-y-1/2 w-[20px]"
+        />
+        <input
+          bind:value={searchQuery}
+          placeholder="Search streams..."
+          class="outline-none text-sm bg-transparent w-full ml-2 dark:text-white"
+        />
+      </div>
+
       {#if filteredData.length === 0}
         <div class="p-7 py-4 flex items-center justify-center text-sm text-gray-400">
           <em>No streams found.</em>

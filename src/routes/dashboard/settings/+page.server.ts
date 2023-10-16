@@ -19,12 +19,6 @@ export const load = async () => {
       path: `/stats`
     });
 
-    await new Promise((res, rej) => {
-      setTimeout(() => {
-        res(1);
-      }, 5000);
-    });
-
     const stats = statsMapper((result as any).data);
     return stats;
   };

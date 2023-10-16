@@ -21,8 +21,10 @@
   import Checkbox from './Checkbox.svelte';
   import StopPropagationWrapper from './StopPropagationWrapper.svelte';
   import { twMerge } from 'tailwind-merge';
+  import { createEventDispatcher } from 'svelte';
 
   export let data: T[];
+  export let emptyDataMessage: string;
   export let colNames: Record<keyof T, string>;
   export let rowClass: string;
   export let areRowsSelectable: boolean | undefined = false;
@@ -31,6 +33,8 @@
   export let hrefBuilder: ((item: T) => string) | undefined = undefined;
   export let actions: ComponentProps<InstanceType<typeof DropdownMenu>>['itemGroups'] | undefined =
     undefined;
+
+  const dispatch = createEventDispatcher<{ selection: { items: T[] } }>();
 
   let ordering: Ordering<T> = {
     key: undefined,
@@ -45,6 +49,10 @@
   $: orderedData = ordering.key ? orderData(data, ordering.key, ordering.asc!) : data;
 
   let selectedItems: string[] = [];
+
+  $: dispatch('selection', {
+    items: data.filter((item) => selectedItems.includes(item.id.toString()))
+  });
 
   const toggleAllChecked = (e: Event) => {
     const { checked } = e.target as HTMLInputElement;
@@ -120,8 +128,13 @@
   </div>
 
   <!-- body -->
+  <div class="min-w-[1300px] h-[calc(100%-60px)] pb-3 overflow-auto" bind:this={bodyElem}>
+    {#if data.length === 0}
+      <div class="flex items-center justify-center text-gray-400 mt-14 text-lg">
+        <em>{emptyDataMessage}</em>
+      </div>
+    {/if}
 
-  <div class="min-w-[1300px] h-[calc(100%-60px)] overflow-auto" bind:this={bodyElem}>
     {#each orderedData as item (item.id)}
       {@const rowDisabled = disabledIds.includes(item.id)}
       <svelte:element
@@ -157,7 +170,7 @@
         {#if actions}
           <StopPropagationWrapper class="flex items-center justify-center w-[100px] mr-12">
             <DropdownMenu itemGroups={actions} placement="left-start">
-              <Button variant="rounded" class="p-5">
+              <Button variant="rounded" class="">
                 <Icon name="verticalDots" />
               </Button>
             </DropdownMenu>
