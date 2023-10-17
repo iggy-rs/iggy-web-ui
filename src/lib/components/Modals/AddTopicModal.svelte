@@ -7,8 +7,6 @@
   import type { CloseModalFn } from '$lib/types/utilTypes';
   import type { StreamDetails } from '$lib/domain/StreamDetails';
 
-  import { showToast } from '../AppToasts.svelte';
-
   export let closeModal: CloseModalFn;
   export let streamDetails: StreamDetails;
 

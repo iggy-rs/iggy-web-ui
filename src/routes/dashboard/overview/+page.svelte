@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Loader from '$lib/components/Loader.svelte';
   import PromiseLoader from '$lib/components/PromiseLoader.svelte';
   export let data;
 </script>
