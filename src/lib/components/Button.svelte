@@ -5,18 +5,19 @@
   import { twMerge } from 'tailwind-merge';
 
   const baseClasses =
-    'flex items-center justify-center font-semibold transition-all gap-2 w-full rounded-[4px] ';
+    'flex items-center justify-center font-semibold transition-all gap-2  rounded-[4px] ';
 
   const disabledClasses =
     'disabled:bg-zinc-400 disabled:opacity-60 disabled:text-zinc-700 disabled:pointer-events-none';
 
   const variants = {
     rounded:
-      'w-[40px] h-[40px] rounded-full dark:text-white flex items-center justify-center dark:hover:bg-shadeD300 hover:bg-shadeL400',
+      'w-[40px] h-[40px] rounded-full dark:text-white flex items-center justify-center dark:hover:bg-shadeD300 hover:bg-shadeL200',
     outlined:
       'border-black dark:border-white dark:text-white border-2 bg-transparent dark:hover:bg-shadeD400 hover:bg-shadeL400',
     outlinedRed: 'border-2 border-red-500 text-red-500 hover:text-red-600 hover:border-red-600',
-    contained: 'bg-black text-white dark:bg-white dark:text-black dark:text-black hover:shadow-lg',
+    contained:
+      'bg-black hover:bg-shadeD600 text-white dark:bg-white dark:text-black dark:text-black hover:shadow-lg',
     containedRed: 'bg-red-500 hover:bg-red-600  text-white hover:shadow-lg',
     text: 'bg-transparent text-color enabled:dark:hover:bg-shadeD500 hover:bg-shadeL400'
   };
@@ -43,11 +44,11 @@
   export { className as class };
 </script>
 
-<div use:tooltip={{ placement: tooltipPlacement }} class={twMerge('', className)}>
+<!-- <div use:tooltip={{ placement: tooltipPlacement }} class="w-full">
   <button
     on:click
     data-trigger
-    class={twMerge(baseClasses, disabledClasses, variants[variant], sizes[size])}
+    class={twMerge(baseClasses, disabledClasses, variants[variant], sizes[size], className)}
     {...$$restProps}
   >
     <slot />
@@ -58,4 +59,19 @@
       <slot name="tooltip" />
     </div>
   {/if}
-</div>
+</div> -->
+
+<button
+  on:click
+  data-trigger
+  class={twMerge(baseClasses, disabledClasses, variants[variant], sizes[size], className)}
+  {...$$restProps}
+>
+  <slot />
+</button>
+
+{#if $$slots.tooltip}
+  <div role="tooltip" class="tooltip">
+    <slot name="tooltip" />
+  </div>
+{/if}

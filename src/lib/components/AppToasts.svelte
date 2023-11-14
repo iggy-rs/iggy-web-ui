@@ -80,12 +80,12 @@
           )}
         >
           <Icon
-            className={twMerge(type === 'success' && 'fill-green-500 ', 'stroke-green-100')}
+            class={twMerge(type === 'success' && 'fill-green-500 ', 'stroke-green-100')}
             name={icons[type]}
           />
 
           <button class="rounded-full p-1 absolute top-3 right-3" on:click={remove}>
-            <Icon name="close" className="w-[16px] h-[16px]" />
+            <Icon name="close" class="w-[16px] h-[16px]" />
           </button>
 
           <div class="flex flex-col">

@@ -39,7 +39,7 @@
               )}
             >
               <span>
-                <Icon name={icon} className="w-[17px] h-[17px]" />
+                <Icon name={icon} class="w-[17px] h-[17px]" />
               </span>
               <span class={twMerge('text-left', className)}>
                 {label}

@@ -1,4 +1,11 @@
-<script lang="ts">
+<script>
+  import { goto, invalidate, invalidateAll } from '$app/navigation';
+  import { page } from '$app/stores';
+  import { typedRoute } from '$lib/types/appRoutes';
 </script>
 
-uups error page!
+{#if $page.error && $page.error.message === 'Not Found'}
+  Not found
+{:else}
+  Internal Error
+{/if}

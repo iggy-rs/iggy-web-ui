@@ -1,21 +1,16 @@
-import { fetchApi } from '$lib/api/fetchApi';
+import { fetchApi, handleFetchErrors } from '$lib/api/fetchApi';
 import { statsMapper } from '$lib/domain/Stats';
 
-export const load = async () => {
-  const statsPromise = async () => {
-    const result = await fetchApi({
-      method: 'GET',
-      path: `/stats`
-    });
+export const load = async ({ cookies }) => {
+  const result = await fetchApi({
+    path: '/stats',
+    method: 'GET',
+    cookies
+  });
 
-    const stats = statsMapper((result as any).data);
-
-    return stats;
-  };
+  const { data } = await handleFetchErrors(result, cookies);
 
   return {
-    streamed: {
-      stats: statsPromise()
-    }
+    stats: statsMapper(data)
   };
 };

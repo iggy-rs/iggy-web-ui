@@ -1,21 +1,17 @@
-import { fetchApi } from '$lib/api/fetchApi';
+import { fetchApi, handleFetchErrors } from '$lib/api/fetchApi';
 import { streamMapper, type Stream } from '$lib/domain/Stream';
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = async () => {
-  const streamsPromise = async () => {
-    const result = await fetchApi({
-      method: 'GET',
-      path: `/streams`,
-      throwOnError: true
-    });
+export const load: LayoutServerLoad = async ({ cookies }) => {
+  const result = await fetchApi({
+    method: 'GET',
+    path: '/streams',
+    cookies
+  });
 
-    return (result.data as any).map(streamMapper) as Stream[];
-  };
+  const { data } = await handleFetchErrors(result, cookies);
 
   return {
-    streamed: {
-      streams: streamsPromise()
-    }
+    streams: (data as any).map(streamMapper) as Stream[]
   };
 };

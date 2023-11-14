@@ -43,7 +43,7 @@
   <Button variant="rounded" on:click={() => (darkMode ? setLightMode() : setDarkMode())}>
     {#key darkMode}
       <div in:fade={{ duration: 200 }}>
-        <Icon name={darkMode ? 'moon' : 'sun'} className="dark:text-white" />
+        <Icon name={darkMode ? 'moon' : 'sun'} class="dark:text-white" />
       </div>
     {/key}
   </Button>

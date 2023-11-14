@@ -1,19 +1,20 @@
-import { fetchApi } from '$lib/api/fetchApi';
+import { fetchApi, handleFetchErrors } from '$lib/api/fetchApi';
 import { topicDetailsMapper } from '$lib/domain/TopicDetails';
 
-export const load = async ({ params }) => {
-  const topicPromise = async () => {
+export const load = async ({ params, cookies }) => {
+  const getTopic = async () => {
     const result = await fetchApi({
       method: 'GET',
-      path: `/streams/${+params.streamId}/topics/${+params.topicId}`
+      path: `/streams/${+params.streamId}/topics/${+params.topicId}`,
+      cookies
     });
 
-    return topicDetailsMapper((result as any).data);
+    const { data } = await handleFetchErrors(result, cookies);
+
+    return topicDetailsMapper(data);
   };
 
   return {
-    streamed: {
-      topic: topicPromise()
-    }
+    topic: await getTopic()
   };
 };

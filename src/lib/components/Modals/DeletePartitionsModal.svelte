@@ -56,11 +56,11 @@
     <form method="POST" class="flex flex-col h-[300px] gap-4" use:enhance>
       <Input
         label="Partitions count"
-        idAndName="partitionsCount"
+        name="partitionsCount"
         bind:value={$form.partitionsCount}
         type="number"
         {...$constraints.partitionsCount}
-        error={$errors.partitionsCount?.join(',')}
+        errorMessage={$errors.partitionsCount?.join(',')}
       />
 
       <div class="flex justify-end gap-3 mt-auto">

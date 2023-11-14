@@ -13,50 +13,19 @@
   import { typedRoute } from '$lib/types/appRoutes';
   import { goto } from '$app/navigation';
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+  import Header from '$lib/components/Header.svelte';
 
   export let data;
-
-  $: console.log('layout data', data);
 </script>
 
 <div id="popupsRoot" />
 <AppModals />
 <AppToasts />
 
-<div class="flex w-full max-h-screen">
-  <Navbar />
-  <div class="flex-1 flex flex-col">
-    <header
-      class="h-[55px] min-h-[55px] max-h-[55px] border-b px-4 flex items-center justify-between bg-shadeL200 dark:bg-shadeD900"
-    >
-      <!-- <RefetchIntervalToggler /> -->
-      <Breadcrumbs />
-
-      <DropdownMenu
-        placement="bottom-end"
-        itemGroups={[
-          [{ label: 'Spetz', icon: 'user', className: 'font-semibold' }],
-          [
-            {
-              label: 'Logout',
-              action: async () => {
-                await fetch(typedRoute('/auth/logout'), { method: 'POST', body: new FormData() });
-                goto(typedRoute('/auth/login'));
-              },
-              icon: 'logout'
-            }
-          ]
-        ]}
-      >
-        <Button variant="rounded" class="p-5">
-          <Icon name="userCircle" className="w-[32px] h-[32px]" strokeWidth={1} />
-        </Button>
-      </DropdownMenu>
-    </header>
-    <main
-      class="h-[calc(100vh-55px)] max-h-[calc(100vh-55px)] max-w-[calc(100vw-90px)] overflow-hidden bg-shadeL100 dark:bg-shadeD700 flex flex-col"
-    >
-      <slot />
-    </main>
-  </div>
-</div>
+<Navbar />
+<Header />
+<main
+  class="fixed left-[90px] top-[55px] bottom-0 right-0 bg-shadeL100 dark:bg-shadeD700 flex flex-col"
+>
+  <slot />
+</main>

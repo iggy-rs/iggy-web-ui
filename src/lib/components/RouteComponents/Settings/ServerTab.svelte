@@ -1,56 +1,51 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
   import Loader from '$lib/components/Loader.svelte';
-  import PromiseLoader from '$lib/components/PromiseLoader.svelte';
+
   import RangeInput from '$lib/components/RangeInput.svelte';
   import Toggler from '$lib/components/Toggler.svelte';
   import type { Stats } from '$lib/domain/Stats';
 
-  export let serverStats: Promise<Stats>;
+  export let serverStats: Stats;
 
   let cacheEnabled = false;
 
   let cacheValue = 0;
-  serverStats.then((stats) => {
-    // cacheValue = stats.availableMemory.rawValue as number;
-  });
 </script>
 
 <div class="p-5">
-  <PromiseLoader promise={serverStats} let:resolvedData={stats} loadingMessage="server settings">
-    <section class="border rounded-md overflow-hidden mx-auto max-w-[900px] text-shadeL1000">
-      <div class="flex flex-col p-7 gap-3">
-        <h3 class="text-2xl font-semibold">Cache</h3>
-        <label class="flex gap-4 mt-2 items-center hover:cursor-pointer w-fit">
-          <Toggler bind:checked={cacheEnabled} />
-          <span>{cacheEnabled ? 'Enabled' : 'Disabled'} </span>
-        </label>
+  <section class="border rounded-md overflow-hidden mx-auto max-w-[900px] text-shadeL1000">
+    <div class="flex flex-col p-7 gap-3">
+      <h3 class="text-2xl font-semibold">Cache</h3>
+      <label class="flex gap-4 mt-2 items-center hover:cursor-pointer w-fit">
+        <Toggler bind:checked={cacheEnabled} />
+        <span>{cacheEnabled ? 'Enabled' : 'Disabled'} </span>
+      </label>
 
-        {#if cacheEnabled}
-          <div>
-            <span class="text-shadeL1000 block">Adjust amount of server cache.</span>
-            <div class="flex items-center justify-center gap-4 w-fit">
-              <div class="w-[270px]">
-                <RangeInput
-                  className="w-[270px] h-[9px]"
-                  size="big"
-                  min={0}
-                  max={100}
-                  initValue={50}
-                  bind:value={cacheValue}
-                />
-              </div>
-              <span> {cacheValue}</span>
+      {#if cacheEnabled}
+        <div>
+          <span class="text-shadeL1000 block">Adjust amount of server cache.</span>
+          <div class="flex items-center justify-center gap-4 w-fit">
+            <div class="w-[270px]">
+              <RangeInput
+                className="w-[270px] h-[9px]"
+                size="big"
+                min={0}
+                max={100}
+                initValue={50}
+                bind:value={cacheValue}
+              />
             </div>
+            <span> {cacheValue}</span>
           </div>
-        {/if}
-      </div>
-      <footer class="p-5 py-4 bg-shadeL200 flex items-center justify-between">
-        <span class="text-shadeL1000 text-sm">
-          max cache size: 80% of {stats.availableMemory.value}
-        </span>
-        <Button disabled variant="contained">Save</Button>
-      </footer>
-    </section>
-  </PromiseLoader>
+        </div>
+      {/if}
+    </div>
+    <footer class="p-5 py-4 bg-shadeL200 flex items-center justify-between">
+      <span class="text-shadeL1000 text-sm">
+        max cache size: 80% of {serverStats.availableMemory.value}
+      </span>
+      <Button disabled variant="contained">Save</Button>
+    </footer>
+  </section>
 </div>

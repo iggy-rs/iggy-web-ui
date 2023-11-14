@@ -3,6 +3,25 @@
 
 GET {{url}}
 
+
+###
+POST {{url}}/users/login
+Content-Type: application/json
+
+{
+    "username":"iggy",
+    "password":"iggy"
+}
+
+###
+POST {{url}}/users/refresh-token
+Content-Type: application/json
+
+{
+  "refresh_token": "aVfPcLQHScxeo+KfnyibkNvEZXiW5J5U4I7kthf1IVmSX3Rv9KUPpbemEY2gY6Vvi1A="
+}
+
+
 ###
 POST {{url}}/users
 Content-Type: application/json
@@ -17,20 +36,22 @@ Content-Type: application/json
 ### Create stream
 POST {{url}}/streams
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmODM0NTI5MC05NzBlLTQ3YzAtOTMwOS02YWM5MmZiMWEyYTYiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNjk5OTgxMTU4LCJleHAiOjE2OTk5ODQ3NTgsIm5iZiI6MTY5OTk4MTE1OH0.6WxgKsOAZQfeAPciwHOcE1oR3iJXM0VORX-RtsvT2hU
 
 {
-    "stream_id": 30,
-    "name":"stream30"
+    "stream_id": 29,
+    "name":"stream29"
 }
 
 ### Create topic
-POST {{url}}/streams/30/topics
+POST {{url}}/streams/11/topics
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmODM0NTI5MC05NzBlLTQ3YzAtOTMwOS02YWM5MmZiMWEyYTYiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNjk5OTgxMTU4LCJleHAiOjE2OTk5ODQ3NTgsIm5iZiI6MTY5OTk4MTE1OH0.6WxgKsOAZQfeAPciwHOcE1oR3iJXM0VORX-RtsvT2hU
 
 {
-  "topic_id": 31,
-  "name": "topic30",
-  "partitions_count": 3,
+  "topic_id": 16,
+  "name": "topic16",
+  "partitions_count": 10,
   "message_expiry": 0
 }
 

@@ -18,7 +18,7 @@
       .max(255, 'Name must not exceed 255 characters')
       .default(''),
     partitionsCount: z.coerce.number().min(0).default(0),
-    messageExpiry: z.coerce.number().min(0).optional()
+    messageExpiry: z.coerce.number().min(0).default(0)
   });
 
   const { form, errors, enhance, constraints } = superForm(superValidateSync(schema), {
@@ -62,35 +62,35 @@
   <form method="POST" class="flex flex-col h-[450px] gap-4" use:enhance>
     <Input
       label="Id"
-      idAndName="topicId"
+      name="topicId"
       type="number"
       bind:value={$form.topicId}
       {...$constraints.topicId}
-      error={$errors.topicId?.join(',')}
+      errorMessage={$errors.topicId?.join(',')}
     />
     <Input
-      idAndName="topicName"
+      name="topicName"
       label="Name"
       bind:value={$form.topicName}
-      error={$errors.topicName?.join(',')}
+      errorMessage={$errors.topicName?.join(',')}
     />
 
     <Input
       label="Partitions count"
       type="number"
-      idAndName="partitionsCount"
+      name="partitionsCount"
       bind:value={$form.partitionsCount}
       {...$constraints.partitionsCount}
-      error={$errors.partitionsCount?.join(',')}
+      errorMessage={$errors.partitionsCount?.join(',')}
     />
 
     <Input
       label="Message expiry"
       type="number"
-      idAndName="messageExpiry"
+      name="messageExpiry"
       bind:value={$form.messageExpiry}
       {...$constraints.messageExpiry}
-      error={$errors.messageExpiry?.join(',')}
+      errorMessage={$errors.messageExpiry?.join(',')}
     />
 
     <div class="flex justify-end gap-3 mt-auto">

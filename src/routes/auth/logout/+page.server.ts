@@ -12,6 +12,6 @@ export const actions = {
     console.log('deleting cookie');
 
     // redirect the user
-    throw redirect(307, typedRoute('/auth/login'));
+    throw redirect(307, typedRoute('/auth/sign-in'));
   }
 };

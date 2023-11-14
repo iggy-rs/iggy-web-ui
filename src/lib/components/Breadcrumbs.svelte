@@ -30,7 +30,7 @@
 
 <div class="flex items-center font-semibold">
   <a href={typedRoute('/dashboard/overview')}
-    ><Icon name="home" className="fill-shadeL700 stroke-shadeL900 mr-2" /></a
+    ><Icon name="home" class="fill-shadeL700 stroke-shadeL900 mr-2" /></a
   >
 
   <span class="flex mr-2">

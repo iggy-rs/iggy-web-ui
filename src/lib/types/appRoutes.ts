@@ -6,6 +6,10 @@ type DashboardRoutes = `/dashboard/${
   | 'clients'
   | 'logs'
   | 'settings'}`;
-type AuthRoutes = '/auth/login' | '/auth/logout' | '/auth/register' | '/auth/reset-password';
+type AuthRoutes = '/auth/logout' | '/auth/sign-in';
 
-export const typedRoute = (route: DashboardRoutes | AuthRoutes) => route;
+export const typedRoute = <const T extends DashboardRoutes | AuthRoutes>(route: T) => route;
+export const publicRoutes = [typedRoute('/auth/logout'), typedRoute('/auth/sign-in')] as const;
+
+export const checkIfPathnameIsPublic = (pathname: string) =>
+  (publicRoutes as ReadonlyArray<string>).includes(pathname);

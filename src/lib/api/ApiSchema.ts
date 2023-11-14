@@ -68,6 +68,46 @@ type Streams =
   | {
       method: 'GET';
       path: `/streams/${number}/topics/${number}`;
+    }
+  | {
+      method: 'POST';
+      path: '/streams';
+      body: {
+        stream_id: number;
+        name: string;
+      };
+    }
+  | {
+      method: 'PUT';
+      path: `/streams/${number}`;
+      body: {
+        name: string;
+      };
+    }
+  | {
+      method: 'DELETE';
+      path: `/streams/${number}`;
+    };
+
+type Auth =
+  | {
+      path: '/users/login';
+      method: 'POST';
+      body: {
+        username: string;
+        password: string;
+      };
+    }
+  | {
+      method: 'POST';
+      path: '/users/logout';
+    }
+  | {
+      path: '/users/refresh-token';
+      method: 'POST';
+      body: {
+        refresh_token: string;
+      };
     };
 
 type Stats = {
@@ -75,4 +115,4 @@ type Stats = {
   path: '/stats';
 };
 
-export type ApiSchema = Users | Streams | Stats;
+export type ApiSchema = Users | Streams | Stats | Auth;

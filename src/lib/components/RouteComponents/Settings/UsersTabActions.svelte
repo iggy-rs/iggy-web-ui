@@ -22,14 +22,14 @@
 
   {#if $usersCount}
     <span class="text-sm text-color-gray"> {$usersCount} users </span>
-
+    <!-- 
     <Input
       bind:value={$searchQuery}
       placeholder="Search"
       idAndName="searchUser"
       class="w-[165px]"
       leadingIcon="search"
-    />
+    /> -->
     <Button variant="contained" on:click={() => openModal('addUserModal')}>
       <Icon name="plus" />
       Add user

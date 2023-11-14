@@ -130,7 +130,7 @@
           {/each}
           <td class="px-5 pr-10 py-3 flex justify-end debug">
             {#if rowHref}
-              <Icon className="w-[20px]" name="arrowRight" />
+              <Icon class="w-[20px]" name="arrowRight" />
             {/if}
 
             {#if actions}

@@ -1,32 +1,34 @@
-import { fetchApi } from '$lib/api/fetchApi';
+import { fetchApi, handleFetchErrors } from '$lib/api/fetchApi';
 import { statsMapper } from '$lib/domain/Stats';
 import { userMapper, type User } from '$lib/domain/User.js';
 
-export const load = async () => {
-  const usersPromise = async () => {
+export const load = async ({ cookies }) => {
+  const getUsers = async () => {
     const result = await fetchApi({
       method: 'GET',
-      path: '/users'
+      path: '/users',
+      cookies
     });
 
-    const users = (result.data as any).map((item: any) => userMapper(item));
-    return users as User[];
+    const { data } = await handleFetchErrors(result, cookies);
+    return (data as any).map((item: any) => userMapper(item)) as User[];
   };
 
-  const statsPromise = async () => {
+  const getStats = async () => {
     const result = await fetchApi({
       method: 'GET',
-      path: `/stats`
+      path: '/stats',
+      cookies
     });
 
-    const stats = statsMapper((result as any).data);
-    return stats;
+    const { data } = await handleFetchErrors(result, cookies);
+    return statsMapper(data);
   };
+
+  const [users, serverStats] = await Promise.all([getUsers(), getStats()]);
 
   return {
-    streamed: {
-      users: usersPromise(),
-      serverStats: statsPromise()
-    }
+    users,
+    serverStats
   };
 };

@@ -28,14 +28,14 @@
       icon: 'adjustments',
       label: 'Server',
       props: {
-        serverStats: data.streamed.serverStats
+        serverStats: data.serverStats
       }
     }),
     users: createTabItem({
       component: UsersTab,
       icon: 'usersGroup',
       label: 'Users',
-      props: { usersPromise: data.streamed.users },
+      props: { users: data.users },
       tabActions: UsersTabActions
     }),
     terminal: createTabItem({
@@ -68,7 +68,7 @@
         goto(url.toString());
       }}
     >
-      <Icon name={icon} className="w-[15px] h-[15px]" />
+      <Icon name={icon} class="w-[15px] h-[15px]" />
 
       <span>
         {label}

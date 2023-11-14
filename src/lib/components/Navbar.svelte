@@ -37,11 +37,11 @@
 </script>
 
 <nav
-  class="h-screen min-w-[90px] max-w-[90px] pb-7 pt-4 border-r flex flex-col items-center bg-shadeL300 dark:bg-shadeD1000"
+  class="fixed z-10 left-0 top-0 bottom-0 min-w-[90px] max-w-[90px] pb-7 pt-4 border-r flex flex-col items-center bg-shadeL300 dark:bg-shadeD1000"
 >
-  <a href={typedRoute('/dashboard/overview')} class="flex flex-col items-center gap-5">
+  <a href={typedRoute('/dashboard/overview')} class="flex flex-col items-center gap-5 mb-5">
     <span class="font-extrabold text-xl tracking-wide text-black dark:text-white"> IGGY </span>
-    <div class="w-[50px] h-[60px] mb-5">
+    <div class="w-[50px] h-[45px]">
       <img src={logo} class="w-[50px]" alt="iggy" />
     </div>
   </a>
@@ -60,7 +60,7 @@
               !isActive && 'hoverable'
             )}
           >
-            <Icon name={icon} className="w-[27px] h-[27px] text-black dark:text-white" />
+            <Icon name={icon} class="w-[27px] h-[27px] text-black dark:text-white" />
           </a>
           <div class="tooltip">
             {name}

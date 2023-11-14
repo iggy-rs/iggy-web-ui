@@ -7,6 +7,7 @@
   import ModalBase from './ModalBase.svelte';
 
   import { showToast } from '../AppToasts.svelte';
+  import { fetchRouteApi } from '$lib/api/fetchRouteApi';
 
   export let closeModal: CloseModalFn;
 
@@ -26,10 +27,16 @@
     async onUpdate({ form }) {
       if (!form.valid) return;
 
-      // const result = await apiClient.post({
-      //   path: '/streams',
-      //   body: { stream_id: +form.data.streamId, name: form.data.streamName }
-      // });
+      const data = await fetchRouteApi({
+        method: 'POST',
+        path: '/streams',
+        body: {
+          stream_id: +form.data.streamId,
+          name: form.data.streamName
+        }
+      });
+
+      console.log('data', data);
 
       // if (result.success) {
       //   await clientQuery.refetchQueries({ queryKey: ['streams'] });
@@ -55,22 +62,22 @@
   <form method="POST" class="flex flex-col h-[300px] gap-4" use:enhance>
     <Input
       label="Id"
-      idAndName="streamId"
+      name="streamId"
       bind:value={$form.streamId}
       type="number"
       {...$constraints.streamId}
-      error={$errors.streamId?.join(',')}
+      errorMessage={$errors.streamId?.join(',')}
     />
     <Input
-      idAndName="streamName"
+      name="streamName"
       label="Name"
       bind:value={$form.streamName}
-      error={$errors.streamName?.join(',')}
+      errorMessage={$errors.streamName?.join(',')}
     />
 
-    <div class="flex justify-end gap-3 mt-auto">
+    <div class="flex justify-end gap-3 mt-auto w-full">
       <Button type="button" variant="text" class="w-2/5" on:click={closeModal}>Cancel</Button>
-      <Button type="submit" variant="contained" disabled={$submitting} class="w-2/5">Create</Button>
+      <Button type="submit" variant="contained" class="w-2/5" disabled={$submitting}>Create</Button>
     </div>
   </form>
 </ModalBase>

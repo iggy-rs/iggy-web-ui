@@ -105,14 +105,14 @@
           <div class="flex flex-col">
             <Icon
               name="caretUp"
-              className={twMerge(
+              class={twMerge(
                 'fill-shadeL700 stroke-shadeL700 w-[18px] h-fit -mb-[4px]',
                 ordering.key === columnName && ordering.asc === true && 'fill- stroke-black'
               )}
             />
             <Icon
               name="caretDown"
-              className={twMerge(
+              class={twMerge(
                 'fill-shadeL700 stroke-shadeL700 w-[18px] h-fit -mt-[4px]',
                 ordering.key === columnName && ordering.asc === false && 'fill-black stroke-black'
               )}
