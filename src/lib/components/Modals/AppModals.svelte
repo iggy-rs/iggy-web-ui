@@ -9,24 +9,8 @@
   import AddPartitionsModal from './AddPartitionsModal.svelte';
   import DeletePartitionsModal from './DeletePartitionsModal.svelte';
   import AddUserModal from './AddUserModal.svelte';
-  import type { CloseModalFn } from '$lib/types/utilTypes';
-  import { string } from 'zod';
   import { noTypeCheck } from '$lib/utils/noTypeCheck';
 
-  import Button from '../Button.svelte';
-  import Checkbox from '../Checkbox.svelte';
-  import TestComponent from '../TestComponent.svelte';
-  import TestComponent2 from '../TestComponent2.svelte';
-
-  // type ModalType = {
-  //   test: string;
-  // } & any;
-
-  // const foo = <T extends ComponentType<SvelteComponent<ModalType>>>(item: T) => {};
-
-  // foo(TestComponent);
-
-  // Record<string, SvelteComponent<{ closeModal: CloseModalFn }>>
   const modals = {
     AddTopicModal,
     AddStreamModal,

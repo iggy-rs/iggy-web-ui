@@ -4,8 +4,6 @@
   import type { HTMLButtonAttributes } from 'svelte/elements';
   import { twMerge } from 'tailwind-merge';
 
-  // focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-4
-
   const baseClasses =
     'flex items-center justify-center font-semibold transition-all gap-2 rounded-[4px] focus:outline-none focus-visible:ring focus:ring-blue-600/60 ring-offset-2 ring-offset-white dark:ring-offset-shadeD700  ';
 
@@ -17,11 +15,10 @@
       'w-[40px] h-[40px] rounded-full dark:text-white flex items-center justify-center dark:hover:bg-shadeD300 hover:bg-shadeL200',
     outlined:
       'border-black dark:border-white dark:text-white border-2 bg-transparent dark:hover:bg-shadeD400 hover:bg-shadeL400',
-    outlinedRed:
-      'border-2 border-red text-red hover:text-red-600 hover:border-red-600 hover:border- ',
+    outlinedRed: 'border-2 border-red-500 text-red-500 hover:text-red-600 hover:border-red-600 ',
     contained:
       'bg-black hover:bg-shadeD600 text-white dark:bg-white dark:text-black dark:text-black hover:shadow-lg dark:shadow-shadeD300',
-    containedRed: 'bg-red-500 hover:bg-red  text-white hover:shadow-lg',
+    containedRed: 'bg-red-500 hover:bg-red-600  text-white hover:shadow-lg',
     text: 'bg-transparent text-color enabled:dark:hover:bg-shadeD500 hover:bg-shadeL400'
   };
 

@@ -3,9 +3,9 @@ import { handleFetchErrors } from '$lib/api/handleFetchErrors';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
-  const { path, body, method } = await request.json();
+  const { path, body, method, queryParams } = await request.json();
 
-  if (!path || !body || !method) {
+  if (!path || !method) {
     const message = `routes/api/proxy/+server.ts no path or body or method provided`;
     console.error(message);
     throw error(500, {
@@ -13,7 +13,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     });
   }
 
-  const result = await fetchApi({ body, path, method, cookies });
+  const result = await fetchApi({ body, path, method, cookies, queryParams });
 
   console.log('fetchApi', result);
   const { data, response } = await handleFetchErrors(result, cookies);

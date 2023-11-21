@@ -66,5 +66,5 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{url}}/streams/248
+DELETE {{url}}/streams/245
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlNDNkOTAzYS02YzhiLTQyY2YtYmRhMy1jNTQ4ODBlMDU1YTEiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNzAwNTYzNjk0LCJleHAiOjE3MDA1NjcyOTQsIm5iZiI6MTcwMDU2MzY5NH0.viKHyJuLTdhpw3k6NTjA6JJ6A361A_v8XTHBIDnasFk

@@ -13,7 +13,6 @@
 
   export async function customInvalidateAll() {
     if (!browser) return;
-    console.log('invalidating');
     isInvalidating.set(true);
     await invalidateAll();
     isInvalidating.set(false);

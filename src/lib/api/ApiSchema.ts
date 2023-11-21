@@ -122,6 +122,13 @@ type Topics =
       body: {
         partitions_count: number;
       };
+    }
+  | {
+      method: 'DELETE';
+      path: `/streams/${number}/topics/${number}/partitions`;
+      queryParams: {
+        partitions_count: number;
+      };
     };
 
 type Auth =

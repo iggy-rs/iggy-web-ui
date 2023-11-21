@@ -46,6 +46,7 @@
         <Icon name={darkMode ? 'moon' : 'sun'} class="dark:text-white" />
       </div>
     {/key} -->
+    <span class="bg-red-600" />
     <Icon name="moon" />
   </Button>
 </button>

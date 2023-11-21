@@ -4,9 +4,9 @@ import { tokens } from '$lib/utils/tokens';
 import { type Cookies } from '@sveltejs/kit';
 
 export async function fetchApi(
-  args: ApiSchema & { urlParams?: Record<string, string>; cookies?: Cookies }
+  args: ApiSchema & { queryParams?: Record<string, string>; cookies?: Cookies }
 ): Promise<Response | unknown> {
-  const { path, method, urlParams, cookies } = args;
+  const { path, method, queryParams, cookies } = args;
 
   try {
     const headers = new Headers();
@@ -19,8 +19,8 @@ export async function fetchApi(
 
     let fullUrl = `${API_URL}${path}`;
 
-    if (urlParams) {
-      const query = new URLSearchParams(Object.entries(urlParams));
+    if (queryParams) {
+      const query = new URLSearchParams(Object.entries(queryParams));
       fullUrl += '?' + query.toString();
     }
 

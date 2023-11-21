@@ -15,7 +15,7 @@
   export let closeModal: CloseModalFn;
 
   const schema = z.object({
-    partitions_count: z.number().min(1).max(numberSizes.max.u32)
+    partitions_count: z.number().min(1).max(numberSizes.max.u32).default(1)
   });
 
   const { form, errors, enhance, constraints } = superForm(superValidateSync(schema), {
@@ -43,7 +43,10 @@
           await invalidateAll();
           showToast({
             type: 'success',
-            description: `${$form.partitions_count} partitions has been added.`,
+            description:
+              $form.partitions_count > 1
+                ? `${$form.partitions_count} partitions have been added.`
+                : '1 partition has been added.',
             duration: 3500
           });
         });
@@ -53,7 +56,7 @@
 </script>
 
 <ModalBase {closeModal} title="Add partitions">
-  <form method="POST" class="flex flex-col gap-4 h-[200px]" use:enhance>
+  <form method="POST" class="flex flex-col gap-4 h-[300px]" use:enhance>
     <Input
       label="Partitions count"
       type="number"

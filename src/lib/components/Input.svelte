@@ -102,7 +102,7 @@
   <div
     class={twMerge(
       'rounded-md dark:bg-shadeD400  ring-1 ring-gray-300 dark:ring-gray-500 flex items-center h-[40px] text-color relative focus-within:ring-2 focus-within:ring-gray-400 transition group',
-      errorMessage && '!ring-red ring-2'
+      errorMessage && '!ring-red-600 ring-2'
     )}
   >
     {#if $$slots.prefix}
@@ -127,7 +127,7 @@
   </div>
 
   {#if errorMessage}
-    <span class="text-red text-xs font-medium ml-1">
+    <span class="text-red-600 text-xs font-medium ml-1">
       {errorMessage}
     </span>
   {/if}

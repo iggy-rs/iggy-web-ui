@@ -6,69 +6,98 @@
   import ModalBase from './ModalBase.svelte';
   import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
   import Button from '../Button.svelte';
-  import DeleteButtonWithConfirmation from '../DeleteButtonWithConfirmation.svelte';
+
+  import ModalConfirmation from '../ModalConfirmation.svelte';
+  import { fetchRouteApi } from '$lib/api/fetchRouteApi';
+  import { page } from '$app/stores';
+  import { invalidateAll } from '$app/navigation';
+  import { showToast } from '../AppToasts.svelte';
+  import { dataHas } from '$lib/utils/dataHas';
 
   export let closeModal: CloseModalFn;
 
-  const schema = z.object({
-    partitionsCount: z.coerce.number().min(1).default(1)
-  });
+  let confirmationOpen = false;
+  let formElement: HTMLFormElement;
 
-  const { form, errors, enhance, constraints, submitting } = superForm(superValidateSync(schema), {
-    SPA: true,
-    validators: schema,
+  const onConfirmationResult = (e: any) => {
+    const result = e.detail as boolean;
+    confirmationOpen = false;
 
-    async onUpdate({ form }) {
-      if (!form.valid) return;
-
-      // const result = await apiClient.post({
-      //   path: `/streams/${streamDetails.id}/topics`,
-      //   body: {
-      //     topic_id: +form.data.topic_id,
-      //     name: form.data.name,
-      //     partitions_count: +form.data.partitionsCount
-      //   }
-      // });
-
-      // if (result.success) {
-      //   await clientQuery.refetchQueries({
-      //     queryKey: ['streamDetails', streamDetails.id]
-      //   });
-      //   closeModal();
-      //   showToast({
-      //     type: 'success',
-      //     title: 'Success',
-      //     description: 'Topic added successfully'
-      //   });
-      //   return;
-      // }
-
-      // const { error } = result;
-      // if ('field' in error && 'reason' in error) {
-      //   setError(form, error.field as any, error.reason as any);
-      // }
+    if (result) {
+      formElement.requestSubmit();
     }
+  };
+
+  const schema = z.object({
+    partitions_count: z.coerce.number().min(1).default(1)
   });
+
+  const { form, errors, enhance, constraints, submitting, validate } = superForm(
+    superValidateSync(schema),
+    {
+      SPA: true,
+      validators: schema,
+
+      async onUpdate({ form }) {
+        if (!form.valid) return;
+
+        const { data, ok } = await fetchRouteApi({
+          method: 'DELETE',
+          path: `/streams/${+$page.params.streamId}/topics/${+$page.params.topicId}/partitions`,
+          queryParams: {
+            partitions_count: $form.partitions_count
+          }
+        });
+
+        if (dataHas(data, 'field', 'reason')) {
+          return setError(form, data.field, data.reason);
+        }
+
+        if (ok) {
+          closeModal(async () => {
+            await invalidateAll();
+            showToast({
+              type: 'success',
+              description:
+                $form.partitions_count > 1
+                  ? `${$form.partitions_count} partitions have been deleted.`
+                  : '1 partition has been deleted.',
+              duration: 3500
+            });
+          });
+        }
+      }
+    }
+  );
 </script>
 
 <ModalBase {closeModal} title="Delete partitions">
-  <div class="h-[300px] flex flex-col bg-shadeL">
-    <form method="POST" class="flex flex-col h-[300px] gap-4" use:enhance>
+  <ModalConfirmation open={confirmationOpen} on:result={onConfirmationResult} />
+  <div class="h-[300px] flex flex-col">
+    <form bind:this={formElement} method="POST" class="flex flex-col h-[300px] gap-4" use:enhance>
       <Input
         label="Partitions count"
-        name="partitionsCount"
-        bind:value={$form.partitionsCount}
+        name="partitions_count"
+        bind:value={$form.partitions_count}
         type="number"
-        {...$constraints.partitionsCount}
-        errorMessage={$errors.partitionsCount?.join(',')}
+        {...$constraints.partitions_count}
+        errorMessage={$errors.partitions_count?.join(',')}
       />
 
       <div class="flex justify-end gap-3 mt-auto">
         <Button type="button" variant="text" class="w-2/5" on:click={() => closeModal()}
           >Cancel</Button
         >
-        <Button type="button" variant="containedRed" class="w-2/5" on:click={() => {}}
-          >Delete</Button
+        <Button
+          type="button"
+          variant="containedRed"
+          class="w-2/5"
+          on:click={async () => {
+            const result = await validate();
+            if (result.valid) {
+              confirmationOpen = true;
+            }
+          }}>Delete</Button
         >
       </div>
     </form>
