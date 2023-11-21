@@ -1,7 +1,7 @@
 <script lang="ts">
   export let data;
 
-  const statsValues = Object.values(data.stats).map((val) => val);
+  $: statsValues = Object.values(data.stats).map((val) => val);
 </script>
 
 <div class="h-full overflow-auto p-10">
