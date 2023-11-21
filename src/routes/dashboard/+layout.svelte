@@ -2,9 +2,6 @@
   import AppModals from '$lib/components/Modals/AppModals.svelte';
   import Navbar from '$lib/components/Navbar.svelte';
 
-  import RefetchIntervalToggler, {
-    dataRefetchIntervalS
-  } from '$lib/components/RefetchIntervalToggler.svelte';
   import ThemeToggler from '$lib/components/ThemeToggler.svelte';
   import AppToasts from '$lib/components/AppToasts.svelte';
   import Icon from '$lib/components/Icon.svelte';
@@ -14,6 +11,7 @@
   import { goto } from '$app/navigation';
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
   import Header from '$lib/components/Header.svelte';
+  import PeriodicInvalidator from '$lib/components/PeriodicInvalidator.svelte';
 
   export let data;
 </script>

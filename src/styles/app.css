@@ -1,4 +1,5 @@
 @import url('./tooltip.css');
+@import url('./variables.css');
 
 @tailwind base;
 @tailwind components;
@@ -20,7 +21,7 @@
   }
 
   .hoverable {
-    @apply dark:hover:bg-shadeD300 hover:bg-shadeL300 hover:cursor-pointer transition-colors;
+    @apply dark:hover:bg-shadeD200 hover:bg-shadeL300 hover:cursor-pointer transition-colors;
   }
 }
 
@@ -42,10 +43,53 @@
   }
 
   .text-color-gray {
-    @apply text-shadeL900;
+    @apply text-shadeL1000 dark:text-white;
   }
 
   .card-shadow {
     box-shadow: rgb(145 157 171 / 20%) 0px 0px 2px 0px, rgb(145 158 171 / 12%) 0px 12px 24px -4px;
   }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-shadeD300;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  @apply rounded-md;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 50px white inset; /* Change the color to your own background color */
+  -webkit-text-fill-color: black;
+}
+
+.dark input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 50px white inset; /* Change the color to your own background color */
+  -webkit-text-fill-color: white;
+}
+
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: white;
 }

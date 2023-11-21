@@ -1,4 +1,5 @@
-import { fetchApi, handleFetchErrors } from '$lib/api/fetchApi.js';
+import { fetchApi } from '$lib/api/fetchApi.js';
+import { handleFetchErrors } from '$lib/api/handleFetchErrors';
 import { streamDetailsMapper } from '$lib/domain/StreamDetails';
 
 export const load = async ({ params, cookies }) => {
@@ -14,17 +15,7 @@ export const load = async ({ params, cookies }) => {
     return streamDetailsMapper(data);
   };
 
-  const streamDetails = await getStreamDetails();
-
-  console.log('getStream details', params.streamId, streamDetails.topics.length);
-
-  // await new Promise((res, rej) => {
-  //   setTimeout(() => {
-  //     res(0);
-  //   }, 1000);
-  // });
-
   return {
-    streamDetails
+    streamDetails: await getStreamDetails()
   };
 };

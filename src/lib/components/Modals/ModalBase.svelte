@@ -5,6 +5,7 @@
   import type { TransitionConfig } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
   import Button from '../Button.svelte';
+  import type { CloseModalFn } from '$lib/types/utilTypes';
 
   function modalTransition(node: Element): TransitionConfig {
     const style = getComputedStyle(node);
@@ -26,7 +27,7 @@
   }
 
   interface $$Props extends HTMLAttributes<HTMLDivElement> {
-    closeModal: () => void;
+    closeModal: CloseModalFn;
     title?: string;
   }
 
@@ -44,7 +45,7 @@
   <div class="h-[15%]">
     <Button
       variant="rounded"
-      on:click={closeModal}
+      on:click={() => closeModal()}
       class="transition-colors   absolute top-5 right-5 p-2"
     >
       <Icon name="close" strokeWidth={2.3} />

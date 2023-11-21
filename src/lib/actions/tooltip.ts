@@ -10,6 +10,8 @@ import {
 } from '@floating-ui/dom';
 import { writable } from 'svelte/store';
 
+const openId = writable<string | null>(null);
+
 type TooltipOptions = {
   placement?: Placement;
   clickable?: boolean;
@@ -24,26 +26,36 @@ export function tooltip(
   const tooltip = node.querySelector('.tooltip') as HTMLElement;
 
   if (!tooltip || !trigger) return;
+  const id = crypto.randomUUID();
 
   let cleanup: VoidFunction | undefined;
 
-  const isOpen = writable(false);
-  const unsub = isOpen.subscribe((val) => (val ? showTooltip() : hideTooltip()));
-  const openTooltip = () => isOpen.set(true);
-  const closeTooltip = () => isOpen.set(false);
-  const toggleOpen = () => isOpen.update((val) => !val);
+  const unsub = openId.subscribe((val) => (val === id ? showTooltip() : hideTooltip()));
+  const openTooltip = () => openId.set(id);
+  const closeTooltip = () => openId.set(null);
+  const toggleOpen = () => openId.update((val) => (val === id ? null : id));
 
-  if (clickable) trigger.addEventListener('click', toggleOpen);
+  const onOutsideClick = (e: MouseEvent) => {
+    if (!tooltip.contains(e.target as HTMLElement)) {
+      console.log('outside click');
+      closeTooltip();
+    }
+  };
+
+  const onTriggerClick = (e: MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleOpen();
+  };
+
+  if (clickable) {
+    document.addEventListener('click', onOutsideClick);
+    trigger.addEventListener('click', onTriggerClick);
+  }
 
   node.addEventListener('closeTooltip', () => {
     console.log('close tooltip event');
   });
-
-  const onOutsideClick = (e: MouseEvent) => {
-    if (!tooltip.contains(e.target as HTMLElement)) {
-      closeTooltip();
-    }
-  };
 
   const arrowEl = document.createElement('div');
   arrowEl.className = 'arrow';
@@ -101,10 +113,6 @@ export function tooltip(
     setTimeout(() => {
       tooltip.style.opacity = '1';
       tooltip.style.transform = 'scale(1)';
-
-      if (clickable) {
-        document.addEventListener('click', onOutsideClick);
-      }
     }, 0);
   }
 
@@ -112,24 +120,25 @@ export function tooltip(
     tooltip.style.opacity = '0';
     tooltip.style.transform = 'scale(0.93)';
 
+    console.log('hide');
+
     if (typeof cleanup === 'function') {
       cleanup();
     }
 
     setTimeout(() => {
       tooltip.style.display = 'none';
-      document.removeEventListener('click', onOutsideClick);
     }, 205);
   }
 
   const actions = [
-    ['mouseenter', openTooltip],
-    ['mouseleave', closeTooltip],
-    ['focus', openTooltip],
-    ['blur', closeTooltip]
+    ['mouseenter', showTooltip],
+    ['mouseleave', hideTooltip],
+    ['focus', showTooltip],
+    ['blur', hideTooltip]
   ] as const;
 
-  if (clickable !== true) {
+  if (!clickable) {
     actions.forEach(([event, listener]) => {
       trigger.addEventListener(event, listener);
     });
@@ -137,11 +146,12 @@ export function tooltip(
 
   return {
     destroy() {
+      console.log('destroy');
       if (typeof cleanup === 'function') {
         cleanup();
       }
       // node.removeEventListener('closeTooltip', closeTooltip);
-      trigger.removeEventListener('click', toggleOpen);
+      trigger.removeEventListener('click', onTriggerClick);
       document.removeEventListener('click', onOutsideClick);
       actions.forEach(([event, listener]) => {
         trigger.removeEventListener(event, listener);

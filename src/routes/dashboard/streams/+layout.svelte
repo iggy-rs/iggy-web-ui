@@ -1,12 +1,14 @@
 <script lang="ts">
   import Icon from '$lib/components/Icon.svelte';
-  import { goto } from '$app/navigation';
+  import { goto, invalidateAll } from '$app/navigation';
   import { twMerge } from 'tailwind-merge';
   import { page } from '$app/stores';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import Button from '$lib/components/Button.svelte';
 
   import { typedRoute } from '$lib/types/appRoutes.js';
+  import { arrayMax } from '$lib/utils/arrayMax';
+  import { onMount } from 'svelte';
 
   export let data;
 
@@ -17,6 +19,17 @@
   if (data.streams.length > 0 && $page.url.pathname === typedRoute('/dashboard/streams')) {
     goto(typedRoute(`/dashboard/streams/${data.streams[0].id}`));
   }
+
+  // let timeout: number;
+  // onMount(() => {
+  //   timeout = setInterval(() => {
+  //     invalidateAll();
+  //   }, 500);
+
+  //   return () => {
+  //     clearTimeout(timeout);
+  //   };
+  // });
 </script>
 
 <div class="flex h-full flex-row">
@@ -72,7 +85,14 @@
     </ul>
 
     <div class="p-5 pb-7">
-      <Button variant="outlined" on:click={() => openModal('addStreamModal')}>
+      <Button
+        variant="outlined"
+        class="w-full"
+        on:click={() =>
+          openModal('AddStreamModal', {
+            nextStreamId: arrayMax(data.streams.map((s) => s.id)) + 1
+          })}
+      >
         <Icon name="plus" class="w-[16px] h-[16px]" strokeWidth={2} />
         New stream
       </Button>

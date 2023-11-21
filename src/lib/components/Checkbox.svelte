@@ -17,9 +17,7 @@
       }
     }
 
-    if (checked) {
-      checked = checkboxChecked;
-    }
+    checked = checkboxChecked;
   }
 </script>
 

@@ -11,6 +11,7 @@
   import TerminalTab from '$lib/components/RouteComponents/Settings/TerminalTab.svelte';
   import ServerTab from '$lib/components/RouteComponents/Settings/ServerTab.svelte';
   import UsersTabActions from '$lib/components/RouteComponents/Settings/UsersTabActions.svelte';
+  import WebUiTab from '$lib/components/RouteComponents/Settings/WebUiTab.svelte';
 
   export let data;
 
@@ -23,6 +24,12 @@
   }) => item;
 
   const tabs = {
+    webUI: createTabItem({
+      component: WebUiTab,
+      icon: 'settings',
+      label: 'Web UI',
+      props: {}
+    }),
     server: createTabItem({
       component: ServerTab,
       icon: 'adjustments',

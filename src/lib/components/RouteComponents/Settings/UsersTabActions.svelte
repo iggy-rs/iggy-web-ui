@@ -30,7 +30,7 @@
       class="w-[165px]"
       leadingIcon="search"
     /> -->
-    <Button variant="contained" on:click={() => openModal('addUserModal')}>
+    <Button variant="contained" on:click={() => openModal('AddUserModal')}>
       <Icon name="plus" />
       Add user
     </Button>

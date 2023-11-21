@@ -66,10 +66,6 @@ type Streams =
       path: `/streams/${number}`;
     }
   | {
-      method: 'GET';
-      path: `/streams/${number}/topics/${number}`;
-    }
-  | {
       method: 'POST';
       path: '/streams';
       body: {
@@ -87,6 +83,45 @@ type Streams =
   | {
       method: 'DELETE';
       path: `/streams/${number}`;
+    };
+
+type Topics =
+  | {
+      method: 'GET';
+      path: `/streams/${number}/topics`;
+    }
+  | {
+      method: 'GET';
+      path: `/streams/${number}/topics/${number}`;
+    }
+  | {
+      method: 'POST';
+      path: `/streams/${number}/topics`;
+      body: {
+        topic_id: number;
+        name: string;
+        partitions_count: number;
+        message_expiry: number;
+      };
+    }
+  | {
+      method: 'PUT';
+      path: `/streams/${number}/topics/${number}`;
+      body: {
+        name: string;
+        message_expiry: number;
+      };
+    }
+  | {
+      method: 'DELETE';
+      path: `/streams/${number}/topics/${number}`;
+    }
+  | {
+      method: 'POST';
+      path: `/streams/${number}/topics/${number}/partitions`;
+      body: {
+        partitions_count: number;
+      };
     };
 
 type Auth =
@@ -115,4 +150,4 @@ type Stats = {
   path: '/stats';
 };
 
-export type ApiSchema = Users | Streams | Stats | Auth;
+export type ApiSchema = Users | Streams | Stats | Topics | Auth;

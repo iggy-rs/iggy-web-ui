@@ -9,7 +9,11 @@ type DashboardRoutes = `/dashboard/${
 type AuthRoutes = '/auth/logout' | '/auth/sign-in';
 
 export const typedRoute = <const T extends DashboardRoutes | AuthRoutes>(route: T) => route;
-export const publicRoutes = [typedRoute('/auth/logout'), typedRoute('/auth/sign-in')] as const;
+export const publicRoutes = [
+  typedRoute('/auth/logout'),
+  typedRoute('/auth/sign-in'),
+  '/auth/test'
+] as const;
 
 export const checkIfPathnameIsPublic = (pathname: string) =>
   (publicRoutes as ReadonlyArray<string>).includes(pathname);

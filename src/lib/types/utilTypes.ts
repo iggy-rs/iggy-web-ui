@@ -1,4 +1,4 @@
-export type CloseModalFn = () => void;
+export type CloseModalFn = (cb?: () => Promise<void>) => void;
 
 export type Entries<T> = {
   [K in keyof T]: [K, T[K]];

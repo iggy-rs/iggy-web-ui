@@ -52,7 +52,7 @@
 </script>
 
 <ModalBase {closeModal} title="Delete partitions">
-  <div class="h-[300px] flex flex-col">
+  <div class="h-[300px] flex flex-col bg-shadeL">
     <form method="POST" class="flex flex-col h-[300px] gap-4" use:enhance>
       <Input
         label="Partitions count"
@@ -64,8 +64,12 @@
       />
 
       <div class="flex justify-end gap-3 mt-auto">
-        <Button type="button" variant="text" class="w-2/5" on:click={closeModal}>Cancel</Button>
-        <DeleteButtonWithConfirmation />
+        <Button type="button" variant="text" class="w-2/5" on:click={() => closeModal()}
+          >Cancel</Button
+        >
+        <Button type="button" variant="containedRed" class="w-2/5" on:click={() => {}}
+          >Delete</Button
+        >
       </div>
     </form>
   </div>

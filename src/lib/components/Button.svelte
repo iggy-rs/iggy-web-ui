@@ -4,21 +4,24 @@
   import type { HTMLButtonAttributes } from 'svelte/elements';
   import { twMerge } from 'tailwind-merge';
 
+  // focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-4
+
   const baseClasses =
-    'flex items-center justify-center font-semibold transition-all gap-2  rounded-[4px] ';
+    'flex items-center justify-center font-semibold transition-all gap-2 rounded-[4px] focus:outline-none focus-visible:ring focus:ring-blue-600/60 ring-offset-2 ring-offset-white dark:ring-offset-shadeD700  ';
 
   const disabledClasses =
-    'disabled:bg-zinc-400 disabled:opacity-60 disabled:text-zinc-700 disabled:pointer-events-none';
+    'disabled:bg-zinc-300  dark:disabled:bg-zinc-500 disabled:text-zinc-700 disabled:pointer-events-none';
 
   const variants = {
     rounded:
       'w-[40px] h-[40px] rounded-full dark:text-white flex items-center justify-center dark:hover:bg-shadeD300 hover:bg-shadeL200',
     outlined:
       'border-black dark:border-white dark:text-white border-2 bg-transparent dark:hover:bg-shadeD400 hover:bg-shadeL400',
-    outlinedRed: 'border-2 border-red-500 text-red-500 hover:text-red-600 hover:border-red-600',
+    outlinedRed:
+      'border-2 border-red text-red hover:text-red-600 hover:border-red-600 hover:border- ',
     contained:
-      'bg-black hover:bg-shadeD600 text-white dark:bg-white dark:text-black dark:text-black hover:shadow-lg',
-    containedRed: 'bg-red-500 hover:bg-red-600  text-white hover:shadow-lg',
+      'bg-black hover:bg-shadeD600 text-white dark:bg-white dark:text-black dark:text-black hover:shadow-lg dark:shadow-shadeD300',
+    containedRed: 'bg-red-500 hover:bg-red  text-white hover:shadow-lg',
     text: 'bg-transparent text-color enabled:dark:hover:bg-shadeD500 hover:bg-shadeL400'
   };
 
@@ -64,14 +67,14 @@
 <button
   on:click
   data-trigger
-  class={twMerge(baseClasses, disabledClasses, variants[variant], sizes[size], className)}
+  class={twMerge(baseClasses, variants[variant], sizes[size], disabledClasses, className, ' ')}
   {...$$restProps}
 >
   <slot />
 </button>
 
 {#if $$slots.tooltip}
-  <div role="tooltip" class="tooltip">
+  <div role="tooltip" class="tooltip ring-bl">
     <slot name="tooltip" />
   </div>
 {/if}

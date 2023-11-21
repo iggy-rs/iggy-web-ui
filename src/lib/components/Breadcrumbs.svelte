@@ -28,13 +28,13 @@
   });
 </script>
 
-<div class="flex items-center font-semibold">
+<div class="flex items-center">
   <a href={typedRoute('/dashboard/overview')}
-    ><Icon name="home" class="fill-shadeL700 stroke-shadeL900 mr-2" /></a
+    ><Icon name="home" class="dark:fill-shadeD900 dark:stroke-white  mr-2" /></a
   >
 
   <span class="flex mr-2">
-    <span class="text-gray-600">/</span>
+    <span class="text-shadeL800">/</span>
   </span>
 
   {#each crumbs as { path, label }, idx (idx)}
@@ -42,12 +42,12 @@
 
     {#if isLast}
       <span class="flex ml-1">
-        <span class="text-color">{label}</span>
+        <span class="text-color font-semibold">{label}</span>
       </span>
     {:else}
       <a href={path} class="flex ml-1">
-        <span class={twMerge('font-medium text-gray-600')}>{label}</span>
-        <span class="font-medium text-gray-600 w-[10px] flex items-center justify-center ml-1"
+        <span class={twMerge('font-medium text-gray-600 dark:text-shadeL800')}>{label}</span>
+        <span class="font-medium text-shadeL800 w-[10px] flex items-center justify-center ml-1"
           >/</span
         >
       </a>

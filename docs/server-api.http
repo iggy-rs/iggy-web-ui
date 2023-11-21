@@ -18,17 +18,18 @@ POST {{url}}/users/refresh-token
 Content-Type: application/json
 
 {
-  "refresh_token": "aVfPcLQHScxeo+KfnyibkNvEZXiW5J5U4I7kthf1IVmSX3Rv9KUPpbemEY2gY6Vvi1A="
+  "refresh_token": "bhVdVpdPM29AZGbKLIqqoCailFnkO2Xq6fwEWZPxL%2B5k3hT%2Fp%2FteEfZM0OHWDCtiKJY%3D"
 }
 
 
 ###
 POST {{url}}/users
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjMmQ5ZWZmNS03OTQ5LTQ1MTEtYmM2YS1hZGY3MmQwN2VjNDkiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNjk5OTg0MzU4LCJleHAiOjE2OTk5ODc5NTgsIm5iZiI6MTY5OTk4NDM1OH0.-C96N0kTHKnjxkUXobGnfkejkvUIHrQa8yEKHD-N5cU
 
 {
-    "username":"t123wdgw",
-    "password":"test3",
+    "username":"asf2sdssdfafa2edad14dd22",
+    "password":"asdasd",
     "status":"inactive",
     "permissions":null
 }
@@ -36,7 +37,7 @@ Content-Type: application/json
 ### Create stream
 POST {{url}}/streams
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmODM0NTI5MC05NzBlLTQ3YzAtOTMwOS02YWM5MmZiMWEyYTYiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNjk5OTgxMTU4LCJleHAiOjE2OTk5ODQ3NTgsIm5iZiI6MTY5OTk4MTE1OH0.6WxgKsOAZQfeAPciwHOcE1oR3iJXM0VORX-RtsvT2hU
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjMmQ5ZWZmNS03OTQ5LTQ1MTEtYmM2YS1hZGY3MmQwN2VjNDkiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNjk5OTg0MzU4LCJleHAiOjE2OTk5ODc5NTgsIm5iZiI6MTY5OTk4NDM1OH0.-C96N0kTHKnjxkUXobGnfkejkvUIHrQa8yEKHD-N5cU
 
 {
     "stream_id": 29,
@@ -63,3 +64,7 @@ Content-Type: application/json
 {
   "partitions_count": 45
 }
+
+###
+DELETE {{url}}/streams/248
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlNDNkOTAzYS02YzhiLTQyY2YtYmRhMy1jNTQ4ODBlMDU1YTEiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNzAwNTYzNjk0LCJleHAiOjE3MDA1NjcyOTQsIm5iZiI6MTcwMDU2MzY5NH0.viKHyJuLTdhpw3k6NTjA6JJ6A361A_v8XTHBIDnasFk

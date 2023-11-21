@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import type { ComponentProps } from 'svelte';
+  import type { ComponentProps, ComponentType, SvelteComponent } from 'svelte';
   import { fade } from 'svelte/transition';
   import { writable } from 'svelte/store';
   import AddStreamModal from './AddStreamModal.svelte';
@@ -9,36 +9,84 @@
   import AddPartitionsModal from './AddPartitionsModal.svelte';
   import DeletePartitionsModal from './DeletePartitionsModal.svelte';
   import AddUserModal from './AddUserModal.svelte';
+  import type { CloseModalFn } from '$lib/types/utilTypes';
+  import { string } from 'zod';
+  import { noTypeCheck } from '$lib/utils/noTypeCheck';
 
+  import Button from '../Button.svelte';
+  import Checkbox from '../Checkbox.svelte';
+  import TestComponent from '../TestComponent.svelte';
+  import TestComponent2 from '../TestComponent2.svelte';
+
+  // type ModalType = {
+  //   test: string;
+  // } & any;
+
+  // const foo = <T extends ComponentType<SvelteComponent<ModalType>>>(item: T) => {};
+
+  // foo(TestComponent);
+
+  // Record<string, SvelteComponent<{ closeModal: CloseModalFn }>>
   const modals = {
-    addTopicModal: AddTopicModal,
-    addStreamModal: AddStreamModal,
-    streamSettingsModal: StreamSettingsModal,
-    topicSettingsModal: TopicSettingsModal,
-    addPartitionsModal: AddPartitionsModal,
-    deletePartitionsModal: DeletePartitionsModal,
-    addUserModal: AddUserModal
+    AddTopicModal,
+    AddStreamModal,
+    StreamSettingsModal,
+    TopicSettingsModal,
+    AddPartitionsModal,
+    DeletePartitionsModal,
+    AddUserModal
   };
 
-  type ModalProps<T extends keyof typeof modals> = Omit<
-    ComponentProps<InstanceType<(typeof modals)[T]>>,
-    'closeModal'
-  >;
+  type DistributiveOmit<T, K extends string> = T extends T ? Omit<T, K> : never;
+  type AllModals = keyof typeof modals;
+  type ModalProps<T extends AllModals> = ComponentProps<InstanceType<(typeof modals)[T]>>;
+  type ExtraProps<T extends AllModals> = DistributiveOmit<ModalProps<T>, 'closeModal'>;
 
-  const openedModal = writable<{ modal: keyof typeof modals; props: any } | undefined>();
+  const openedModal = writable<
+    | {
+        modal: AllModals;
+        props: ModalProps<AllModals>;
+      }
+    | undefined
+  >();
 
-  export function openModal<T extends keyof typeof modals>(modal: T, props?: ModalProps<T>) {
-    openedModal.set({ modal, props });
-  }
+  export function openModal<T extends AllModals>(
+    modal: T,
+    ...args: ExtraProps<T> extends Record<string, never> ? [] : [ExtraProps<T>]
+  ) {
+    const props = args[0] || {};
 
-  function closeModal() {
-    openedModal.set(undefined);
+    openedModal.set({
+      modal,
+      props: {
+        closeModal: (cb) => {
+          return new Promise<void>((res, _) => {
+            openedModal.set(undefined);
+            setTimeout(async () => {
+              if (cb) cb();
+              res();
+            }, 250);
+          });
+        },
+        ...props
+      }
+    });
   }
 </script>
 
-<svelte:window on:keydown={(e) => e.key === 'Escape' && closeModal()} />
+<svelte:window
+  on:keydown={(e) => {
+    if (e.key === 'Escape' && $openedModal) {
+      $openedModal.props.closeModal();
+    }
+  }}
+/>
 
 {#if $openedModal}
   <div transition:fade={{ duration: 100 }} class="fixed inset-0 bg-black/40 z-[500]" />
-  <svelte:component this={modals[$openedModal.modal]} {...$openedModal.props} {closeModal} />
+  <svelte:component
+    this={noTypeCheck(modals[$openedModal.modal])}
+    {...$openedModal.props}
+    closeModal={$openedModal.props.closeModal}
+  />
 {/if}

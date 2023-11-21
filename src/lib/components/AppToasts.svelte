@@ -28,7 +28,7 @@
     type: ToastType;
 
     description: string;
-  }) {
+  }): Promise<void> {
     const toastId = Date.now();
     const obj = {
       id: toastId,
@@ -41,11 +41,14 @@
     toastsStore.update((v) => [...v, obj]);
 
     // 0 seconds duration means toast will never disappear
-    if (duration > 0) {
-      setTimeout(() => {
-        obj.remove();
-      }, duration);
-    }
+    return new Promise((res, rej) => {
+      if (duration > 0) {
+        setTimeout(() => {
+          obj.remove();
+          res();
+        }, duration);
+      }
+    });
   }
 
   const icons = {
@@ -60,9 +63,9 @@
   };
 </script>
 
-<div class="fixed p-2 pointer-events-none bottom-5 right-5 z-[999px]">
+<div class="fixed p-2 pointer-events-none bottom-5 right-5 z-50">
   <ul class="flex flex-col gap-2">
-    {#each $toastsStore as { id, remove, type, description }, idx (id)}
+    {#each $toastsStore as { id, remove, type, description } (id)}
       <li
         animate:flip={{ duration: 250, easing: cubicOut }}
         in:fly={{ duration: 300, x: '70%', easing: cubicOut }}

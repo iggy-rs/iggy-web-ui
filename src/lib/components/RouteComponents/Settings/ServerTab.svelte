@@ -14,7 +14,9 @@
 </script>
 
 <div class="p-5">
-  <section class="border rounded-md overflow-hidden mx-auto max-w-[900px] text-shadeL1000">
+  <section
+    class="border rounded-md overflow-hidden mx-auto max-w-[900px] text-color text-shadeL1000"
+  >
     <div class="flex flex-col p-7 gap-3">
       <h3 class="text-2xl font-semibold">Cache</h3>
       <label class="flex gap-4 mt-2 items-center hover:cursor-pointer w-fit">
@@ -24,7 +26,7 @@
 
       {#if cacheEnabled}
         <div>
-          <span class="text-shadeL1000 block">Adjust amount of server cache.</span>
+          <span class="block">Adjust amount of server cache.</span>
           <div class="flex items-center justify-center gap-4 w-fit">
             <div class="w-[270px]">
               <RangeInput
@@ -41,8 +43,8 @@
         </div>
       {/if}
     </div>
-    <footer class="p-5 py-4 bg-shadeL200 flex items-center justify-between">
-      <span class="text-shadeL1000 text-sm">
+    <footer class="p-5 py-4 bg-shadeL200 dark:bg-shadeD900 flex items-center justify-between">
+      <span class=" text-sm">
         max cache size: 80% of {serverStats.availableMemory.value}
       </span>
       <Button disabled variant="contained">Save</Button>

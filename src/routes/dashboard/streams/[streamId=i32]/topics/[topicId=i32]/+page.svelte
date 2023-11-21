@@ -8,8 +8,7 @@
   import SortableList from '$lib/components/SortableList.svelte';
 
   export let data;
-
-  const topic = data.topic;
+  $: topic = data.topic;
 
   $: prevPage = $page.url.pathname.split('/').slice(0, 4).join('/') + '/';
 </script>
@@ -24,7 +23,7 @@
   <Button
     variant="rounded"
     class="ml-3"
-    on:click={() => openModal('topicSettingsModal', { topic })}
+    on:click={() => openModal('TopicSettingsModal', { topic })}
   >
     <Icon name="settings" />
     <div slot="tooltip">Settings</div>
@@ -47,11 +46,11 @@
 
   <div class="flex gap-2 ml-auto">
     {#if topic.partitions.length > 0}
-      <Button variant="outlinedRed" on:click={() => openModal('deletePartitionsModal')}
+      <Button variant="outlinedRed" on:click={() => openModal('DeletePartitionsModal')}
         >Delete partitions</Button
       >
     {/if}
-    <Button variant="contained" on:click={() => openModal('addPartitionsModal')}
+    <Button variant="contained" on:click={() => openModal('AddPartitionsModal')}
       >Add partitions</Button
     >
   </div>

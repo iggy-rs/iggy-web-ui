@@ -1,13 +1,13 @@
 <script lang="ts">
+  import { invalidateAll } from '$app/navigation';
   import { page } from '$app/stores';
-
   import Button from '$lib/components/Button.svelte';
-
   import Icon from '$lib/components/Icon.svelte';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
-
   import SortableList from '$lib/components/SortableList.svelte';
   import { typedRoute } from '$lib/types/appRoutes.js';
+  import { arrayMax } from '$lib/utils/arrayMax';
+  import { onMount } from 'svelte';
 
   export let data;
   $: stream = data.streamDetails;
@@ -21,7 +21,7 @@
   <Button
     variant="rounded"
     class="ml-3"
-    on:click={() => openModal('streamSettingsModal', { stream })}
+    on:click={() => openModal('StreamSettingsModal', { stream })}
   >
     <Icon name="settings" class="dark:text-white" />
     <div slot="tooltip">Settings</div>
@@ -45,7 +45,11 @@
   <Button
     variant="contained"
     class="ml-auto"
-    on:click={() => openModal('addTopicModal', { streamDetails: stream })}
+    on:click={() =>
+      openModal('AddTopicModal', {
+        streamDetails: stream,
+        nextTopicId: arrayMax(data.streamDetails.topics.map((t) => t.id)) + 1
+      })}
   >
     <Icon name="plus" class="w-[16px] h-[16px]" strokeWidth={2} />
     Add Topic

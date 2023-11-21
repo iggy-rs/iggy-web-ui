@@ -6,7 +6,7 @@ export type Stream = {
   sizeBytes: number;
   messagesCount: number;
   topicsCount: number;
-  createdAt: string;
+  createdAt: number;
 };
 
 export function streamMapper(item: any): Stream {
@@ -16,6 +16,6 @@ export function streamMapper(item: any): Stream {
     sizeBytes: item.size_bytes,
     messagesCount: item.messages_count,
     topicsCount: item.topics_count,
-    createdAt: formatDate(item.created_at)
+    createdAt: item.created_at
   };
 }

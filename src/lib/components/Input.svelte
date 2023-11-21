@@ -82,7 +82,7 @@
 
   const inputProps = {
     class: twMerge(
-      'w-full px-4 h-full rounded-lg outline-none',
+      'w-full px-4 h-full rounded-lg outline-none bg-transparent text-color',
       $$slots.prefix && 'pl-9',
       $$slots.suffix && 'pr-12'
     ),
@@ -101,7 +101,7 @@
 
   <div
     class={twMerge(
-      'rounded-md ring-1 ring-gray-300 flex items-center h-[40px] text-color relative focus-within:ring-2 focus-within:ring-gray-400 transition group',
+      'rounded-md dark:bg-shadeD400  ring-1 ring-gray-300 dark:ring-gray-500 flex items-center h-[40px] text-color relative focus-within:ring-2 focus-within:ring-gray-400 transition group',
       errorMessage && '!ring-red ring-2'
     )}
   >
@@ -112,11 +112,11 @@
     {/if}
 
     {#if type === 'text'}
-      <input bind:value type="text" {...inputProps} />
+      <input bind:value type="text" on:input {...inputProps} />
     {:else if type === 'password'}
-      <input bind:value type="password" {...inputProps} />
+      <input bind:value type="password" on:input {...inputProps} />
     {:else if type === 'number'}
-      <input bind:value type="number" {...inputProps} />
+      <input bind:value type="number" on:input {...inputProps} />
     {/if}
 
     {#if $$slots.suffix}

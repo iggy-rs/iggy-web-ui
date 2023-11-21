@@ -1,4 +1,5 @@
-import { fetchApi, handleFetchErrors } from '$lib/api/fetchApi';
+import { fetchApi } from '$lib/api/fetchApi';
+import { handleFetchErrors } from '$lib/api/handleFetchErrors';
 import { statsMapper } from '$lib/domain/Stats';
 
 export const load = async ({ cookies }) => {

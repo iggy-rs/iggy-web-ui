@@ -14,6 +14,12 @@
 </script>
 
 <script lang="ts" generics="T extends ListItem">
+  import { asConst } from '$lib/utils/asConst';
+
+  import { afterNavigate, beforeNavigate } from '$app/navigation';
+
+  import { slide } from 'svelte/transition';
+
   import DropdownMenu from './DropdownMenu.svelte';
   import type { ComponentProps, ComponentType } from 'svelte';
   import Icon from './Icon.svelte';
@@ -21,7 +27,8 @@
   import Checkbox from './Checkbox.svelte';
   import StopPropagationWrapper from './StopPropagationWrapper.svelte';
   import { twMerge } from 'tailwind-merge';
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
+  import { noTypeCheck } from '$lib/utils/noTypeCheck';
 
   export let data: T[];
   export let emptyDataMessage: string;
@@ -29,6 +36,21 @@
   export let rowClass: string;
   export let areRowsSelectable: boolean | undefined = false;
   export let disabledIds: T['id'][] = [];
+
+  let animationEnabled = true;
+
+  // if($page.nav)
+
+  beforeNavigate(() => {
+    animationEnabled = false;
+    console.log('before navigate');
+  });
+
+  afterNavigate(() => {
+    setTimeout(() => {
+      animationEnabled = true;
+    }, 500);
+  });
 
   export let hrefBuilder: ((item: T) => string) | undefined = undefined;
   export let actions: ComponentProps<InstanceType<typeof DropdownMenu>>['itemGroups'] | undefined =
@@ -66,14 +88,11 @@
   }
 </script>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
-<!-- svelte-ignore a11y-interactive-supports-focus -->
-<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="overflow-auto flex-1">
   <!-- header -->
   <div
     class={twMerge(
-      'flex h-[60px] min-h-[60px] bg-shadeL200 min-w-[1300px]',
+      'flex h-[60px] min-h-[60px] bg-shadeL300 dark:bg-shadeD400 min-w-[1300px]',
       isBodyOverflowing && 'pr-5'
     )}
   >
@@ -90,35 +109,37 @@
 
     <div class="w-full {rowClass}">
       {#each columns as { columnName, columnDisplayedName } (columnName)}
-        <div
+        <button
           on:click={() =>
             (ordering = {
               key: columnName,
               asc: ordering.key !== columnName ? true : !ordering.asc
             })}
-          class="flex items-center px-5 hover:cursor-pointer hover:bg-shadeL400 transition-colors justify-between"
+          class="flex items-center px-5 hover:cursor-pointer hover:bg-shadeL400 dark:hover:bg-shadeD200 dark:text-white justify-between outline-none focus:outline-none focus-visible:ring ring-inset ring-blue-600/60 transition-colors"
         >
           <span>
             {columnDisplayedName}
           </span>
 
           <div class="flex flex-col">
-            <Icon
-              name="caretUp"
-              class={twMerge(
-                'fill-shadeL700 stroke-shadeL700 w-[18px] h-fit -mb-[4px]',
-                ordering.key === columnName && ordering.asc === true && 'fill- stroke-black'
-              )}
-            />
-            <Icon
-              name="caretDown"
-              class={twMerge(
-                'fill-shadeL700 stroke-shadeL700 w-[18px] h-fit -mt-[4px]',
-                ordering.key === columnName && ordering.asc === false && 'fill-black stroke-black'
-              )}
-            />
+            {#each asConst(['caretUp', 'caretDown']) as icon}
+              <Icon
+                name={icon}
+                class={twMerge(
+                  'fill-shadeL800 stroke-shadeL800 dark:fill-shadeL900 dark:stroke-shadeL900 w-[18px] h-fit -mb-[4px] -my-[2px]',
+                  ordering.key === columnName &&
+                    ordering.asc &&
+                    icon === 'caretUp' &&
+                    ' stroke-black  fill-black dark:stroke-white dark:fill-white',
+                  ordering.key === columnName &&
+                    !ordering.asc &&
+                    icon === 'caretDown' &&
+                    ' stroke-black fill-black dark:stroke-white dark:fill-white'
+                )}
+              />
+            {/each}
           </div>
-        </div>
+        </button>
       {/each}
     </div>
 
@@ -140,10 +161,25 @@
       <svelte:element
         this={hrefBuilder ? 'a' : 'label'}
         href={hrefBuilder && hrefBuilder(item)}
+        on:introstart={noTypeCheck((e) => {
+          e.target.style.backgroundColor = 'rgb(74, 222, 128)';
+        })}
+        on:introend={(e) => {
+          setTimeout(
+            () => {
+              e.target.style.backgroundColor = 'transparent';
+              e.target.style.transitionDuration = '500ms';
+            },
+            animationEnabled ? 800 : 0
+          );
+        }}
+        on:outrostart={(e) => (e.target.style.backgroundColor = 'rgb(239 68 68)')}
+        in:slide={{ duration: animationEnabled ? 300 : 0 }}
+        out:slide={{ duration: animationEnabled ? 300 : 0, delay: animationEnabled ? 800 : 0 }}
         class={twMerge(
-          'flex flex-row h-[65px] border-b transition-colors hover:cursor-pointer',
-          selectedItems.includes(item.id.toString()) ? 'bg-green100' : 'hoverable',
-          rowDisabled && 'bg-shadeL400 text-shadeL900 pointer-events-none'
+          'flex flex-row h-[65px] border-b hover:cursor-pointer dark:text-white',
+          selectedItems.includes(item.id.toString()) ? 'bg-green100' : 'hoverable  ',
+          rowDisabled && 'bg-shadeL400 text-shadeL900 pointer-events-none '
         )}
       >
         {#if areRowsSelectable}

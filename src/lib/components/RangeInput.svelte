@@ -45,6 +45,10 @@
     border: 1px solid var(--shadeL800);
   }
 
+  .dark .progress::-webkit-slider-thumb {
+    background: white !important;
+  }
+
   .progress::-webkit-slider-thumb:hover {
     cursor: ew-resize;
   }

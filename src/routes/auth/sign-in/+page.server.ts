@@ -3,8 +3,9 @@ import type { Actions } from './$types';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import { typedRoute } from '$lib/types/appRoutes';
-import { fetchApi, getJson } from '$lib/api/fetchApi';
+import { fetchApi } from '$lib/api/fetchApi';
 import { tokens } from '$lib/utils/tokens';
+import { getJson } from '$lib/api/getJson';
 
 const schema = z.object({
   username: z.string().min(1),
@@ -40,6 +41,8 @@ export const actions = {
     const {
       tokens: { access_token, refresh_token }
     } = (await getJson(result)) as any;
+
+    console.log({ access_token, refresh_token });
 
     cookies.set(tokens.accessToken, access_token.token, {
       path: '/',

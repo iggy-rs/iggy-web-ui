@@ -14,6 +14,7 @@
   "devDependencies": {
     "@sveltejs/adapter-auto": "^2.0.0",
     "@sveltejs/kit": "^1.20.4",
+    "@types/d3-interpolate": "^3.0.4",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "autoprefixer": "^10.4.14",
@@ -38,6 +39,7 @@
   "dependencies": {
     "@floating-ui/dom": "^1.5.1",
     "@types/gsap": "^3.0.0",
+    "d3-interpolate": "^3.0.1",
     "date-fns": "^2.30.0",
     "gsap": "^3.12.2",
     "svelte-headlessui": "^0.0.26",

@@ -1,4 +1,5 @@
-import { fetchApi, handleFetchErrors } from '$lib/api/fetchApi';
+import { fetchApi } from '$lib/api/fetchApi';
+import { handleFetchErrors } from '$lib/api/handleFetchErrors';
 import { topicDetailsMapper } from '$lib/domain/TopicDetails';
 
 export const load = async ({ params, cookies }) => {

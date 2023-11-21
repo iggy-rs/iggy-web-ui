@@ -5,21 +5,34 @@
   import Icon from '$lib/components/Icon.svelte';
   import Input from '$lib/components/Input.svelte';
   import PasswordInput from '$lib/components/PasswordInput.svelte';
-  import { typedRoute } from '$lib/types/appRoutes.js';
-
-  import { writable } from 'svelte/store';
+  import { persistedStore } from '$lib/utils/persistedStore.js';
+  import { onMount } from 'svelte';
   import { superForm } from 'sveltekit-superforms/client';
 
   export let data;
   const { form, constraints, errors, message } = superForm(data.form);
 
-  let rememberMe = true;
+  const remember = persistedStore('rememberMe', { rememberMe: true, username: '', password: '' });
 
-  // const loginData = persisted('loginData', { rememberMe: true });
+  onMount(() => {
+    if ($remember.rememberMe) {
+      $form.username = $remember.username;
+      $form.password = $remember.password;
+    }
+  });
 </script>
 
 <form
   method="POST"
+  on:submit={() => {
+    if ($remember.rememberMe) {
+      $remember.username = $form.username;
+      $remember.password = $form.password;
+    } else {
+      $remember.username = '';
+      $remember.password = '';
+    }
+  }}
   class="min-w-[350px] max-w-[400px] bg-white dark:bg-shadeD700 text-color p-5 rounded-2xl card-shadow dark:shadow-lg flex flex-col gap-5"
 >
   <span class="mx-auto font-semibold">Admin sign in</span>
@@ -46,7 +59,7 @@
 
   <div class="flex justify-between items-center">
     <label class="flex gap-1 items-center w-fit">
-      <!-- <Checkbox bind:checked={$loginData.rememberMe} /> -->
+      <Checkbox bind:checked={$remember.rememberMe} value="rememberMe" />
       <span class="text-xs font-light">Remember me</span>
     </label>
   </div>
