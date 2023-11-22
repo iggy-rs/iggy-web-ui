@@ -9,6 +9,9 @@
   import AddPartitionsModal from './AddPartitionsModal.svelte';
   import DeletePartitionsModal from './DeletePartitionsModal.svelte';
   import AddUserModal from './AddUserModal.svelte';
+  import DeleteUserModal from './DeleteUserModal.svelte';
+  import EditUserModal from './EditUserModal.svelte';
+  import EditUserPermissionsModal from './EditUserPermissionsModal.svelte';
   import { noTypeCheck } from '$lib/utils/noTypeCheck';
 
   const modals = {
@@ -18,7 +21,10 @@
     TopicSettingsModal,
     AddPartitionsModal,
     DeletePartitionsModal,
-    AddUserModal
+    AddUserModal,
+    DeleteUserModal,
+    EditUserModal,
+    EditUserPermissionsModal
   };
 
   type DistributiveOmit<T, K extends string> = T extends T ? Omit<T, K> : never;

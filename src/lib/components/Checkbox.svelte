@@ -4,6 +4,7 @@
   export let checked: boolean | undefined = undefined;
   let isMouseDown = false;
   export let value: string;
+  export let id: string = '';
   export let name: string | undefined = undefined;
   export let bindGroup: string[] | undefined = undefined;
 
@@ -14,10 +15,9 @@
         bindGroup = [...bindGroup, checkboxValue];
       } else {
         bindGroup = bindGroup.filter((item) => item !== value);
+        checked = checkboxChecked;
       }
     }
-
-    checked = checkboxChecked;
   }
 </script>
 
@@ -27,6 +27,7 @@
     checked={bindGroup?.includes(value) || checked}
     {name}
     {value}
+    {id}
     on:change={onChange}
     on:change
     on:mousedown={() => (isMouseDown = true)}

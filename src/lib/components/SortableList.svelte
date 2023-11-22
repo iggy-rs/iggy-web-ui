@@ -24,21 +24,18 @@
   import Icon from './Icon.svelte';
   import Button from './Button.svelte';
   import Checkbox from './Checkbox.svelte';
-  import StopPropagationWrapper from './StopPropagationWrapper.svelte';
+
   import { twMerge } from 'tailwind-merge';
   import { createEventDispatcher, onMount } from 'svelte';
   import { noTypeCheck } from '$lib/utils/noTypeCheck';
+  import StopPropagation from './StopPropagation.svelte';
 
   export let data: T[];
   export let emptyDataMessage: string;
   export let colNames: Record<keyof T, string>;
   export let rowClass: string;
-  export let areRowsSelectable: boolean | undefined = false;
-  export let disabledIds: T['id'][] = [];
 
   let animationEnabled = true;
-
-  // if($page.nav)
 
   beforeNavigate(() => {
     animationEnabled = false;
@@ -52,7 +49,6 @@
   });
 
   export let hrefBuilder: ((item: T) => string) | undefined = undefined;
-  export let actions: any | undefined = undefined;
 
   const dispatch = createEventDispatcher<{ selection: { items: T[] } }>();
 
@@ -67,17 +63,6 @@
   })) as { columnDisplayedName: string; columnName: keyof T }[];
 
   $: orderedData = ordering.key ? orderData(data, ordering.key, ordering.asc!) : data;
-
-  let selectedItems: string[] = [];
-
-  $: dispatch('selection', {
-    items: data.filter((item) => selectedItems.includes(item.id.toString()))
-  });
-
-  const toggleAllChecked = (e: Event) => {
-    const { checked } = e.target as HTMLInputElement;
-    selectedItems = checked ? data.map((item) => `${item.id}`) : [];
-  };
 
   let isBodyOverflowing = false;
   let bodyElem: HTMLDivElement | null = null;
@@ -94,17 +79,6 @@
       isBodyOverflowing && 'pr-5'
     )}
   >
-    {#if areRowsSelectable}
-      <div class="w-[100px] flex items-center justify-center">
-        <Checkbox
-          on:change={toggleAllChecked}
-          checked={selectedItems.length === data.length - disabledIds.length}
-          value="all"
-          name="checkAll"
-        />
-      </div>
-    {/if}
-
     <div class="w-full {rowClass}">
       {#each columns as { columnName, columnDisplayedName } (columnName)}
         <button
@@ -140,10 +114,6 @@
         </button>
       {/each}
     </div>
-
-    {#if actions}
-      <div class="flex items-center justify-center px-5 w-[100px] mr-12">Actions</div>
-    {/if}
   </div>
 
   <!-- body -->
@@ -155,9 +125,8 @@
     {/if}
 
     {#each orderedData as item (item.id)}
-      {@const rowDisabled = disabledIds.includes(item.id)}
       <svelte:element
-        this={hrefBuilder ? 'a' : 'label'}
+        this={hrefBuilder ? 'a' : 'div'}
         href={hrefBuilder && hrefBuilder(item)}
         on:introstart={noTypeCheck((e) => {
           e.target.style.backgroundColor = 'rgb(74, 222, 128)';
@@ -174,21 +143,8 @@
         on:outrostart={(e) => (e.target.style.backgroundColor = 'rgb(239 68 68)')}
         in:slide={{ duration: animationEnabled ? 300 : 0 }}
         out:slide={{ duration: animationEnabled ? 300 : 0, delay: animationEnabled ? 800 : 0 }}
-        class={twMerge(
-          'flex flex-row h-[65px] border-b hover:cursor-pointer dark:text-white',
-          selectedItems.includes(item.id.toString()) ? 'bg-green100' : 'hoverable  ',
-          rowDisabled && 'bg-shadeL400 text-shadeL900 pointer-events-none '
-        )}
+        class={twMerge('flex flex-row h-[65px] border-b hover:cursor-pointer dark:text-white')}
       >
-        {#if areRowsSelectable}
-          <div class="w-[100px] flex items-center justify-center">
-            {#if rowDisabled}
-              <Checkbox value={item.id.toString()} checked={false} />
-            {:else}
-              <Checkbox value={item.id.toString()} bind:bindGroup={selectedItems} />
-            {/if}
-          </div>
-        {/if}
         <div class="flex items-center w-full {rowClass}">
           <slot {item}>
             {#each columns as { columnName }, idx (idx)}
@@ -200,16 +156,6 @@
             {/each}
           </slot>
         </div>
-
-        {#if actions}
-          <StopPropagationWrapper class="flex items-center justify-center w-[100px] mr-12">
-            <!-- <DropdownMenu itemGroups={actions} placement="left-start">
-              <Button variant="rounded" class="">
-                <Icon name="verticalDots" />
-              </Button>
-            </DropdownMenu> -->
-          </StopPropagationWrapper>
-        {/if}
       </svelte:element>
     {/each}
   </div>

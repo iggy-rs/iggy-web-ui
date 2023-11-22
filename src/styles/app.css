@@ -23,6 +23,10 @@
   .hoverable {
     @apply dark:hover:bg-shadeD200 hover:bg-shadeL300 hover:cursor-pointer transition-colors;
   }
+
+  .hoverable-strong {
+    @apply hover:bg-shadeL300 dark:hover:bg-shadeD1000 hover:cursor-pointer transition-colors;
+  }
 }
 
 @layer components {
