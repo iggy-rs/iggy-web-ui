@@ -3,7 +3,7 @@
   import { z } from 'zod';
   import Input from '../Input.svelte';
   import ModalBase from './ModalBase.svelte';
-  import { numberSizes } from '$lib/utils/numberSizes';
+  import { numberSizes } from '$lib/utils/constants/numberSizes';
   import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
   import { fetchRouteApi } from '$lib/api/fetchRouteApi';
   import { page } from '$app/stores';

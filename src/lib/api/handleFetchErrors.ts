@@ -1,6 +1,6 @@
 import { error, type Cookies, redirect } from '@sveltejs/kit';
 import { getJson } from './getJson';
-import { tokens } from '$lib/utils/tokens';
+import { tokens } from '$lib/utils/constants/tokens';
 import { typedRoute } from '$lib/types/appRoutes';
 
 export const handleFetchErrors = async (

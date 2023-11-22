@@ -4,7 +4,7 @@ import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import { typedRoute } from '$lib/types/appRoutes';
 import { fetchApi } from '$lib/api/fetchApi';
-import { tokens } from '$lib/utils/tokens';
+import { tokens } from '$lib/utils/constants/tokens';
 import { getJson } from '$lib/api/getJson';
 
 const schema = z.object({
@@ -15,12 +15,16 @@ const schema = z.object({
 export const load = async () => {
   const form = await superValidate(schema);
 
+  console.log('load sign in');
+
   return { form };
 };
 
 export const actions = {
   default: async ({ request, cookies, locals }) => {
     const form = await superValidate(request, schema);
+
+    console.log('posting sign in');
 
     if (!form.valid) {
       return fail(400, { form });

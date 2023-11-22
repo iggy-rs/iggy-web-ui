@@ -59,13 +59,20 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
+  @apply bg-shadeL500;
+}
+
+.dark ::-webkit-scrollbar-track {
   @apply bg-shadeD300;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  @apply rounded-md;
+  @apply rounded-md bg-shadeL800;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply rounded-md bg-shadeD1000;
 }
 
 /* Handle on hover */
@@ -92,4 +99,11 @@ input:-webkit-autofill {
 
 input:-webkit-autofill:focus {
   -webkit-text-fill-color: white;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
 }

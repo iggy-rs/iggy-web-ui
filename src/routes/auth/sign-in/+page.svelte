@@ -10,7 +10,7 @@
   import { superForm } from 'sveltekit-superforms/client';
 
   export let data;
-  const { form, constraints, errors, message } = superForm(data.form);
+  const { form, constraints, errors, message, reset } = superForm(data.form, {});
 
   const remember = persistedStore('rememberMe', { rememberMe: true, username: '', password: '' });
 
@@ -25,6 +25,7 @@
 <form
   method="POST"
   on:submit={() => {
+    console.log('on submit');
     if ($remember.rememberMe) {
       $remember.username = $form.username;
       $remember.password = $form.password;
@@ -33,7 +34,7 @@
       $remember.password = '';
     }
   }}
-  class="min-w-[350px] max-w-[400px] bg-white dark:bg-shadeD700 text-color p-5 rounded-2xl card-shadow dark:shadow-lg flex flex-col gap-5"
+  class="min-w-[350px] max-w-[400px] bg-white dark:bg-shadeD700 border text-color p-5 rounded-2xl card-shadow dark:shadow-lg flex flex-col gap-5"
 >
   <span class="mx-auto font-semibold">Admin sign in</span>
 

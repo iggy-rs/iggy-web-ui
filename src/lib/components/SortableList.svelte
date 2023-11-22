@@ -20,7 +20,6 @@
 
   import { slide } from 'svelte/transition';
 
-  import DropdownMenu from './DropdownMenu.svelte';
   import type { ComponentProps, ComponentType } from 'svelte';
   import Icon from './Icon.svelte';
   import Button from './Button.svelte';
@@ -53,8 +52,7 @@
   });
 
   export let hrefBuilder: ((item: T) => string) | undefined = undefined;
-  export let actions: ComponentProps<InstanceType<typeof DropdownMenu>>['itemGroups'] | undefined =
-    undefined;
+  export let actions: any | undefined = undefined;
 
   const dispatch = createEventDispatcher<{ selection: { items: T[] } }>();
 
@@ -205,11 +203,11 @@
 
         {#if actions}
           <StopPropagationWrapper class="flex items-center justify-center w-[100px] mr-12">
-            <DropdownMenu itemGroups={actions} placement="left-start">
+            <!-- <DropdownMenu itemGroups={actions} placement="left-start">
               <Button variant="rounded" class="">
                 <Icon name="verticalDots" />
               </Button>
-            </DropdownMenu>
+            </DropdownMenu> -->
           </StopPropagationWrapper>
         {/if}
       </svelte:element>

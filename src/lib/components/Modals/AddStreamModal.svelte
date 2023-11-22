@@ -9,7 +9,7 @@
   import { fetchRouteApi } from '$lib/api/fetchRouteApi';
   import { dataHas } from '$lib/utils/dataHas';
   import { invalidateAll } from '$app/navigation';
-  import { numberSizes } from '$lib/utils/numberSizes';
+  import { numberSizes } from '$lib/utils/constants/numberSizes';
 
   export let closeModal: CloseModalFn;
   export let nextStreamId: number;

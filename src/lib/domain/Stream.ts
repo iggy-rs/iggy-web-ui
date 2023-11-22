@@ -1,4 +1,4 @@
-import { formatDate } from '$lib/utils/dateFormatter';
+import { formatDate } from '$lib/utils/formatters/dateFormatter';
 
 export type Stream = {
   id: number;

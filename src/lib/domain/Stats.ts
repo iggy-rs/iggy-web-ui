@@ -1,4 +1,4 @@
-import { bytesFormatter } from '$lib/utils/bytesFormatter';
+import { bytesFormatter } from '$lib/utils/formatters/bytesFormatter';
 import { intervalToDuration, formatDuration } from 'date-fns';
 
 type StatsStringItem = { name: string; value: string; rawValue: string | number };

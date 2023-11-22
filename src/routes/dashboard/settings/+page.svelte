@@ -53,7 +53,7 @@
     })
   };
 
-  $: activeTab = oneOfOrDefault($page.url.searchParams.get('tab'), Object.keys(tabs), 'users');
+  $: activeTab = oneOfOrDefault($page.url.searchParams.get('tab'), Object.keys(tabs), 'webUI');
 </script>
 
 <div class="flex justify-between items-center px-10">

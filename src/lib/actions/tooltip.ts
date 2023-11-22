@@ -37,7 +37,6 @@ export function tooltip(
 
   const onOutsideClick = (e: MouseEvent) => {
     if (!tooltip.contains(e.target as HTMLElement)) {
-      console.log('outside click');
       closeTooltip();
     }
   };
@@ -53,9 +52,7 @@ export function tooltip(
     trigger.addEventListener('click', onTriggerClick);
   }
 
-  node.addEventListener('closeTooltip', () => {
-    console.log('close tooltip event');
-  });
+  tooltip.addEventListener('closeTooltip', closeTooltip);
 
   const arrowEl = document.createElement('div');
   arrowEl.className = 'arrow';
@@ -120,8 +117,6 @@ export function tooltip(
     tooltip.style.opacity = '0';
     tooltip.style.transform = 'scale(0.93)';
 
-    console.log('hide');
-
     if (typeof cleanup === 'function') {
       cleanup();
     }
@@ -146,12 +141,12 @@ export function tooltip(
 
   return {
     destroy() {
-      console.log('destroy');
       if (typeof cleanup === 'function') {
         cleanup();
       }
-      // node.removeEventListener('closeTooltip', closeTooltip);
+
       trigger.removeEventListener('click', onTriggerClick);
+      tooltip.removeEventListener('closeTooltip', closeTooltip);
       document.removeEventListener('click', onOutsideClick);
       actions.forEach(([event, listener]) => {
         trigger.removeEventListener(event, listener);

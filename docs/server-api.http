@@ -25,7 +25,7 @@ Content-Type: application/json
 ###
 POST {{url}}/users
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjMmQ5ZWZmNS03OTQ5LTQ1MTEtYmM2YS1hZGY3MmQwN2VjNDkiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNjk5OTg0MzU4LCJleHAiOjE2OTk5ODc5NTgsIm5iZiI6MTY5OTk4NDM1OH0.-C96N0kTHKnjxkUXobGnfkejkvUIHrQa8yEKHD-N5cU
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwMzg5Y2RlNS1lZGRlLTQzZDItOWIyZS0zMDNkODc3ZGRmM2EiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNzAwNTk4NDYwLCJleHAiOjE3MDA2MDIwNjAsIm5iZiI6MTcwMDU5ODQ2MH0.x-KgfXp-3arpZy-FA9j5V85M88eHVa5Q1AERYjo3Pow
 
 {
     "username":"asf2sdssdfafa2edad14dd22",
@@ -33,6 +33,13 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjMmQ5ZWZmN
     "status":"inactive",
     "permissions":null
 }
+
+
+###
+GET {{url}}/users
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5NmJlY2QwNy03ZTYyLTRiYTktYTcyZS02NzgwOThmMjE1MmMiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNzAwNTk4NTI5LCJleHAiOjE3MDA2MDIxMjksIm5iZiI6MTcwMDU5ODUyOX0.IYaIwFA1VajunF_P2KLQWOnnEzCYHJT31QuIQa__TS0
+
 
 ### Create stream
 POST {{url}}/streams
@@ -66,5 +73,5 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{url}}/streams/245
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJlNDNkOTAzYS02YzhiLTQyY2YtYmRhMy1jNTQ4ODBlMDU1YTEiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNzAwNTYzNjk0LCJleHAiOjE3MDA1NjcyOTQsIm5iZiI6MTcwMDU2MzY5NH0.viKHyJuLTdhpw3k6NTjA6JJ6A361A_v8XTHBIDnasFk
+GET {{url}}/users/13
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5NmJlY2QwNy03ZTYyLTRiYTktYTcyZS02NzgwOThmMjE1MmMiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNzAwNTk4NTI5LCJleHAiOjE3MDA2MDIxMjksIm5iZiI6MTcwMDU5ODUyOX0.IYaIwFA1VajunF_P2KLQWOnnEzCYHJT31QuIQa__TS0

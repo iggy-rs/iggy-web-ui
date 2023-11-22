@@ -2,7 +2,7 @@ import { fetchApi } from '$lib/api/fetchApi';
 import { handleFetchErrors } from '$lib/api/handleFetchErrors';
 import { checkIfPathnameIsPublic, typedRoute } from '$lib/types/appRoutes';
 import { dataHas } from '$lib/utils/dataHas';
-import { tokens } from '$lib/utils/tokens';
+import { tokens } from '$lib/utils/constants/tokens';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 

@@ -19,17 +19,6 @@
   if (data.streams.length > 0 && $page.url.pathname === typedRoute('/dashboard/streams')) {
     goto(typedRoute(`/dashboard/streams/${data.streams[0].id}`));
   }
-
-  // let timeout: number;
-  // onMount(() => {
-  //   timeout = setInterval(() => {
-  //     invalidateAll();
-  //   }, 500);
-
-  //   return () => {
-  //     clearTimeout(timeout);
-  //   };
-  // });
 </script>
 
 <div class="flex h-full flex-row">

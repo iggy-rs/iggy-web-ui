@@ -57,7 +57,7 @@
             class={twMerge(
               'p-2 block rounded-xl transition-colors  ring-2 ring-transparent',
               isActive && 'ring-black dark:ring-white',
-              !isActive && 'hoverable'
+              !isActive && 'hover:bg-shadeL500 dark:hover:bg-shadeD300'
             )}
           >
             <Icon name={icon} class="w-[27px] h-[27px] text-black dark:text-white" />

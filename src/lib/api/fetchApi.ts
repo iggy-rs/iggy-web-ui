@@ -1,6 +1,6 @@
 import { API_URL } from '$env/static/private';
 import type { ApiSchema } from '$lib/api/ApiSchema';
-import { tokens } from '$lib/utils/tokens';
+import { tokens } from '$lib/utils/constants/tokens';
 import { type Cookies } from '@sveltejs/kit';
 
 export async function fetchApi(

@@ -2,7 +2,7 @@
   import Button from '$lib/components/Button.svelte';
   import Input from '$lib/components/Input.svelte';
   import { invalidateIntervalDuration } from '$lib/components/PeriodicInvalidator.svelte';
-  import { durationFormatter } from '$lib/utils/durationFormatter';
+  import { durationFormatter } from '$lib/utils/formatters/durationFormatter';
 
   let intervalValue = $invalidateIntervalDuration;
 
