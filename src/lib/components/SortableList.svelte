@@ -16,7 +16,7 @@
 <script lang="ts" generics="T extends ListItem">
   import { asConst } from '$lib/utils/asConst';
 
-  import { afterNavigate, beforeNavigate } from '$app/navigation';
+  import { afterNavigate, beforeNavigate, onNavigate } from '$app/navigation';
 
   import { slide } from 'svelte/transition';
 
@@ -36,21 +36,21 @@
   export let rowClass: string;
 
   let animationEnabled = true;
+  let isAnimating = false;
+  let timeout: number;
 
-  beforeNavigate(() => {
+  onNavigate(() => {
     animationEnabled = false;
-    console.log('before navigate');
-  });
 
-  afterNavigate(() => {
-    setTimeout(() => {
-      animationEnabled = true;
-    }, 500);
+    return () => {
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        animationEnabled = true;
+      }, 800);
+    };
   });
 
   export let hrefBuilder: ((item: T) => string) | undefined = undefined;
-
-  const dispatch = createEventDispatcher<{ selection: { items: T[] } }>();
 
   let ordering: Ordering<T> = {
     key: undefined,
@@ -118,7 +118,7 @@
 
   <!-- body -->
   <div class="min-w-[1300px] h-[calc(100%-60px)] pb-3 overflow-auto" bind:this={bodyElem}>
-    {#if data.length === 0}
+    {#if data.length === 0 && !isAnimating}
       <div class="flex items-center justify-center text-gray-400 mt-14 text-lg">
         <em>{emptyDataMessage}</em>
       </div>
@@ -129,21 +129,29 @@
         this={hrefBuilder ? 'a' : 'div'}
         href={hrefBuilder && hrefBuilder(item)}
         on:introstart={noTypeCheck((e) => {
+          if (!animationEnabled) return;
           e.target.style.backgroundColor = 'rgb(74, 222, 128)';
+          isAnimating = true;
         })}
         on:introend={(e) => {
-          setTimeout(
-            () => {
-              e.target.style.backgroundColor = 'transparent';
-              e.target.style.transitionDuration = '500ms';
-            },
-            animationEnabled ? 800 : 0
-          );
+          setTimeout(() => {
+            if (!animationEnabled) return;
+            e.target.style = '';
+          }, 800);
         }}
-        on:outrostart={(e) => (e.target.style.backgroundColor = 'rgb(239 68 68)')}
+        on:outrostart={(e) => {
+          if (!animationEnabled) return;
+          e.target.style.backgroundColor = 'rgb(239 68 68)';
+          isAnimating = true;
+        }}
+        on:outroend={(e) => {
+          isAnimating = false;
+        }}
         in:slide={{ duration: animationEnabled ? 300 : 0 }}
         out:slide={{ duration: animationEnabled ? 300 : 0, delay: animationEnabled ? 800 : 0 }}
-        class={twMerge('flex flex-row h-[65px] border-b hover:cursor-pointer dark:text-white')}
+        class={twMerge(
+          'flex flex-row h-[65px] border-b hover:cursor-pointer hoverable dark:text-white'
+        )}
       >
         <div class="flex items-center w-full {rowClass}">
           <slot {item}>

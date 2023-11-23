@@ -33,7 +33,7 @@
   };
 
   const schema = z.object({
-    partitions_count: z.coerce.number().min(1).default(1)
+    partitions_count: z.coerce.number().min(1).max(topic.partitionsCount).default(1)
   });
 
   const { form, errors, enhance, constraints, submitting, validate } = superForm(

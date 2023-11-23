@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from '$lib/components/Icon.svelte';
-  import { goto, invalidateAll } from '$app/navigation';
+  import { goto, invalidateAll, onNavigate } from '$app/navigation';
   import { twMerge } from 'tailwind-merge';
   import { page } from '$app/stores';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
@@ -9,6 +9,8 @@
   import { typedRoute } from '$lib/types/appRoutes.js';
   import { arrayMax } from '$lib/utils/arrayMax';
   import { onMount } from 'svelte';
+  import { noTypeCheck } from '$lib/utils/noTypeCheck.js';
+  import { slide } from 'svelte/transition';
 
   export let data;
 
