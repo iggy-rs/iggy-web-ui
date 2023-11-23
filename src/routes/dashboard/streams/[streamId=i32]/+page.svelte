@@ -58,7 +58,7 @@
 
 <SortableList
   emptyDataMessage="This stream has no topics."
-  rowClass="grid grid-cols-[150px_3fr_2fr_2fr_2fr_3fr]"
+  rowClass="grid grid-cols-[150px_3fr_2fr_2fr_2fr_2fr_3fr]"
   data={stream.topics}
   hrefBuilder={(topic) =>
     typedRoute(`/dashboard/streams/${+$page.params.streamId}/topics/${topic.id}`)}
@@ -67,6 +67,7 @@
     name: 'Name',
     messagesCount: 'Messages',
     partitionsCount: 'Partitions',
+    messageExpiry: 'Message expiry',
     sizeBytes: 'Size',
     createdAt: 'Created'
   }}
