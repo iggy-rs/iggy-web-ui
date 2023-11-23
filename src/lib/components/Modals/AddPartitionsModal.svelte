@@ -11,6 +11,7 @@
   import { invalidateAll } from '$app/navigation';
   import { showToast } from '../AppToasts.svelte';
   import Button from '../Button.svelte';
+  import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
 
   export let closeModal: CloseModalFn;
 
