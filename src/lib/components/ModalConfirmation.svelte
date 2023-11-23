@@ -26,15 +26,6 @@
   />
   <div
     transition:slide={{ duration: 300 }}
-    on:copy={(e) => {
-      e.preventDefault();
-    }}
-    on:paste={(e) => {
-      e.preventDefault();
-    }}
-    on:cut={(e) => {
-      e.preventDefault();
-    }}
     class="absolute bottom-0 left-0 right-0 flex flex-col z-50 items-center bg-shadeL100 dark:bg-shadeD700 rounded-tl-2xl rounded-tr-2xl"
   >
     <div class="p-5 pt-10 flex flex-col items-center border-b relative text-color">
