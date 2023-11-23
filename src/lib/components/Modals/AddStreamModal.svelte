@@ -10,6 +10,7 @@
   import { dataHas } from '$lib/utils/dataHas';
   import { invalidateAll } from '$app/navigation';
   import { numberSizes } from '$lib/utils/constants/numberSizes';
+  import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
 
   export let closeModal: CloseModalFn;
   export let nextStreamId: number;
@@ -47,7 +48,7 @@
 
         if (ok) {
           closeModal(async () => {
-            await invalidateAll();
+            await customInvalidateAll();
             showToast({
               type: 'success',
               description: `Stream ${$form.name} has been added.`,

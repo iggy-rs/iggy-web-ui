@@ -40,7 +40,7 @@
 
       if (ok) {
         closeModal(async () => {
-          await invalidateAll();
+          await customInvalidateAll();
           showToast({
             type: 'success',
             description:

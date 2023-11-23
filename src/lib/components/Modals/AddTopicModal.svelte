@@ -13,6 +13,7 @@
   import { dataHas } from '$lib/utils/dataHas';
   import { invalidateAll } from '$app/navigation';
   import { showToast } from '../AppToasts.svelte';
+  import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
 
   export let closeModal: CloseModalFn;
   export let streamDetails: StreamDetails;
@@ -52,7 +53,7 @@
 
       if (ok) {
         closeModal(async () => {
-          await invalidateAll();
+          await customInvalidateAll();
           showToast({
             type: 'success',
             description: `Topic ${$form.name} has been added.`,

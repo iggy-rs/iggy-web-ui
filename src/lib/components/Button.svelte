@@ -64,14 +64,15 @@
 <button
   on:click
   data-trigger
+  use:tooltip={{ placement: tooltipPlacement, isTrigger: true }}
   class={twMerge(baseClasses, variants[variant], sizes[size], disabledClasses, className, ' ')}
   {...$$restProps}
 >
   <slot />
-</button>
 
-{#if $$slots.tooltip}
-  <div role="tooltip" class="tooltip ring-bl">
-    <slot name="tooltip" />
-  </div>
-{/if}
+  {#if $$slots.tooltip}
+    <div role="tooltip" class="tooltip ring-bl">
+      <slot name="tooltip" />
+    </div>
+  {/if}
+</button>

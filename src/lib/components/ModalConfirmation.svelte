@@ -2,8 +2,14 @@
   import { fade, slide } from 'svelte/transition';
   import Button from './Button.svelte';
   import { createEventDispatcher } from 'svelte';
+  import Input from './Input.svelte';
+  import Icon from './Icon.svelte';
 
   export let open: boolean;
+  export let retypeText: string;
+  export let deleteButtonTitle: string;
+
+  let retypedText = '';
 
   const dispatch = createEventDispatcher<{ result: boolean }>();
 </script>
@@ -20,14 +26,54 @@
   />
   <div
     transition:slide={{ duration: 300 }}
-    class="absolute bottom-0 left-0 right-0 flex flex-col z-50 items-center bg-shadeL100 dark:bg-shadeD700 pt-10 rounded-tl-2xl rounded-tr-2xl"
+    on:copy={(e) => {
+      e.preventDefault();
+    }}
+    on:paste={(e) => {
+      e.preventDefault();
+    }}
+    on:cut={(e) => {
+      e.preventDefault();
+    }}
+    class="absolute bottom-0 left-0 right-0 flex flex-col z-50 items-center bg-shadeL100 dark:bg-shadeD700 rounded-tl-2xl rounded-tr-2xl"
   >
-    <h2 class="text-color font-semibold text-xl">Are you sure?</h2>
-    <div class="flex gap-2 p-5 py-10 w-full">
-      <Button variant="containedRed" class="flex-1" on:click={() => dispatch('result', true)}
-        >Yes</Button
+    <div class="p-5 pt-10 flex flex-col items-center border-b relative text-color">
+      <Button
+        variant="rounded"
+        on:click={() => dispatch('result', false)}
+        class="absolute top-3 right-3 p-2"
       >
-      <Button variant="text" class="flex-1" on:click={() => dispatch('result', false)}>No</Button>
+        <Icon name="close" strokeWidth={2.3} />
+      </Button>
+
+      <h2 class=" font-semibold text-xl">Are you sure?</h2>
+      {#if $$slots.message}
+        <span class="text-sm block w-full text-center my-1">
+          <slot name="message" />
+        </span>
+      {/if}
+    </div>
+    <div class="mt-5 w-full px-5 mb-5 gap-4 flex flex-col text-color">
+      <span class="block text-sm"
+        >To confirm type "<span class="italic">{retypeText}</span>" in the box below</span
+      >
+      <Input name="retypeText" bind:value={retypedText} />
+
+      <div class="w-full">
+        <Button
+          variant="containedRed"
+          on:click={() => dispatch('result', true)}
+          disabled={retypedText !== retypeText}
+          class="w-full">{deleteButtonTitle}</Button
+        >
+      </div>
     </div>
   </div>
 {/if}
+
+<!-- <div class="flex gap-2 p-5 py-10 w-full">
+  <Button variant="containedRed" class="flex-1" on:click={() => dispatch('result', true)}
+    >Yes</Button
+  >
+  <Button variant="text" class="flex-1" on:click={() => dispatch('result', false)}>No</Button>
+</div> -->

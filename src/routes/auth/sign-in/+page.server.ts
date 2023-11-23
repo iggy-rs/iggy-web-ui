@@ -56,6 +56,8 @@ export const actions = {
       expires: new Date(access_token.expiry * 1000)
     });
 
+    console.log('login');
+
     cookies.set(tokens.refreshToken, refresh_token.token, {
       path: '/',
       httpOnly: true,

@@ -23,7 +23,7 @@
   <Button
     variant="rounded"
     class="ml-3"
-    on:click={() => openModal('TopicSettingsModal', { topic })}
+    on:click={() => openModal('TopicSettingsModal', { topic, onDeleteRedirectPath: prevPage })}
   >
     <Icon name="settings" />
     <div slot="tooltip">Settings</div>
@@ -46,7 +46,7 @@
 
   <div class="flex gap-2 ml-auto">
     {#if topic.partitions.length > 0}
-      <Button variant="outlinedRed" on:click={() => openModal('DeletePartitionsModal')}
+      <Button variant="outlinedRed" on:click={() => openModal('DeletePartitionsModal', { topic })}
         >Delete partitions</Button
       >
     {/if}
@@ -58,12 +58,13 @@
 
 <SortableList
   emptyDataMessage="No partitions found."
-  rowClass="grid grid-cols-[150px_1fr_1fr_1fr_1fr]"
+  rowClass="grid grid-cols-[150px_1fr_1fr_1fr_1fr_1fr]"
   data={topic.partitions}
   colNames={{
     id: 'ID',
     currentOffset: 'Offset',
     segmentsCount: 'Segments',
+    messagesCount: 'Messages',
     sizeBytes: 'Size',
     createdAt: 'Created'
   }}

@@ -15,14 +15,15 @@ const openId = writable<string | null>(null);
 type TooltipOptions = {
   placement?: Placement;
   clickable?: boolean;
+  isTrigger?: boolean;
 };
 
 export function tooltip(
   node: HTMLElement | null,
-  { placement = 'right', clickable }: TooltipOptions
+  { placement = 'right', clickable, isTrigger }: TooltipOptions
 ) {
   if (!node) return;
-  const trigger = node.querySelector('[data-trigger]') as HTMLElement;
+  const trigger = isTrigger ? node : (node.querySelector('[data-trigger]') as HTMLElement);
   const tooltip = node.querySelector('.tooltip') as HTMLElement;
 
   if (!tooltip || !trigger) return;

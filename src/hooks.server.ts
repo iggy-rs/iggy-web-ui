@@ -5,45 +5,30 @@ import { dataHas } from '$lib/utils/dataHas';
 import { tokens } from '$lib/utils/constants/tokens';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
+import { redirect, type Actions } from '@sveltejs/kit';
 
-const handleRedirects: Handle = async ({ event, resolve }) => {
-  const isPublicPath = checkIfPathnameIsPublic(event.url.pathname);
-
-  const publicRedirects = [
-    {
-      from: '/',
-      to: typedRoute('/auth/sign-in')
-    },
-    {
-      from: '/auth',
-      to: typedRoute('/auth/sign-in')
-    }
-  ];
-
-  const privateRedirects = [
-    {
-      from: '/dashboard/',
-      to: typedRoute('/dashboard/overview')
-    },
-    {
-      from: '/dashboard',
-      to: typedRoute('/dashboard/overview')
-    },
-    {
-      from: '/',
-      to: typedRoute('/dashboard/overview')
-    }
-  ];
-
-  const redirect = (isPublicPath ? publicRedirects : privateRedirects).find(
-    (r) => r.from === event.url.pathname
-  );
-
-  if (redirect && event.request.method === 'GET') {
-    return new Response(null, { status: 307, headers: { Location: redirect.to } });
+const accessTokenOkRedirects = [
+  {
+    from: '/dashboard/',
+    to: typedRoute('/dashboard/overview')
+  },
+  {
+    from: '/dashboard',
+    to: typedRoute('/dashboard/overview')
+  },
+  {
+    from: '/',
+    to: typedRoute('/dashboard/overview')
+  },
+  {
+    from: '/auth',
+    to: typedRoute('/dashboard/overview')
+  },
+  {
+    from: typedRoute('/auth/sign-in'),
+    to: typedRoute('/dashboard/overview')
   }
-  return resolve(event);
-};
+];
 
 const handleAuth: Handle = async ({ event, resolve }) => {
   const cookies = event.cookies;
@@ -51,15 +36,20 @@ const handleAuth: Handle = async ({ event, resolve }) => {
   const accessToken = cookies.get(tokens.accessToken);
   const refreshToken = cookies.get(tokens.refreshToken);
 
-  const refreshTokens = async (token: string) => {
+  if (accessToken) {
+    const invalidPathRedirect = accessTokenOkRedirects.find((r) => r.from === event.url.pathname);
+    if (invalidPathRedirect) throw redirect(302, invalidPathRedirect.to);
+  }
+
+  if (!accessToken && refreshToken) {
     const result = await fetchApi({
       path: '/users/refresh-token',
       method: 'POST',
-      body: { refresh_token: token }
+      body: { refresh_token: refreshToken }
     });
+    console.log('refresh token post', refreshToken);
 
     const { data } = await handleFetchErrors(result, cookies);
-
     const { access_token, refresh_token } = (data as any).tokens;
 
     cookies.set(tokens.accessToken, access_token.token, {
@@ -77,39 +67,21 @@ const handleAuth: Handle = async ({ event, resolve }) => {
       secure: true,
       expires: new Date(refresh_token.expiry * 1000)
     });
-  };
 
-  if (accessToken && refreshToken) {
-    if (isPublicPath)
-      return new Response(null, {
-        status: 307,
-        headers: { Location: typedRoute('/dashboard/overview') }
-      });
-    return resolve(event);
-  }
+    const invalidPathRedirect = accessTokenOkRedirects.find((r) => r.from === event.url.pathname);
 
-  if (!accessToken && refreshToken) {
-    await refreshTokens(refreshToken);
-    if (isPublicPath)
-      return new Response(null, {
-        status: 307,
-        headers: { Location: typedRoute('/dashboard/overview') }
-      });
-    return resolve(event);
+    if (invalidPathRedirect) throw redirect(302, invalidPathRedirect.to);
   }
 
   if (!accessToken && !refreshToken) {
     if (isPublicPath) {
       return resolve(event);
     } else {
-      return new Response(null, {
-        status: 307,
-        headers: { Location: typedRoute('/auth/sign-in') }
-      });
+      throw redirect(302, typedRoute('/auth/sign-in'));
     }
   }
 
   return resolve(event);
 };
 
-export const handle = sequence(handleAuth, handleRedirects);
+export const handle = sequence(handleAuth);

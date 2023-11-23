@@ -40,7 +40,10 @@
         e.stopPropagation();
       }}
     >
-      <Icon name={isVisible ? 'eye' : 'eyeOff'} class="w-[20px] h-[20px] stroke-shadeD200" />
+      <Icon
+        name={isVisible ? 'eye' : 'eyeOff'}
+        class="w-[20px] h-[20px] dark:stroke-white stroke-shadeD200"
+      />
     </Button>
   </span>
 </Input>

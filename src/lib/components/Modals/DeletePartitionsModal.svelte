@@ -13,8 +13,12 @@
   import { invalidateAll } from '$app/navigation';
   import { showToast } from '../AppToasts.svelte';
   import { dataHas } from '$lib/utils/dataHas';
+  import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
+  import type { TopicDetails } from '$lib/domain/TopicDetails';
+  import { arraySum } from '$lib/utils/arraySum';
 
   export let closeModal: CloseModalFn;
+  export let topic: TopicDetails;
 
   let confirmationOpen = false;
   let formElement: HTMLFormElement;
@@ -55,7 +59,7 @@
 
         if (ok) {
           closeModal(async () => {
-            await invalidateAll();
+            await customInvalidateAll();
             showToast({
               type: 'success',
               description:
@@ -69,10 +73,26 @@
       }
     }
   );
+
+  $: messagesToDelete = arraySum(
+    topic.partitions.slice($form.partitions_count).map((p) => p.messagesCount)
+  );
 </script>
 
 <ModalBase {closeModal} title="Delete partitions">
-  <ModalConfirmation open={confirmationOpen} on:result={onConfirmationResult} />
+  <ModalConfirmation
+    open={confirmationOpen}
+    retypeText="{topic.name}/partitions"
+    deleteButtonTitle="Delete {$form.partitions_count > 1 ? 'partitions' : 'partition'}"
+    on:result={onConfirmationResult}
+  >
+    <svelte:fragment slot="message">
+      Deleting the <span class="font-semibold">{$form.partitions_count}</span>
+      {$form.partitions_count > 1 ? 'partitions' : 'partition'} from topic
+      <span class="font-semibold">"{topic.name}"</span> will permenently remove all associated
+      messages <span class="font-semibold">({messagesToDelete})</span>.
+    </svelte:fragment>
+  </ModalConfirmation>
   <div class="h-[300px] flex flex-col">
     <form bind:this={formElement} method="POST" class="flex flex-col h-[300px] gap-4" use:enhance>
       <Input
@@ -94,9 +114,7 @@
           class="w-2/5"
           on:click={async () => {
             const result = await validate();
-            if (result.valid) {
-              confirmationOpen = true;
-            }
+            if (result.valid) confirmationOpen = true;
           }}>Delete</Button
         >
       </div>

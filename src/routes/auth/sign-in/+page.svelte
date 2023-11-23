@@ -59,7 +59,7 @@
   {/if}
 
   <div class="flex justify-between items-center">
-    <label class="flex gap-1 items-center w-fit">
+    <label class="flex gap-1 items-center w-fit hover:cursor-pointer">
       <Checkbox bind:checked={$remember.rememberMe} value="rememberMe" />
       <span class="text-xs font-light">Remember me</span>
     </label>
