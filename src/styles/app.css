@@ -25,7 +25,7 @@
   }
 
   .hoverable-strong {
-    @apply hover:bg-shadeL300 dark:hover:bg-shadeD1000 hover:cursor-pointer transition-colors;
+    @apply hover:bg-shadeL500 dark:hover:bg-shadeD1000 hover:cursor-pointer transition-colors;
   }
 }
 

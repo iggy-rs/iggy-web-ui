@@ -7,6 +7,7 @@
   export let id: string = '';
   export let name: string | undefined = undefined;
   export let bindGroup: string[] | undefined = undefined;
+  export let disabled = false;
 
   function onChange(e: Event) {
     const { value: checkboxValue, checked: checkboxChecked } = e.target as HTMLInputElement;
@@ -17,6 +18,8 @@
         bindGroup = bindGroup.filter((item) => item !== value);
         checked = checkboxChecked;
       }
+    } else {
+      checked = checkboxChecked;
     }
   }
 </script>
@@ -28,6 +31,7 @@
     {name}
     {value}
     {id}
+    {disabled}
     on:change={onChange}
     on:change
     on:mousedown={() => (isMouseDown = true)}
@@ -42,7 +46,7 @@
     tabindex="0"
     aria-checked={checked}
     class={twMerge(
-      'w-5 h-5 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-neutral-300 border-2 rounded transition-all pointer-events-none',
+      'w-[18px] h-[18px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-neutral-300 border-2 rounded transition-all pointer-events-none',
       isMouseDown && 'scale-90'
     )}
   />
@@ -56,7 +60,6 @@
     <path
       id="Vector"
       d="M6 12L10.2426 16.2426L18.727 7.75732"
-      stroke="#ffffff"
       stroke-width="2.4"
       stroke-linecap="round"
       stroke-linejoin="round"
@@ -73,7 +76,7 @@
     @apply bg-shadeL100;
   }
 
-  input[type='checkbox']:hover:not(:checked) + div {
+  input[type='checkbox']:hover:not(:checked):not(:disabled) + div {
     @apply border-neutral-400;
   }
 
@@ -81,7 +84,15 @@
     @apply bg-[#32AD84];
   }
 
+  input[type='checkbox']:checked:disabled + div {
+    @apply bg-white opacity-50;
+  }
+
+  input[type='checkbox']:disabled {
+    @apply cursor-not-allowed;
+  }
+
   input[type='checkbox']:checked + div + svg {
-    @apply opacity-100 scale-100;
+    @apply opacity-100 scale-100 stroke-black dark:stroke-white;
   }
 </style>

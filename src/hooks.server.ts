@@ -25,6 +25,10 @@ const accessTokenOkRedirects = [
     to: typedRoute('/dashboard/overview')
   },
   {
+    from: typedRoute('/dashboard/settings'),
+    to: typedRoute('/dashboard/settings/webUI')
+  },
+  {
     from: typedRoute('/auth/sign-in'),
     to: typedRoute('/dashboard/overview')
   }

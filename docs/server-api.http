@@ -1,4 +1,5 @@
 @url = http://localhost:3000
+@access_token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4YmYyY2FmNS04MTgwLTQ1YzItOGZmMy1kOWJhNWJiZjE0OWUiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNzAxMTA5MTg4LCJleHAiOjE3MDExMTI3ODgsIm5iZiI6MTcwMTEwOTE4OH0.i1kkVUCGOzLUR3tiDuD5xwOLS3AKGKLsMu_5QbFfhRY
 ###
 
 GET {{url}}
@@ -75,3 +76,26 @@ Content-Type: application/json
 ###
 GET {{url}}/users/13
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5NmJlY2QwNy03ZTYyLTRiYTktYTcyZS02NzgwOThmMjE1MmMiLCJpc3MiOiJpZ2d5LnJzIiwiYXVkIjoiaWdneS5ycyIsInN1YiI6MSwiaWF0IjoxNzAwNTk4NTI5LCJleHAiOjE3MDA2MDIxMjksIm5iZiI6MTcwMDU5ODUyOX0.IYaIwFA1VajunF_P2KLQWOnnEzCYHJT31QuIQa__TS0
+
+
+
+###Create User
+POST {{url}}/users
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "username": "airport.security.logs",
+  "password": "test",
+  "status": "active",
+  "permissions": null
+}
+
+###GET User
+GET {{url}}/users/37
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+### Delete User
+DELETE {{url}}/users/2
+Authorization: Bearer {{access_token}}

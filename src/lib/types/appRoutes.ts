@@ -1,3 +1,5 @@
+type SettingsSegment = 'settings' | `settings/${'server' | 'users' | 'terminal' | 'webUI'}`;
+
 type DashboardRoutes = `/dashboard/${
   | 'overview'
   | 'streams'
@@ -5,7 +7,7 @@ type DashboardRoutes = `/dashboard/${
   | `streams/${number}/topics/${number}`
   | 'clients'
   | 'logs'
-  | 'settings'}`;
+  | SettingsSegment}`;
 
 type AuthRoutes = `/auth/${'sign-in' | 'logout'}`;
 

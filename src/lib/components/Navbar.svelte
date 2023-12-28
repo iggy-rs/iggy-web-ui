@@ -7,7 +7,7 @@
   import { tooltip } from '$lib/actions/tooltip';
   import { typedRoute } from '$lib/types/appRoutes';
 
-  const navItems: { name: string; icon: iconType; href: string }[] = [
+  const navItems = [
     {
       name: 'Overview',
       icon: 'home',
@@ -33,7 +33,7 @@
       icon: 'settings',
       href: typedRoute('/dashboard/settings')
     }
-  ];
+  ] satisfies { name: string; icon: iconType; href: string }[];
 </script>
 
 <nav
@@ -69,17 +69,4 @@
       </li>
     {/each}
   </ul>
-
-  <!-- <form method="POST" action="/auth/logout" class="mt-auto">
-    <button
-      type="submit"
-      class={twMerge(
-        'p-2  mt-auto rounded-xl transition-colors  ring-2 ring-transparent dark:hover:bg-shadeD300'
-      )}
-      use:tooltip={{ placement: 'right' }}
-    >
-      <div class="tooltip">Logout</div>
-      <Icon name={'logout'} className="w-[27px] h-[27px] text-black dark:text-white" />
-    </button>
-  </form> -->
 </nav>

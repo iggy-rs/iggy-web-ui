@@ -8,7 +8,7 @@
 </script>
 
 <div class="flex flex-col-reverse lg:flex-row gap-3 lg:gap-5 items-center">
-  {#if $selectedUsersId.length > 0}
+  <!-- {#if $selectedUsersId.length > 0}
     <div class="mr-auto flex gap-2" transition:fade={{ duration: 50 }}>
       <Button variant="containedRed">
         <Icon name="trash" />
@@ -19,7 +19,7 @@
         Change permissions</Button
       >
     </div>
-  {/if}
+  {/if} -->
 
   <div class="flex items-center gap-4">
     {#if $usersCount}
@@ -31,11 +31,11 @@
           </span>
         </Input>
       </div>
-
-      <Button variant="contained" on:click={() => openModal('AddUserModal')}>
+      <!-- 
+      <Button variant="contained" on:click={() => openModal('AddUserModal', {streams: })}>
         <Icon name="plus" />
         Add user
-      </Button>
+      </Button> -->
     {/if}
   </div>
 </div>

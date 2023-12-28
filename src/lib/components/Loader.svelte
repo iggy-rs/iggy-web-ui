@@ -1,12 +1,12 @@
 <script lang="ts">
-  export let name: string;
 </script>
 
-<div class="flex items-baseline text-gray-400">
-  <span class=" text-2xl mr-1">Loading {name} </span>
-
+<div class="flex items-baseline gap-1 text-gray-400">
   {#each [0, 200, 400] as delay}
-    <span class="loader-animation text-2xl" style="animation-delay:{delay}ms">.</span>
+    <span
+      class="loader-animation w-[4px] h-[4px] bg-gray-400 rounded-full"
+      style="animation-delay:{delay}ms "
+    />
   {/each}
 </div>
 

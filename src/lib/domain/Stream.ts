@@ -1,5 +1,3 @@
-import { formatDate } from '$lib/utils/formatters/dateFormatter';
-
 export type Stream = {
   id: number;
   name: string;
@@ -18,4 +16,11 @@ export function streamMapper(item: any): Stream {
     topicsCount: item.topics_count,
     createdAt: item.created_at
   };
+}
+
+export function streamListMapper(data: any): Stream[] {
+  const streams = data.map(streamMapper) as Stream[];
+  const sortedStream = streams.sort((a, b) => b.createdAt - a.createdAt);
+
+  return sortedStream;
 }

@@ -133,7 +133,7 @@
     <div class="px-5">
       <span
         class={twMerge(
-          'rounded-full block w-[70px] text-center p-1 text-white text-sm',
+          'rounded-full block w-[70px] text-center p-1 text-white text-sm capitalize',
           row.status === 'active' ? 'bg-green500' : 'bg-shadeD100 dark:bg-shadeD400'
         )}
       >

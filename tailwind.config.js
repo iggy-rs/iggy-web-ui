@@ -13,6 +13,8 @@ export default {
       },
       colors: {
         shadeD100: 'var(--shadeD100)',
+        shadeD150: 'var(--shadeD150)',
+        shadeD170: 'var(--shadeD170)',
         shadeD200: 'var(--shadeD200)',
         shadeD300: 'var(--shadeD300)',
         shadeD400: 'var(--shadeD400)',
