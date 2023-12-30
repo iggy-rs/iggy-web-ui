@@ -1,38 +1,50 @@
-# create-svelte
+# Iggy Web UI
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+This repository hosts the web user interface for [Iggy](https://github.com/spetz/iggy), a persistent message streaming platform written in Rust. The web UI is built using SvelteKit.
 
-## Creating a project
+![iggy](static/signIn.png)
+![iggy](static/stats.png)
+![iggy](static/permissions.png)
+![iggy](static/streams.png)
+![iggy](static/streamsLight.png)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Overview
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+The Iggy Web UI provides a user-friendly panel for managing various aspects of the Iggy platform, including streams, topics, partitions, and more.
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+### Getting Started
 
-## Developing
+1. **Clone the repository:**
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+   ```sh
+   git clone https://github.com/iggy-rs/iggy-web-ui.git
+   ```
 
-```bash
-npm run dev
+2. **Build the project:**
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+   ```sh
+   cd iggy-web-ui
+   npm install
+   ```
 
-## Building
+3. **Run the project:**
+   ```sh
+   npm run dev
+   ```
 
-To create a production version of your app:
+## Roadmap
 
-```bash
-npm run build
-```
+- [x] Authorization
+- [x] Allow manual interval setting for auto-refresh
+- [x] Introduce dark mode
+- [x] Enable CRUD operations on Streams
+- [x] Enable CRUD operations on Topics
+- [ ] Messages management
+- [ ] General UI improvements
+- [ ] Permission management (in progress)
+- [ ] GitHub actions CI/CD
+- [ ] Publish to Dockerhub as separate Image
 
-You can preview the production build with `npm run preview`.
+## Contributing
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Feel free to contribute to the project. Your feedback and contributions are highly appreciated!
