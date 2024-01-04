@@ -14,6 +14,7 @@
   export let items: T[];
   export let isLoading: boolean = false;
   export let selectedValue: T | undefined = undefined;
+  export let formatter: ((item: T) => string) | undefined = undefined;
 
   const combobox = createCombobox({ label: label || 'Actions' });
   const dispatch = createEventDispatcher<{ select: T }>();
@@ -27,7 +28,9 @@
 
   $: (async () => {
     if (selectedValue !== undefined) {
-      combobox.set({ selected: selectedValue });
+      combobox.set({
+        selected: formatter ? { ...selectedValue, name: formatter(selectedValue) } : selectedValue
+      });
 
       if (!mounted) await tick();
       dispatch('select', selectedValue);
@@ -37,9 +40,11 @@
   $: filtered = (() => {
     const value = $combobox.filter.toLowerCase().replace(/\s+/g, '');
     return items.filter((item) => {
+      if (formatter) {
+        return formatter(item).toLowerCase().replace(/\s+/g, '').includes(value);
+      }
       const rawName = item.name.toLowerCase().replace(/\s+/g, '');
-      const rawId = item.id.toString();
-      return rawName.includes(value) || rawId.includes(value);
+      return rawName.includes(value);
     });
   })();
 </script>
@@ -57,10 +62,11 @@
     >
       <input
         use:combobox.input
-        on:select={(e) => (selectedValue = noTypeCheck(e).detail.selected)}
+        on:select={(e) => {
+          selectedValue = noTypeCheck(e).detail.selected;
+        }}
         disabled={isLoading}
         class="w-full bg-transparent px-4 outline-none"
-        value={$combobox.selected.name}
       />
 
       {#if isLoading}
@@ -76,7 +82,7 @@
             type="button"
             class={$combobox.expanded ? 'rotate-180' : 'rotate-0'}
           >
-            <Icon name="chevronDown" />
+            <Icon name="chevronDown" class="w-[18px]" />
           </Button>
         </div>
       {/if}
@@ -104,7 +110,7 @@
             )}
             use:combobox.item={{ value }}
           >
-            <span class="block truncate">{value.name}</span>
+            <span class="block truncate">{formatter ? formatter(value) : value.name}</span>
           </li>
         {:else}
           <li class="relative cursor-default select-none px-4 py-2 text-color">

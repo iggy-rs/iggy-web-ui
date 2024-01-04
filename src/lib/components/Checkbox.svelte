@@ -84,15 +84,15 @@
     @apply bg-[#32AD84];
   }
 
+  input[type='checkbox']:checked + div + svg {
+    @apply opacity-100 stroke-white;
+  }
+
   input[type='checkbox']:checked:disabled + div {
-    @apply bg-white opacity-50;
+    @apply opacity-50;
   }
 
   input[type='checkbox']:disabled {
     @apply cursor-not-allowed;
-  }
-
-  input[type='checkbox']:checked + div + svg {
-    @apply opacity-100 scale-100 stroke-black dark:stroke-white;
   }
 </style>

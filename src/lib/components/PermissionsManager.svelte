@@ -44,15 +44,11 @@
   import { noTypeCheck } from '$lib/utils/noTypeCheck';
   import { fade } from 'svelte/transition';
 
-  const formatSelected = (id: number, name: string) => {
-    return { id, name: `id: ${id}, ${name}` };
-  };
-
   export let streams: Stream[];
 
   let topics: Topic[] = [];
   let fetchingTopics = false;
-  let selectedStream: { id: number; name: string } = formatSelected(streams[0].id, streams[0].name);
+  let selectedStream: { id: number; name: string } = { name: streams[0].name, id: streams[0].id };
   let selectedTopic: { id: number; name: string } | undefined = undefined;
 
   const fetchTopics = async (id: number) => {
@@ -69,8 +65,12 @@
     fetchingTopics = false;
     const newTopics = data.map(topicMapper) as Topic[];
 
-    if (newTopics.length === 0) return;
-    selectedTopic = formatSelected(newTopics[0].id, newTopics[0].name);
+    if (newTopics.length > 0) {
+      selectedTopic = { name: newTopics[0].name, id: newTopics[0].id };
+    } else {
+      selectedTopic = undefined;
+    }
+
     topics = newTopics;
   };
 
@@ -217,8 +217,8 @@
   $: fetchTopics(selectedStream.id);
   $: buildTopicsPerms(topics);
 
-  $: tainedStreams = (() => {
-    const tained: Set<number> = new Set([]);
+  $: taintedStreams = (() => {
+    const tainted: Set<number> = new Set([]);
 
     Object.keys(streamsPerms).forEach((streamId) => {
       Object.keys(streamsPerms[streamId]).forEach((permissionKey) => {
@@ -231,19 +231,19 @@
               .map((k) => topicPerm[k])
               .some((p) => p.checked);
 
-            if (isTopicTained) tained.add(streamId);
+            if (isTopicTained) tainted.add(streamId);
           });
         } else {
           const perm = streamsPerms[streamId][permissionKey];
-          if (perm.checked && !perm.disabled) tained.add(streamId);
+          if (perm.checked && !perm.disabled) tainted.add(streamId);
         }
       });
     });
 
-    return Array.from(tained);
-  })().map((tainedStreamId) => {
-    const name = streams.find((stream) => stream.id === +tainedStreamId)!.name;
-    return { name, id: +tainedStreamId };
+    return Array.from(tainted);
+  })().map((taintedStreamId) => {
+    const name = streams.find((stream) => stream.id === +taintedStreamId)!.name;
+    return { name, id: +taintedStreamId };
   });
 </script>
 
@@ -267,14 +267,14 @@
   {/each}
 </div>
 
-<div class="flex gap-3 mt-4 items-center">
+<div class="flex flex-wrap gap-3 mt-4 items-center">
   <h4 class="text-lg text-color mr-2">Granular permissions</h4>
 
-  {#each tainedStreams as { id, name } (id)}
+  {#each taintedStreams as { id, name } (id)}
     <button
       type="button"
-      on:click={() => (selectedStream = formatSelected(id, name))}
-      transition:fade={{ duration: 100 }}
+      on:click={() => (selectedStream = { name, id })}
+      transition:fade={{ duration: 80 }}
       class={twMerge(
         'rounded-3xl px-3 py-1 whitespace-nowrap text-xs hover:shadow-lg  hover:ring-2 transition-all text-white ring-1 ring-green-500 shadow-md hover:cursor-pointer',
         selectedStream.id === id && 'bg-green-500'
@@ -287,10 +287,8 @@
 <div class="grid grid-cols-[1fr_auto_1fr] gap-5 mt-4">
   <div class="w-full flex flex-col">
     <Combobox
-      items={streams.map((stream) => ({
-        id: stream.id,
-        name: `id: ${stream.id}, ${stream.name}`
-      }))}
+      items={streams}
+      formatter={(item) => `id: ${item.id}, ${item.name}`}
       label={`Stream`}
       bind:selectedValue={selectedStream}
     />
@@ -318,23 +316,32 @@
     </div>
   </div>
 
-  <span class="h-[68px] w-[45px] flex flex-col justify-end">
-    {#if selectedTopic}
-      <div class="w-fit h-fit">
-        <Icon name="chevronRight" class="h-[40px] dark:stroke-white mt-auto  w-auto" />
+  <div class="h-[68px] w-[40px] flex flex-col justify-end">
+    <div class="w-fit h-fit">
+      <Icon name="chevronRight" class="h-[40px] dark:stroke-white mt-auto  w-auto" />
+    </div>
+  </div>
+
+  <div class="w-full flex flex-col">
+    {#if topics.length === 0 && !streamsPerms[selectedStream.id].manage_topics.checked}
+      <em class="italic dark:text-white text-center block mt-[34px]">
+        This stream has no topics.
+      </em>
+    {/if}
+    {#if streamsPerms[selectedStream.id].manage_topics.checked}
+      <div class="dark:text-white mt-9 text-center">
+        <span> Every topic in stream </span>
+        <em class="text-green-500">{selectedStream.name}</em>
+        <span> {topics.length === 0 ? 'will have' : 'has'} full permissions </span>
       </div>
     {/if}
-  </span>
 
-  <div class="w-full flex flex-col relative">
-    {#if topics.length > 0 && selectedTopic && Object.keys(streamsPerms[selectedStream.id].topicPerms).length > 0}
+    {#if selectedTopic && Object.keys(streamsPerms[selectedStream.id].topicPerms).length > 0 && !streamsPerms[selectedStream.id].manage_topics.checked}
       <div>
         <Combobox
           isLoading={fetchingTopics}
-          items={topics.map((topic) => ({
-            id: topic.id,
-            name: `id: ${topic.id}, ${topic.name}`
-          }))}
+          items={topics}
+          formatter={(item) => `id: ${item.id}, ${item.name}`}
           label="Topic"
           bind:selectedValue={selectedTopic}
         />
@@ -353,10 +360,6 @@
             </label>
           {/each}
         </div>
-      </div>
-    {:else}
-      <div class="absolute inset-0 flex items-start justify-center">
-        <em class="italic dark:text-white block mt-[34px]"> This stream has no topics. </em>
       </div>
     {/if}
   </div>

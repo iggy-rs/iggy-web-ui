@@ -48,7 +48,7 @@
       <Icon
         name="chevronDown"
         class={twMerge(
-          ' pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 fill-creator-black w-[14px] transition-transform',
+          ' pointer-events-none absolute right-3 top-1/2 -translate-y-1/2  w-[18px] transition-transform',
           $listbox.expanded && '-rotate-180'
         )}
       />
