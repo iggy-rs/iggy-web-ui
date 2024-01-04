@@ -15,7 +15,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
   const result = await fetchApi({ body, path, method, cookies, queryParams });
 
-  console.log('fetchApi', result);
   const { data, response } = await handleFetchErrors(result, cookies);
 
   return json({ data, ok: response.ok, status: response.status });

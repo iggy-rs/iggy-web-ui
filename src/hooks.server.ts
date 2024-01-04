@@ -25,10 +25,6 @@ const accessTokenOkRedirects = [
     to: typedRoute('/dashboard/overview')
   },
   {
-    from: typedRoute('/dashboard/settings'),
-    to: typedRoute('/dashboard/settings/webUI')
-  },
-  {
     from: typedRoute('/auth/sign-in'),
     to: typedRoute('/dashboard/overview')
   }
@@ -51,7 +47,6 @@ const handleAuth: Handle = async ({ event, resolve }) => {
       method: 'POST',
       body: { refresh_token: refreshToken }
     });
-    console.log('refresh token post', refreshToken);
 
     const { data } = await handleFetchErrors(result, cookies);
     const { access_token, refresh_token } = (data as any).tokens;

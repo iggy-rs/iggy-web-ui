@@ -25,7 +25,6 @@
 <form
   method="POST"
   on:submit={() => {
-    console.log('on submit');
     if ($remember.rememberMe) {
       $remember.username = $form.username;
       $remember.password = $form.password;

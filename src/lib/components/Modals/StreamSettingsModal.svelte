@@ -21,8 +21,6 @@
   export let stream: StreamDetails;
   export let closeModal: CloseModalFn;
 
-  $: console.log('stream', stream);
-
   let confirmationOpen = false;
 
   const schema = z.object({

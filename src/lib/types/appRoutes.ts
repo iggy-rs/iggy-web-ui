@@ -1,4 +1,4 @@
-type SettingsSegment = 'settings' | `settings/${'server' | 'users' | 'terminal' | 'webUI'}`;
+type SettingsSegment = `settings/${'server' | 'users' | 'terminal' | 'webUI'}`;
 
 type DashboardRoutes = `/dashboard/${
   | 'overview'

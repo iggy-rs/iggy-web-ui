@@ -276,8 +276,8 @@
       on:click={() => (selectedStream = { name, id })}
       transition:fade={{ duration: 80 }}
       class={twMerge(
-        'rounded-3xl px-3 py-1 whitespace-nowrap text-xs hover:shadow-lg  hover:ring-2 transition-all text-white ring-1 ring-green-500 shadow-md hover:cursor-pointer',
-        selectedStream.id === id && 'bg-green-500'
+        'rounded-3xl px-3 py-1 whitespace-nowrap text-xs hover:shadow-lg  hover:ring-2 transition-all dark:text-white ring-1 ring-green-500 shadow-md hover:cursor-pointer',
+        selectedStream.id === id && 'bg-green-500 text-white'
       )}
       >id: {id}, {name}
     </button>

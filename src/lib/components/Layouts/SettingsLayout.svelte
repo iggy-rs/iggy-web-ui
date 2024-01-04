@@ -10,8 +10,6 @@
 
   $: activeTab = $page.url.pathname.split('/').slice(-1)[0];
 
-  $: console.log(activeTab);
-
   const tabs = [
     {
       tab: 'server',

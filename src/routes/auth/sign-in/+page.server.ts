@@ -15,16 +15,12 @@ const schema = z.object({
 export const load = async () => {
   const form = await superValidate(schema);
 
-  console.log('load sign in');
-
   return { form };
 };
 
 export const actions = {
   default: async ({ request, cookies, locals }) => {
     const form = await superValidate(request, schema);
-
-    console.log('posting sign in');
 
     if (!form.valid) {
       return fail(400, { form });
@@ -46,8 +42,6 @@ export const actions = {
       tokens: { access_token, refresh_token }
     } = (await getJson(result)) as any;
 
-    console.log({ access_token, refresh_token });
-
     cookies.set(tokens.accessToken, access_token.token, {
       path: '/',
       httpOnly: true,
@@ -55,8 +49,6 @@ export const actions = {
       secure: true,
       expires: new Date(access_token.expiry * 1000)
     });
-
-    console.log('login');
 
     cookies.set(tokens.refreshToken, refresh_token.token, {
       path: '/',

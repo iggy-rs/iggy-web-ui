@@ -7,33 +7,38 @@
   import { tooltip } from '$lib/actions/tooltip';
   import { typedRoute } from '$lib/types/appRoutes';
 
-  const navItems = [
+  $: navItems = [
     {
       name: 'Overview',
       icon: 'home',
-      href: typedRoute('/dashboard/overview')
+      href: typedRoute('/dashboard/overview'),
+      active: $page.url.pathname.includes(typedRoute('/dashboard/overview'))
     },
     {
       name: 'Streams',
       icon: 'stream',
-      href: typedRoute('/dashboard/streams')
+      href: typedRoute('/dashboard/streams'),
+      active: $page.url.pathname.includes(typedRoute('/dashboard/streams'))
     },
     {
       name: 'Clients',
       icon: 'clients',
-      href: typedRoute('/dashboard/clients')
+      href: typedRoute('/dashboard/clients'),
+      active: $page.url.pathname.includes(typedRoute('/dashboard/clients'))
     },
     {
       name: 'Logs',
       icon: 'logs',
-      href: typedRoute('/dashboard/logs')
+      href: typedRoute('/dashboard/logs'),
+      active: $page.url.pathname.includes(typedRoute('/dashboard/logs'))
     },
     {
       name: 'Settings',
       icon: 'settings',
-      href: typedRoute('/dashboard/settings')
+      href: typedRoute('/dashboard/settings/webUI'),
+      active: $page.url.pathname.includes('/dashboard/settings')
     }
-  ] satisfies { name: string; icon: iconType; href: string }[];
+  ] satisfies { name: string; icon: iconType; href: string; active: boolean }[];
 </script>
 
 <nav
@@ -47,8 +52,7 @@
   </a>
 
   <ul class="flex flex-col gap-7">
-    {#each navItems as { name, icon, href }}
-      {@const isActive = $page.url.pathname.includes(href)}
+    {#each navItems as { name, icon, href, active }}
       <li>
         <div use:tooltip={{ placement: 'right' }}>
           <a
@@ -56,8 +60,8 @@
             data-trigger
             class={twMerge(
               'p-2 block rounded-xl transition-colors  ring-2 ring-transparent',
-              isActive && 'ring-black dark:ring-white',
-              !isActive && 'hover:bg-shadeL500 dark:hover:bg-shadeD300'
+              active && 'ring-black dark:ring-white',
+              !active && 'hover:bg-shadeL500 dark:hover:bg-shadeD300'
             )}
           >
             <Icon name={icon} class="w-[27px] h-[27px] text-black dark:text-white" />
