@@ -48,8 +48,12 @@
 
   let topics: Topic[] = [];
   let fetchingTopics = false;
-  let selectedStream: { id: number; name: string } = { name: streams[0].name, id: streams[0].id };
+  let selectedStream: { id: number; name: string } | undefined = undefined;
   let selectedTopic: { id: number; name: string } | undefined = undefined;
+
+  if (streams.length > 0) {
+    selectedStream = { name: streams[0].name, id: streams[0].id };
+  }
 
   const fetchTopics = async (id: number) => {
     fetchingTopics = true;
@@ -77,7 +81,7 @@
   const buildTopicsPerms = (newTopics: Topic[]) => {
     const tempTopicPerms: TopicsPerms = {};
 
-    if (Object.keys(streamsPerms[selectedStream.id].topicPerms).length > 0) {
+    if (!selectedStream || Object.keys(streamsPerms[selectedStream.id].topicPerms).length > 0) {
       return;
     }
 
@@ -214,7 +218,7 @@
     return tempPerms;
   })() satisfies StreamsPerms;
 
-  $: fetchTopics(selectedStream.id);
+  $: if (selectedStream) fetchTopics(selectedStream.id);
   $: buildTopicsPerms(topics);
 
   $: taintedStreams = (() => {
@@ -267,100 +271,102 @@
   {/each}
 </div>
 
-<div class="flex flex-wrap gap-3 mt-4 items-center">
-  <h4 class="text-lg text-color mr-2">Granular permissions</h4>
+{#if selectedStream}
+  <div class="flex flex-wrap gap-3 mt-6 items-center">
+    <h4 class="text-lg text-color mr-2">Granular permissions</h4>
 
-  {#each taintedStreams as { id, name } (id)}
-    <button
-      type="button"
-      on:click={() => (selectedStream = { name, id })}
-      transition:fade={{ duration: 80 }}
-      class={twMerge(
-        'rounded-3xl px-3 py-1 whitespace-nowrap text-xs hover:shadow-lg  hover:ring-2 transition-all dark:text-white ring-1 ring-green-500 shadow-md hover:cursor-pointer',
-        selectedStream.id === id && 'bg-green-500 text-white'
-      )}
-      >id: {id}, {name}
-    </button>
-  {/each}
-</div>
-
-<div class="grid grid-cols-[1fr_auto_1fr] gap-5 mt-4">
-  <div class="w-full flex flex-col">
-    <Combobox
-      items={streams}
-      formatter={(item) => `id: ${item.id}, ${item.name}`}
-      label={`Stream`}
-      bind:selectedValue={selectedStream}
-    />
-
-    <div class="grid grid-cols-2 mt-4">
-      {#each Object.keys(streamsPerms[selectedStream.id]) as key (key)}
-        {#if key !== 'topicPerms'}
-          <label
-            class={twMerge(
-              'flex gap-2 items-center text-color cursor-pointer',
-              streamsPerms[selectedStream.id][key].disabled && 'cursor-not-allowed text-shadeL800'
-            )}
-            for={`stream-${key}-permission`}
-          >
-            <Checkbox
-              bind:checked={streamsPerms[selectedStream.id][key].checked}
-              value={streamsPerms[selectedStream.id][key].name}
-              disabled={streamsPerms[selectedStream.id][key].disabled}
-              id={`stream-${key}-permission`}
-            />
-            <span class={twMerge('text-sm')}>{streamsPerms[selectedStream.id][key].name}</span>
-          </label>
-        {/if}
-      {/each}
-    </div>
+    {#each taintedStreams as { id, name } (id)}
+      <button
+        type="button"
+        on:click={() => (selectedStream = { name, id })}
+        transition:fade={{ duration: 80 }}
+        class={twMerge(
+          'rounded-3xl px-3 py-1 whitespace-nowrap text-xs hover:shadow-lg  hover:ring-2 transition-all dark:text-white ring-1 ring-green-500 shadow-md hover:cursor-pointer',
+          selectedStream?.id === id && 'bg-green-500 text-white'
+        )}
+        >id: {id}, {name}
+      </button>
+    {/each}
   </div>
 
-  <div class="h-[68px] w-[40px] flex flex-col justify-end">
-    <div class="w-fit h-fit">
-      <Icon name="chevronRight" class="h-[40px] dark:stroke-white mt-auto  w-auto" />
-    </div>
-  </div>
+  <div class="grid grid-cols-[1fr_auto_1fr] gap-5 mt-4">
+    <div class="w-full flex flex-col">
+      <Combobox
+        items={streams}
+        formatter={(item) => `id: ${item.id}, ${item.name}`}
+        label={`Stream`}
+        bind:selectedValue={selectedStream}
+      />
 
-  <div class="w-full flex flex-col">
-    {#if topics.length === 0 && !streamsPerms[selectedStream.id].manage_topics.checked}
-      <em class="italic dark:text-white text-center block mt-[34px]">
-        This stream has no topics.
-      </em>
-    {/if}
-    {#if streamsPerms[selectedStream.id].manage_topics.checked}
-      <div class="dark:text-white mt-9 text-center">
-        <span> Every topic in stream </span>
-        <em class="text-green-500">{selectedStream.name}</em>
-        <span> {topics.length === 0 ? 'will have' : 'has'} full permissions </span>
-      </div>
-    {/if}
-
-    {#if selectedTopic && Object.keys(streamsPerms[selectedStream.id].topicPerms).length > 0 && !streamsPerms[selectedStream.id].manage_topics.checked}
-      <div>
-        <Combobox
-          isLoading={fetchingTopics}
-          items={topics}
-          formatter={(item) => `id: ${item.id}, ${item.name}`}
-          label="Topic"
-          bind:selectedValue={selectedTopic}
-        />
-
-        <div class="grid grid-cols-2 mt-4">
-          {#each Object.keys(streamsPerms[selectedStream.id].topicPerms[selectedTopic.id]) as key (key)}
-            <label class="flex gap-2 items-center text-color cursor-pointer">
+      <div class="grid grid-cols-2 mt-4">
+        {#each Object.keys(streamsPerms[selectedStream.id]) as key (key)}
+          {#if key !== 'topicPerms'}
+            <label
+              class={twMerge(
+                'flex gap-2 items-center text-color cursor-pointer',
+                streamsPerms[selectedStream.id][key].disabled && 'cursor-not-allowed text-shadeL800'
+              )}
+              for={`stream-${key}-permission`}
+            >
               <Checkbox
-                bind:checked={streamsPerms[selectedStream.id].topicPerms[selectedTopic.id][key]
-                  .checked}
-                value={''}
+                bind:checked={streamsPerms[selectedStream.id][key].checked}
+                value={streamsPerms[selectedStream.id][key].name}
+                disabled={streamsPerms[selectedStream.id][key].disabled}
+                id={`stream-${key}-permission`}
               />
-              <span class="text-sm"
-                >{streamsPerms[selectedStream.id].topicPerms[selectedTopic.id][key].name}</span
-              >
+              <span class={twMerge('text-sm')}>{streamsPerms[selectedStream.id][key].name}</span>
             </label>
-          {/each}
-        </div>
+          {/if}
+        {/each}
       </div>
-    {/if}
+    </div>
+
+    <div class="h-[68px] w-[40px] flex flex-col justify-end">
+      <div class="w-fit h-fit">
+        <Icon name="chevronRight" class="h-[40px] dark:stroke-white mt-auto  w-auto" />
+      </div>
+    </div>
+
+    <div class="w-full flex flex-col">
+      {#if topics.length === 0 && !streamsPerms[selectedStream.id].manage_topics.checked}
+        <em class="italic dark:text-white text-center block mt-[34px]">
+          This stream has no topics.
+        </em>
+      {/if}
+      {#if streamsPerms[selectedStream.id].manage_topics.checked}
+        <div class="dark:text-white mt-9 text-center">
+          <span> Every topic in stream </span>
+          <em class="text-green-500">{selectedStream.name}</em>
+          <span> {topics.length === 0 ? 'will have' : 'has'} full permissions </span>
+        </div>
+      {/if}
+
+      {#if selectedTopic && Object.keys(streamsPerms[selectedStream.id].topicPerms).length > 0 && !streamsPerms[selectedStream.id].manage_topics.checked}
+        <div>
+          <Combobox
+            isLoading={fetchingTopics}
+            items={topics}
+            formatter={(item) => `id: ${item.id}, ${item.name}`}
+            label="Topic"
+            bind:selectedValue={selectedTopic}
+          />
+
+          <div class="grid grid-cols-2 mt-4">
+            {#each Object.keys(streamsPerms[selectedStream.id].topicPerms[selectedTopic.id]) as key (key)}
+              <label class="flex gap-2 items-center text-color cursor-pointer">
+                <Checkbox
+                  bind:checked={streamsPerms[selectedStream.id].topicPerms[selectedTopic.id][key]
+                    .checked}
+                  value={''}
+                />
+                <span class="text-sm"
+                  >{streamsPerms[selectedStream.id].topicPerms[selectedTopic.id][key].name}</span
+                >
+              </label>
+            {/each}
+          </div>
+        </div>
+      {/if}
+    </div>
   </div>
-</div>
+{/if}

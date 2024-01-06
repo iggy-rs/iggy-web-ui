@@ -1,7 +1,10 @@
+import { bytesFormatter } from '$lib/utils/formatters/bytesFormatter';
+
 export type Stream = {
   id: number;
   name: string;
   sizeBytes: number;
+  sizeFormatted: string;
   messagesCount: number;
   topicsCount: number;
   createdAt: number;
@@ -12,6 +15,7 @@ export function streamMapper(item: any): Stream {
     id: item.id,
     name: item.name,
     sizeBytes: item.size_bytes,
+    sizeFormatted: bytesFormatter(item.size_bytes),
     messagesCount: item.messages_count,
     topicsCount: item.topics_count,
     createdAt: item.created_at

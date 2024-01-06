@@ -32,7 +32,7 @@
 
   export let data: T[];
   export let emptyDataMessage: string;
-  export let colNames: Record<keyof T, string>;
+  export let colNames: Record<keyof T, string | undefined>;
   export let rowClass: string;
 
   let animationEnabled = true;
@@ -57,10 +57,17 @@
     asc: undefined
   };
 
-  $: columns = Object.entries(colNames).map(([key, value]) => ({
-    columnDisplayedName: value,
-    columnName: key
-  })) as { columnDisplayedName: string; columnName: keyof T }[];
+  // $: columns =   Object.entries(colNames).map(([key, value]) => ({
+  //   columnDisplayedName: value,
+  //   columnName: key
+  // })) as { columnDisplayedName: string; columnName: keyof T }[];
+
+  $: columns = Object.keys(colNames)
+    .filter((k) => colNames[k as string])
+    .map((key) => ({
+      columnDisplayedName: colNames[key as keyof T],
+      columnName: key
+    })) as { columnDisplayedName: string; columnName: keyof T }[];
 
   $: orderedData = ordering.key ? orderData(data, ordering.key, ordering.asc!) : data;
 

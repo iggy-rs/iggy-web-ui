@@ -16,8 +16,7 @@
 
   const schema = z.object({
     username: z.string().min(1).trim(),
-    password: z.string().min(4, { message: 'Password must contain at least 4 characters' }).trim(),
-    status: z.enum(['active', 'inactive'])
+    password: z.string().min(4, { message: 'Password must contain at least 4 characters' }).trim()
   });
 
   const { form, errors, enhance, constraints } = superForm(superValidateSync(schema), {
@@ -32,42 +31,41 @@
 </script>
 
 <ModalBase {closeModal} title="Add User">
-  <div class="h-[600px] flex flex-col">
-    <form method="POST" class="h-[450px] gap-4" use:enhance>
-      <div class="grid grid-cols-3 gap-4 min-w-[800px]">
-        <Input
-          label="Username"
-          name="username"
-          bind:value={$form.username}
-          {...$constraints.username}
-          errorMessage={$errors.username?.join(',')}
-        />
+  <form method="POST" class="min-h-[400px] flex flex-col" use:enhance>
+    <div class="grid grid-cols-3 gap-4 min-w-[800px]">
+      <Input
+        label="Username"
+        name="username"
+        bind:value={$form.username}
+        {...$constraints.username}
+        errorMessage={$errors.username?.join(',')}
+      />
 
-        <PasswordInput
-          label="Password"
-          name="password"
-          errorMessage={$errors.password?.join(',')}
-          bind:value={$form.password}
-          {...$constraints.password}
-        />
+      <PasswordInput
+        label="Password"
+        name="password"
+        errorMessage={$errors.password?.join(',')}
+        bind:value={$form.password}
+        {...$constraints.password}
+      />
 
-        <Listbox
-          label="Status"
-          options={[
-            { name: 'Active', value: 'active' },
-            { name: 'Inactive', value: 'inactive' }
-          ]}
-          selectedValue="active"
-        />
-      </div>
+      <Listbox
+        label="Status"
+        options={[
+          { name: 'Active', value: 'active' },
+          { name: 'Inactive', value: 'inactive' }
+        ]}
+        selectedValue="active"
+      />
+    </div>
 
-      <PermissionsManager {streams} />
-    </form>
-    <div class="flex justify-end gap-3 mt-auto w-[350px] ml-auto">
+    <PermissionsManager {streams} />
+
+    <div class="flex justify-end gap-3 mt-16 w-[350px] ml-auto">
       <Button variant="text" type="button" class="w-2/5" on:click={() => closeModal()}
         >Cancel</Button
       >
       <Button type="submit" variant="contained" class="w-2/5">Add</Button>
     </div>
-  </div>
+  </form>
 </ModalBase>

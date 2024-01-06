@@ -11,6 +11,7 @@
   import { onMount } from 'svelte';
   import { noTypeCheck } from '$lib/utils/noTypeCheck.js';
   import { slide } from 'svelte/transition';
+  import { bytesFormatter } from '$lib/utils/formatters/bytesFormatter';
 
   export let data;
 
@@ -62,7 +63,7 @@
                 <span class="text-xs">
                   Id: {id}
                 </span>
-                <span class="text-xs">Size: {sizeBytes}</span>
+                <span class="text-xs">Size: {bytesFormatter(sizeBytes)}</span>
               </div>
 
               <div class="flex flex-col items-start">

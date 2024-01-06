@@ -7,6 +7,7 @@
   import SortableList from '$lib/components/SortableList.svelte';
   import { typedRoute } from '$lib/types/appRoutes.js';
   import { arrayMax } from '$lib/utils/arrayMax';
+  import { bytesFormatter } from '$lib/utils/formatters/bytesFormatter';
   import { onMount } from 'svelte';
 
   export let data;
@@ -32,7 +33,7 @@
       <span>Id: {stream.id}</span>
     </div>
     <div class="chip">
-      <span>Size: {stream.sizeBytes}</span>
+      <span>Size: {stream.sizeFormatted}</span>
     </div>
     <div class="chip">
       <span>Messages: {stream.messagesCount}</span>
@@ -68,7 +69,8 @@
     messagesCount: 'Messages',
     partitionsCount: 'Partitions',
     messageExpiry: 'Message expiry',
-    sizeBytes: 'Size',
-    createdAt: 'Created'
+    sizeFormatted: 'Size',
+    createdAt: 'Created',
+    sizeBytes: undefined
   }}
 />

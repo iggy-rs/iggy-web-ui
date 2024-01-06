@@ -23,7 +23,7 @@
           <span>ms</span>
           {#if intervalValue >= 1000}
             <span class="text-sm">
-              ({durationFormatter(intervalValue / 1000)})
+              ({durationFormatter(Math.round(intervalValue / 1000))})
             </span>
           {/if}
         </div>

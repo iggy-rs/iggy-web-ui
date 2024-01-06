@@ -34,6 +34,8 @@ export const actions = {
       body: { username, password }
     });
 
+    console.log('result', result);
+
     if (!(result instanceof Response) || !result.ok) {
       return message(form, 'Username or password is not valid', { status: 403 });
     }

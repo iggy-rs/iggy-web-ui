@@ -34,7 +34,7 @@
       <span>Id: {topic.id}</span>
     </div>
     <div class="chip">
-      <span>Size: {topic.sizeBytes}</span>
+      <span>Size: {topic.sizeFormatted}</span>
     </div>
     <div class="chip">
       <span>Messages: {topic.messagesCount}</span>
@@ -65,7 +65,8 @@
     currentOffset: 'Offset',
     segmentsCount: 'Segments',
     messagesCount: 'Messages',
-    sizeBytes: 'Size',
-    createdAt: 'Created'
+    sizeFormatted: 'Size',
+    createdAt: 'Created',
+    sizeBytes: undefined
   }}
 />
