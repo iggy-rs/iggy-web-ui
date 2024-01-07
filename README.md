@@ -14,22 +14,51 @@ The Iggy Web UI provides a user-friendly panel for managing various aspects of t
 
 ### Getting Started
 
+1. **Run Iggy server first**
+
+   ```sh
+   docker pull iggyrs/iggy:latest
+   ```
+
+   ```sh
+   docker run -p 3000:3000 -p 8090:8090 iggyrs/iggy:latest
+   ```
+
 1. **Clone the repository:**
 
    ```sh
    git clone https://github.com/iggy-rs/iggy-web-ui.git
    ```
 
-2. **Build the project:**
+1. **Build the project:**
 
    ```sh
    cd iggy-web-ui
    npm install
    ```
 
-3. **Run the project:**
+1. **Run the project:**
+
    ```sh
    npm run dev
+   ```
+
+   **To expose port in local network run:**
+
+   ```sh
+   npm run dev -- --host --port 3333
+   ```
+
+   **If Iggy server was run using cargo directly we need to change API_URL env in web ui root folder to:**
+
+   ```sh
+   API_URL=http://127.0.0.1:3000
+   ```
+
+   **instead of**
+
+   ```sh
+   API_URL=http://localhost:3000
    ```
 
 ## Roadmap

@@ -1,14 +1,23 @@
+import prettyBytes from 'pretty-bytes';
+
 export function bytesFormatter(bytes: number) {
-  if (bytes === 0) return '0 Bytes';
+  const over1Mb = bytes > 1000000;
+  const decimalPlaces = over1Mb ? 2 : 0;
 
-  const k = 1024;
-  const sizes = ['Bytes', 'kB', 'MB', 'GB'] as const;
+  return prettyBytes(bytes, {
+    maximumFractionDigits: decimalPlaces,
+    minimumFractionDigits: decimalPlaces
+  });
 
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  // if (bytes === 0) return '0 Bytes';
 
-  const size = sizes[i];
+  // const k = 1024;
+  // const sizes = ['Bytes', 'kB', 'MB', 'GB'] as const;
 
-  return `${parseFloat(
-    (bytes / Math.pow(k, i)).toFixed(size !== 'Bytes' && size !== 'kB' ? 2 : 0)
-  )} ${size}`;
+  // const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  // const size = sizes[i];
+  // const decimalPlaces = size !== 'Bytes' && size !== 'kB' ? 2 : 0;
+
+  // return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${size}`;
 }
