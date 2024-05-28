@@ -30,7 +30,7 @@ export type Stats = {
 
 export function statsMapper(item: any): Stats {
   const formattedRuntime = formatDuration(
-    intervalToDuration({ start: 0, end: item.run_time * 1000 }),
+    item.run_time.duration,
     {
       format: ['hours', 'minutes', 'seconds'],
       zero: true,
@@ -64,18 +64,18 @@ export function statsMapper(item: any): Stats {
       rawValue: item.cpu_usage
     },
     memoryUsage: {
-      value: bytesFormatter(item.memory_usage),
+      value: item.memory_usage,
       name: 'Memory usage',
       rawValue: item.memory_usage
     },
     totalMemory: {
       name: 'Total memory',
-      value: bytesFormatter(item.total_memory),
+      value: item.total_memory,
       rawValue: item.total_memory
     },
     availableMemory: {
       name: 'Available memory',
-      value: bytesFormatter(item.available_memory),
+      value: item.available_memory,
       rawValue: item.available_memory
     },
     runTime: {
@@ -91,18 +91,18 @@ export function statsMapper(item: any): Stats {
 
     readBytes: {
       name: 'Read',
-      value: bytesFormatter(item.read_bytes),
+      value: item.read_bytes,
       rawValue: item.read_bytes
     },
 
     writtenBytes: {
       name: 'Written',
-      value: bytesFormatter(item.written_bytes),
+      value: item.written_bytes,
       rawValue: item.written_bytes
     },
     messagesSizeBytes: {
       name: 'Messages Size',
-      value: bytesFormatter(item.messages_size_bytes),
+      value: item.messages_size_bytes,
       rawValue: item.messages_size_bytes
     },
     streamsCount: {

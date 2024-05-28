@@ -63,7 +63,7 @@
                 <span class="text-xs">
                   Id: {id}
                 </span>
-                <span class="text-xs">Size: {bytesFormatter(sizeBytes)}</span>
+                <span class="text-xs">Size: {sizeBytes}</span>
               </div>
 
               <div class="flex flex-col items-start">
