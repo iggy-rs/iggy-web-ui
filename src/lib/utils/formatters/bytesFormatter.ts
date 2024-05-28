@@ -1,13 +1,16 @@
 import prettyBytes from 'pretty-bytes';
 
-export function bytesFormatter(bytes: number) {
-  const over1Mb = bytes > 1000000;
-  const decimalPlaces = over1Mb ? 2 : 0;
+export function bytesFormatter(bytes: any) {
+  // The bytes size string is already formatted by the API
+  return bytes;
 
-  return prettyBytes(bytes, {
-    maximumFractionDigits: decimalPlaces,
-    minimumFractionDigits: decimalPlaces
-  });
+  // const over1Mb = bytes > 1000000;
+  // const decimalPlaces = over1Mb ? 2 : 0;
+
+  // return prettyBytes(bytes, {
+  //   maximumFractionDigits: decimalPlaces,
+  //   minimumFractionDigits: decimalPlaces
+  // });
 
   // if (bytes === 0) return '0 Bytes';
 
