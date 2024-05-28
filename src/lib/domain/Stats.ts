@@ -30,7 +30,7 @@ export type Stats = {
 
 export function statsMapper(item: any): Stats {
   const formattedRuntime = formatDuration(
-    item.run_time.duration,
+    item.run_time,
     {
       format: ['hours', 'minutes', 'seconds'],
       zero: true,
