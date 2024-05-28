@@ -49,7 +49,7 @@ export const actions = {
       httpOnly: true,
       sameSite: 'lax',
       secure: true,
-      expires: new Date(access_token.expiry * 1000)
+      expires: new Date(access_token.expiry)
     });
 
     cookies.set(tokens.refreshToken, refresh_token.token, {
@@ -57,7 +57,7 @@ export const actions = {
       httpOnly: true,
       sameSite: 'lax',
       secure: true,
-      expires: new Date(refresh_token.expiry * 1000)
+      expires: new Date(refresh_token.expiry)
     });
 
     throw redirect(302, typedRoute('/dashboard/overview'));

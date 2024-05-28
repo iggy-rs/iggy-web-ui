@@ -56,7 +56,7 @@ const handleAuth: Handle = async ({ event, resolve }) => {
       httpOnly: true,
       sameSite: 'lax',
       secure: true,
-      expires: new Date(access_token.expiry * 1000)
+      expires: new Date(access_token.expiry)
     });
 
     cookies.set(tokens.refreshToken, refresh_token.token, {
@@ -64,7 +64,7 @@ const handleAuth: Handle = async ({ event, resolve }) => {
       httpOnly: true,
       sameSite: 'lax',
       secure: true,
-      expires: new Date(refresh_token.expiry * 1000)
+      expires: new Date(refresh_token.expiry)
     });
 
     const invalidPathRedirect = accessTokenOkRedirects.find((r) => r.from === event.url.pathname);
