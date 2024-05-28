@@ -14,8 +14,8 @@ export function streamMapper(item: any): Stream {
   return {
     id: item.id,
     name: item.name,
-    sizeBytes: item.size_bytes,
-    sizeFormatted: item.size_bytes,
+    sizeBytes: item.size,
+    sizeFormatted: item.size,
     messagesCount: item.messages_count,
     topicsCount: item.topics_count,
     createdAt: item.created_at

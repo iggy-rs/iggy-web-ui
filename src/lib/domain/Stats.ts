@@ -102,8 +102,8 @@ export function statsMapper(item: any): Stats {
     },
     messagesSizeBytes: {
       name: 'Messages Size',
-      value: item.messages_size_bytes,
-      rawValue: item.messages_size_bytes
+      value: item.messages_size,
+      rawValue: item.messages_size
     },
     streamsCount: {
       name: 'Streams',

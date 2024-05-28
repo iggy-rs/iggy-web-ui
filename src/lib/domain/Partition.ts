@@ -16,8 +16,8 @@ export function partitionMapper(item: any): Partition {
     id: item.id,
     segmentsCount: item.segments_count,
     currentOffset: item.current_offset,
-    sizeBytes: item.size_bytes,
-    sizeFormatted: item.size_bytes,
+    sizeBytes: item.size,
+    sizeFormatted: item.size,
     messagesCount: item.messages_count,
     createdAt: formatDate(item.created_at)
   };
