@@ -34,14 +34,12 @@ export const actions = {
       body: { username, password }
     });
 
-    console.log('result', result);
-
     if (!(result instanceof Response) || !result.ok) {
       return message(form, 'Username or password is not valid', { status: 403 });
     }
 
     const {
-      tokens: { access_token, refresh_token }
+      access_token
     } = (await getJson(result)) as any;
 
     cookies.set(tokens.accessToken, access_token.token, {
@@ -49,15 +47,7 @@ export const actions = {
       httpOnly: true,
       sameSite: 'lax',
       secure: true,
-      expires: new Date(access_token.expiry)
-    });
-
-    cookies.set(tokens.refreshToken, refresh_token.token, {
-      path: '/',
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: true,
-      expires: new Date(refresh_token.expiry)
+      expires: new Date(1000 * access_token.expiry)
     });
 
     throw redirect(302, typedRoute('/dashboard/overview'));

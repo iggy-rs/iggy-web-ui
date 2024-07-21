@@ -19,7 +19,7 @@ POST {{url}}/users/refresh-token
 Content-Type: application/json
 
 {
-  "refresh_token": "bhVdVpdPM29AZGbKLIqqoCailFnkO2Xq6fwEWZPxL%2B5k3hT%2Fp%2FteEfZM0OHWDCtiKJY%3D"
+  "token": "bhVdVpdPM29AZGbKLIqqoCailFnkO2Xq6fwEWZPxL%2B5k3hT%2Fp%2FteEfZM0OHWDCtiKJY%3D"
 }
 
 

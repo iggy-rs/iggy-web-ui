@@ -148,7 +148,7 @@ type Auth =
       path: '/users/refresh-token';
       method: 'POST';
       body: {
-        refresh_token: string;
+        token: string;
       };
     };
 

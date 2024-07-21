@@ -10,11 +10,6 @@ export const actions = {
       expires: new Date(0)
     });
 
-    cookies.set(tokens.refreshToken, '', {
-      path: '/',
-      expires: new Date(0)
-    });
-
     console.log('deleting cookie');
 
     // redirect the user

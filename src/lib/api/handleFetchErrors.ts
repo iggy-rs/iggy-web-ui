@@ -26,11 +26,6 @@ export const handleFetchErrors = async (
       path: '/',
       expires: new Date(0)
     });
-
-    cookies.set(tokens.refreshToken, '', {
-      path: '/',
-      expires: new Date(0)
-    });
   };
 
   const errorHandlers = {
@@ -43,6 +38,7 @@ export const handleFetchErrors = async (
       };
     },
     401: () => {
+      // TODO: Refresh token
       console.log(`handleErrorStatus: 401 ${response.url}`);
       removeCookies();
       throw redirect(302, typedRoute('/auth/sign-in'));
@@ -66,6 +62,6 @@ export const handleFetchErrors = async (
   console.log(`handleErrorStatus: 500 ${response.url}`);
 
   throw error(500, {
-    message: 'handleErrorStatus: Internal serwer error'
+    message: 'handleErrorStatus: Internal server error'
   });
 };
