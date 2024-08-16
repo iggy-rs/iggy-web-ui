@@ -68,7 +68,7 @@
     name: 'Name',
     messagesCount: 'Messages',
     partitionsCount: 'Partitions',
-    messageExpiry: 'Message expiry',
+    messageExpiryFormatted: 'Message expiry',
     sizeFormatted: 'Size',
     createdAt: 'Created',
     sizeBytes: undefined
