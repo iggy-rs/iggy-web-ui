@@ -49,16 +49,16 @@ The Iggy Web UI provides a user-friendly panel for managing various aspects of t
    npm run dev -- --host --port 3333
    ```
 
-   **If Iggy server was run using cargo directly we need to change API_URL env in web ui root folder to:**
+   **If Iggy server was run using cargo directly we need to change PUBLIC_IGGY_API_URL env in web ui root folder to:**
 
    ```sh
-   API_URL=http://127.0.0.1:3000
+   PUBLIC_IGGY_API_URL=http://0.0.0.0:3000
    ```
 
    **instead of**
 
    ```sh
-   API_URL=http://localhost:3000
+   PUBLIC_IGGY_API_URL=http://localhost:3000
    ```
 
 ## Roadmap

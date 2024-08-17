@@ -29,7 +29,7 @@ export function topicMapper(item: any): Topic {
 }
 
 function format_expiry(expiry: number): string {
-  if (expiry >= 18446744073709551615n) {
+  if (expiry === 0 || expiry >= 18446744073709551615n) {
     return 'never';
   }
 

@@ -1,9 +1,12 @@
+import { env } from '$env/dynamic/public';
 import { fetchApi } from '$lib/api/fetchApi';
 import { checkIfPathnameIsPublic, typedRoute } from '$lib/types/appRoutes';
 import { tokens } from '$lib/utils/constants/tokens';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { redirect, type Actions } from '@sveltejs/kit';
+
+console.log(`IggyAPI URL: ${env.PUBLIC_IGGY_API_URL}`)
 
 const accessTokenOkRedirects = [
   {

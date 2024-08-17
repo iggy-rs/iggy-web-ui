@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "vite dev --port 3002",
+    "dev": "vite dev --port 3050",
     "build": "vite build",
     "preview": "vite preview",
+    "server": "vite server",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
@@ -33,7 +34,7 @@
     "ts-toolbelt": "^9.6.0",
     "tslib": "^2.4.1",
     "typescript": "^5.0.0",
-    "vite": "^4.4.2",
+    "vite": "^4.5.3",
     "zod": "^3.21.4"
   },
   "type": "module",
@@ -47,6 +48,7 @@
     "svelte-headlessui": "^0.0.26",
     "svelte-popperjs": "^1.3.2",
     "svelte-transition": "^0.0.10",
-    "tailwind-merge": "^1.14.0"
+    "tailwind-merge": "^1.14.0",
+    "yarn": "^1.22.22"
   }
 }

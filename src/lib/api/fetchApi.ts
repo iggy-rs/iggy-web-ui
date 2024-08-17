@@ -1,4 +1,4 @@
-import { API_URL } from '$env/static/private';
+import { env } from '$env/dynamic/public';
 import type { ApiSchema } from '$lib/api/ApiSchema';
 import { tokens } from '$lib/utils/constants/tokens';
 import { type Cookies } from '@sveltejs/kit';
@@ -17,7 +17,7 @@ export async function fetchApi(
       if (accessToken) headers.set('Authorization', `Bearer ${accessToken}`);
     }
 
-    let fullUrl = `${API_URL}${path}`;
+    let fullUrl = `${env.PUBLIC_IGGY_API_URL}${path}`;
 
     if (queryParams) {
       const query = new URLSearchParams(Object.entries(queryParams));
