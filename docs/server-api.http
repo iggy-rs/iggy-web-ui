@@ -61,7 +61,9 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmODM0NTI5M
   "topic_id": 16,
   "name": "topic16",
   "partitions_count": 10,
-  "message_expiry": 0
+  "message_expiry": 0,
+  "compression_algorithm": "none",
+  "max_topic_size": "1000000000"
 }
 
  
