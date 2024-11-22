@@ -95,6 +95,10 @@ type Topics =
       path: `/streams/${number}/topics/${number}`;
     }
   | {
+      method: 'GET';
+      path: `/streams/${number}/topics/${number}/messages`;
+    }
+  | {
       method: 'POST';
       path: `/streams/${number}/topics`;
       body: {
