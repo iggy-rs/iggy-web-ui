@@ -11,6 +11,8 @@ export type Topic = {
   messageExpiryFormatted: string;
   partitionsCount: number;
   createdAt: string;
+  compressionAlgorithm: number;
+  maxTopicSize: number;
 };
 
 export function topicMapper(item: any): Topic {
@@ -20,11 +22,13 @@ export function topicMapper(item: any): Topic {
     name: item.name,
     sizeBytes: item.size,
     sizeFormatted: bytesFormatter(item.size),
-    messageExpiry: item.message_expiry ?? 0,
+    messageExpiry: messageExpiry,
     messageExpiryFormatted: format_expiry(messageExpiry),
     messagesCount: item.messages_count,
     partitionsCount: item.partitions_count,
-    createdAt: formatDate(item.created_at)
+    createdAt: formatDate(item.created_at),
+    compressionAlgorithm: item.compression_algorithm ?? 0,
+    maxTopicSize: item.max_topic_size,
   };
 }
 
@@ -33,11 +37,11 @@ function format_expiry(expiry: number): string {
     return 'never';
   }
 
-  let ms = expiry / 1000;
-  let seconds = ms / 1000;
-  let minutes = (ms / (1000 * 60));
-  let hours = (ms / (1000 * 60 * 60));
-  let days = (ms / (1000 * 60 * 60 * 24));
+  const ms = expiry / 1000;
+  const seconds = ms / 1000;
+  const minutes = (ms / (1000 * 60));
+  const hours = (ms / (1000 * 60 * 60));
+  const days = (ms / (1000 * 60 * 60 * 24));
   if (seconds < 60) {
     return seconds + " second(s)";
   }

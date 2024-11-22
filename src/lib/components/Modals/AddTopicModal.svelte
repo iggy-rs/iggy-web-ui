@@ -2,6 +2,7 @@
   import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
   import { z } from 'zod';
   import Input from '../Input.svelte';
+  import Select from '../Select.svelte';
   import Button from '../Button.svelte';
   import ModalBase from './ModalBase.svelte';
   import type { CloseModalFn } from '$lib/types/utilTypes';
@@ -26,7 +27,9 @@
       .min(1, 'Name must contain at least 1 character')
       .max(255, 'Name must not exceed 255 characters'),
     partitions_count: z.number().min(0).max(numberSizes.max.u32).default(1),
-    message_expiry: z.number().min(0).max(numberSizes.max.u32)
+    message_expiry: z.number().min(0).max(numberSizes.max.u32),
+    compression_algorithm: z.enum(["none", "gzip"]).default("none"),
+    max_topic_size: z.number().min(0).max(numberSizes.max.u32).default(1_000_000_000),
   });
 
   const { form, errors, enhance, constraints } = superForm(superValidateSync(schema), {
@@ -43,7 +46,9 @@
           topic_id: form.data.topic_id,
           name: form.data.name,
           partitions_count: form.data.partitions_count,
-          message_expiry: form.data.message_expiry
+          message_expiry: form.data.message_expiry,
+          compression_algorithm: form.data.compression_algorithm,
+          max_topic_size: form.data.max_topic_size,
         }
       });
 
@@ -66,7 +71,7 @@
 </script>
 
 <ModalBase {closeModal} title="Add topic">
-  <form method="POST" class="flex flex-col h-[450px] gap-4" use:enhance>
+  <form method="POST" class="flex flex-col h-[650px] gap-4" use:enhance>
     <Input
       label="Id"
       name="topic_id"
@@ -99,9 +104,29 @@
       {...$constraints.message_expiry}
       errorMessage={$errors.message_expiry?.join(',')}
     />
-    <span class="text-xs text-shadeD200 dark:text-shadeL700 -mt-1">
+    
+    <span class="-mt-1 text-xs text-shadeD200 dark:text-shadeL700">
       {durationFormatter(+$form.message_expiry || 0)}
     </span>
+    
+    <Select
+      label="Compression Algorithm"
+      type="text"
+      name="compressionAlgorithm"
+      options={["none", "gzip"]}
+      bind:value={$form.compression_algorithm}
+      {...$constraints.compression_algorithm}
+      errorMessage={$errors.compression_algorithm?.join(',')}
+    />
+
+    <Input
+      label="Max topic size"
+      type="number"
+      name="maxTopicSize"
+      bind:value={$form.max_topic_size}
+      {...$constraints.max_topic_size}
+      errorMessage={$errors.max_topic_size?.join(',')}
+    />
 
     <div class="flex justify-end gap-3 mt-auto">
       <Button variant="text" type="button" class="w-2/5" on:click={() => closeModal()}
