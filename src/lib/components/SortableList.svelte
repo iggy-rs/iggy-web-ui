@@ -51,6 +51,7 @@
   });
 
   export let hrefBuilder: ((item: T) => string) | undefined = undefined;
+  export let onclickAction: ((index: number) => any) | undefined = undefined;
 
   let ordering: Ordering<T> = {
     key: undefined,
@@ -78,7 +79,7 @@
   }
 </script>
 
-<div class="overflow-auto flex-1">
+<div class="flex-1 overflow-auto">
   <!-- header -->
   <div
     class={twMerge(
@@ -94,7 +95,7 @@
               key: columnName,
               asc: ordering.key !== columnName ? true : !ordering.asc
             })}
-          class="flex items-center px-5 hover:cursor-pointer hover:bg-shadeL400 dark:hover:bg-shadeD200 dark:text-white justify-between outline-none focus:outline-none focus-visible:ring ring-inset ring-blue-600/60 transition-colors"
+          class="flex items-center justify-between px-5 transition-colors outline-none hover:cursor-pointer hover:bg-shadeL400 dark:hover:bg-shadeD200 dark:text-white focus:outline-none focus-visible:ring ring-inset ring-blue-600/60"
         >
           <span>
             {columnDisplayedName}
@@ -126,15 +127,19 @@
   <!-- body -->
   <div class="min-w-[1300px] h-[calc(100%-60px)] pb-3 overflow-auto" bind:this={bodyElem}>
     {#if data.length === 0 && !isAnimating}
-      <div class="flex items-center justify-center text-gray-400 mt-14 text-lg">
+      <div class="flex items-center justify-center text-lg text-gray-400 mt-14">
         <em>{emptyDataMessage}</em>
       </div>
     {/if}
 
-    {#each orderedData as item (item.id)}
+    {#each orderedData as item, index}
       <svelte:element
         this={hrefBuilder ? 'a' : 'div'}
         href={hrefBuilder && hrefBuilder(item)}
+        role="button"
+        tabindex={index}
+        aria-roledescription="Display message details"
+        on:click={onclickAction && onclickAction(index)}
         on:introstart={noTypeCheck((e) => {
           if (!animationEnabled) return;
           e.target.style.backgroundColor = 'rgb(74, 222, 128)';

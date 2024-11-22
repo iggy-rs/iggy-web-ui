@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { invalidateAll } from '$app/navigation';
   import { page } from '$app/stores';
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
@@ -7,8 +6,6 @@
   import SortableList from '$lib/components/SortableList.svelte';
   import { typedRoute } from '$lib/types/appRoutes.js';
   import { arrayMax } from '$lib/utils/arrayMax';
-  import { bytesFormatter } from '$lib/utils/formatters/bytesFormatter';
-  import { onMount } from 'svelte';
 
   export let data;
   $: stream = data.streamDetails;

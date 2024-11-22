@@ -116,7 +116,7 @@
         />
       {/if}
     </div>
-    <div class=" px-5 font-semibold">
+    <div class="px-5 font-semibold ">
       {row.id}
     </div>
 
@@ -126,7 +126,7 @@
       </span>
     </div>
 
-    <div class=" whitespace-nowrap px-5">
+    <div class="px-5  whitespace-nowrap">
       {row.createdAt}
     </div>
 
@@ -154,7 +154,7 @@
                   close();
                 }}
                 class={twMerge(
-                  ' grid grid-cols-[20px,1fr] gap-x-1 rounded-md items-center w-full px-2 py-2 text-sm text-color cursor-default hoverable-strong'
+                  'grid grid-cols-[20px,1fr] gap-x-1 rounded-md items-center w-full px-2 py-2 text-sm text-color cursor-default hoverable-strong'
                 )}
               >
                 <span>
