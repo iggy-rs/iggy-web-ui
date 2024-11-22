@@ -1,30 +1,32 @@
 <script lang="ts" context="module">
   import type { ComponentProps, ComponentType, SvelteComponent } from 'svelte';
-  import { fade } from 'svelte/transition';
-  import { writable } from 'svelte/store';
+  import AddPartitionsModal from './AddPartitionsModal.svelte';
   import AddStreamModal from './AddStreamModal.svelte';
   import AddTopicModal from './AddTopicModal.svelte';
-  import StreamSettingsModal from './StreamSettingsModal.svelte';
-  import TopicSettingsModal from './TopicSettingsModal.svelte';
-  import AddPartitionsModal from './AddPartitionsModal.svelte';
-  import DeletePartitionsModal from './DeletePartitionsModal.svelte';
   import AddUserModal from './AddUserModal.svelte';
+  import DeletePartitionsModal from './DeletePartitionsModal.svelte';
   import DeleteUserModal from './DeleteUserModal.svelte';
   import EditUserModal from './EditUserModal.svelte';
   import EditUserPermissionsModal from './EditUserPermissionsModal.svelte';
+  import InspectMessage from './InspectMessage.svelte';
+  import StreamSettingsModal from './StreamSettingsModal.svelte';
+  import TopicSettingsModal from './TopicSettingsModal.svelte';
+  import { fade } from 'svelte/transition';
   import { noTypeCheck } from '$lib/utils/noTypeCheck';
+  import { writable } from 'svelte/store';
 
   const modals = {
-    AddTopicModal,
-    AddStreamModal,
-    StreamSettingsModal,
-    TopicSettingsModal,
     AddPartitionsModal,
-    DeletePartitionsModal,
+    AddStreamModal,
+    AddTopicModal,
     AddUserModal,
+    DeletePartitionsModal,
     DeleteUserModal,
     EditUserModal,
-    EditUserPermissionsModal
+    EditUserPermissionsModal,
+    InspectMessage,
+    StreamSettingsModal,
+    TopicSettingsModal,
   };
 
   type DistributiveOmit<T, K extends string> = T extends T ? Omit<T, K> : never;
@@ -73,7 +75,7 @@
 />
 
 {#if $openedModal}
-  <div transition:fade={{ duration: 100 }} class="fixed inset-0 bg-black/40 z-[500]" />
+  <div transition:fade={{ duration: 100 }} class="fixed inset-0 bg-black/40 z-[500]" on:click={$openedModal.props.closeModal} role="button" tabindex={1} />
   <svelte:component
     this={noTypeCheck(modals[$openedModal.modal])}
     {...$openedModal.props}
