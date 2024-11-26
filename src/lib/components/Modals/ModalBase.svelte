@@ -43,13 +43,13 @@
   )}
 >
   <div class="h-[15%]">
-    <Button variant="rounded" on:click={() => closeModal()} class="absolute top-5 right-5 p-2">
+    <Button variant="rounded" on:click={() => closeModal()} class="absolute p-2 top-5 right-5">
       <Icon name="close" strokeWidth={2.3} />
     </Button>
 
     {#if title}
-      <div class="flex gap-2 items-center">
-        <h2 class="text-xl text-color font-semibold mb-7">{title}</h2>
+      <div class="flex items-center gap-2">
+        <h2 class="text-xl font-semibold text-color mb-7">{title}</h2>
         <slot name="titleSuffix" />
       </div>
     {/if}
