@@ -3,6 +3,7 @@
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import { goto } from '$app/navigation';
+  import { typedRoute } from '$lib/types/appRoutes.js';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
 
   import SortableList from '$lib/components/SortableList.svelte';
@@ -18,7 +19,7 @@
     <Icon name="arrowLeft" class="h-[40px] w-[30px]" />
   </Button>
 
-  <h1 class="font-semibold text-xl text-color">Topic {topic.name}</h1>
+  <h1 class="text-xl font-semibold text-color">Topic {topic.name}</h1>
 
   <Button
     variant="rounded"
@@ -60,6 +61,8 @@
   emptyDataMessage="No partitions found."
   rowClass="grid grid-cols-[150px_1fr_1fr_1fr_1fr_1fr]"
   data={topic.partitions}
+  hrefBuilder={() =>
+    typedRoute(`/dashboard/streams/${+$page.params.streamId}/topics/${topic.id}/messages`)}
   colNames={{
     id: 'ID',
     currentOffset: 'Offset',
