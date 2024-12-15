@@ -16,23 +16,18 @@
 <script lang="ts" generics="T extends ListItem">
   import { asConst } from '$lib/utils/asConst';
 
-  import { afterNavigate, beforeNavigate, onNavigate } from '$app/navigation';
+  import { onNavigate } from '$app/navigation';
 
   import { slide } from 'svelte/transition';
 
-  import type { ComponentProps, ComponentType } from 'svelte';
   import Icon from './Icon.svelte';
-  import Button from './Button.svelte';
-  import Checkbox from './Checkbox.svelte';
 
   import { twMerge } from 'tailwind-merge';
-  import { createEventDispatcher, onMount } from 'svelte';
   import { noTypeCheck } from '$lib/utils/noTypeCheck';
-  import StopPropagation from './StopPropagation.svelte';
 
   export let data: T[];
   export let emptyDataMessage: string;
-  export let colNames: Record<keyof T, string | undefined>;
+  export let colNames: Partial<Record<keyof T, string | undefined>>;
   export let rowClass: string;
 
   let animationEnabled = true;
@@ -52,16 +47,12 @@
 
   export let hrefBuilder: ((item: T) => string) | undefined = undefined;
   export let onclickAction: ((index: number) => any) | undefined = undefined;
+  export let ariaRoleDescription: string | undefined = undefined;
 
   let ordering: Ordering<T> = {
     key: undefined,
     asc: undefined
   };
-
-  // $: columns =   Object.entries(colNames).map(([key, value]) => ({
-  //   columnDisplayedName: value,
-  //   columnName: key
-  // })) as { columnDisplayedName: string; columnName: keyof T }[];
 
   $: columns = Object.keys(colNames)
     .filter((k) => colNames[k as string])
@@ -138,7 +129,7 @@
         href={hrefBuilder && hrefBuilder(item)}
         role="button"
         tabindex={index}
-        aria-roledescription="Display message details"
+        aria-roledescription={ariaRoleDescription}
         on:click={onclickAction && onclickAction(index)}
         on:introstart={noTypeCheck((e) => {
           if (!animationEnabled) return;

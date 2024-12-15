@@ -1,36 +1,50 @@
+export type MessagePartition = {
+  partitionId: number;
+  currentOffset: number;
+  messages: Message[];
+};
+
 export type Message = {
   checksum: number;
-  header: Record<string, string>;
+  headers: Record<string, string>;
   id: number;
   offset: number;
   payload: string;
-  truncatedPayload: string
-  state: "available";
+  truncatedPayload: string;
+  state: 'available';
   timestamp: number;
 };
 
 export function messageMapper(item: any): Message {
-  let payload = "";
+  let payload = '';
 
   try {
-    payload = atob(item.payload)
+    payload = atob(item.payload);
   } catch {
-    payload = "[NOT DECODABLE]"
+    payload = '[NOT DECODABLE]';
   }
 
   let truncatedPayload = payload;
   if (payload.length > 100) {
-    truncatedPayload = `${payload.slice(0, 100)} [...]`
+    truncatedPayload = `${payload.slice(0, 100)} [...]`;
   }
 
   return {
     id: item.id,
-    header: item.header,
+    headers: item.headers,
     offset: item.offset,
-    payload,
     state: item.state,
     timestamp: item.timestamp,
     checksum: item.checksum,
-    truncatedPayload,
+    payload,
+    truncatedPayload
+  };
+}
+
+export function messagePartitionMapper(item: any): MessagePartition {
+  return {
+    partitionId: item.partition_id,
+    currentOffset: item.current_offset,
+    messages: item.messages.map(messageMapper)
   };
 }
