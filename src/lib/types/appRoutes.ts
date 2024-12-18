@@ -5,7 +5,7 @@ type DashboardRoutes = `/dashboard/${
   | 'streams'
   | `streams/${number}`
   | `streams/${number}/topics/${number}`
-  | `streams/${number}/topics/${number}/messages`
+  | `streams/${number}/topics/${number}/partitions/${number}/messages`
   | 'clients'
   | 'logs'
   | SettingsSegment}`;
