@@ -91,7 +91,7 @@
       colNames={{
         offset: 'Offset',
         truncatedPayload: 'Payload',
-        timestamp: 'Timestamp',
+        formattedTimestamp: 'Timestamp',
         checksum: 'Checksum'
       }}
     />

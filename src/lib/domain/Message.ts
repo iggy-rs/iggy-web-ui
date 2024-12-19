@@ -1,3 +1,5 @@
+import { formatDateWithMicroseconds } from '$lib/utils/formatters/dateFormatter';
+
 export type MessagePartition = {
   partitionId: number;
   currentOffset: number;
@@ -13,6 +15,7 @@ export type Message = {
   truncatedPayload: string;
   state: 'available';
   timestamp: number;
+  formattedTimestamp: string;
 };
 
 export function messageMapper(item: any): Message {
@@ -35,6 +38,7 @@ export function messageMapper(item: any): Message {
     offset: item.offset,
     state: item.state,
     timestamp: item.timestamp,
+    formattedTimestamp: formatDateWithMicroseconds(item.timestamp),
     checksum: item.checksum,
     payload,
     truncatedPayload

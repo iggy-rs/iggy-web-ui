@@ -2,7 +2,6 @@
   import ModalBase from './ModalBase.svelte';
   import type { CloseModalFn } from '$lib/types/utilTypes';
   import { type Message } from '$lib/domain/Message';
-  import { formatDate } from '$lib/utils/formatters/dateFormatter';
 
   export let closeModal: CloseModalFn;
   export let message: Message;
@@ -44,9 +43,12 @@
 
       <div class="bg-shadeL200 dark:bg-shadeD400 p-3 lg:p-4 rounded-md">
         <span class="text-xs text-shadeL900 dark:text-shadeL700 block mb-1">Timestamp</span>
-        <span class="text-sm text-color font-medium"
-          >{message?.timestamp ? formatDate(message.timestamp) : 'N/A'}</span
-        >
+        <span class="text-sm text-color font-medium">
+          {message?.formattedTimestamp ?? 'N/A'}
+          <span class="text-xs text-shadeL900 dark:text-shadeL700 ml-2">
+            ({message?.timestamp ?? 'N/A'})
+          </span>
+        </span>
       </div>
 
       <div class="bg-shadeL200 dark:bg-shadeD400 p-3 lg:p-4 rounded-md">
@@ -59,7 +61,7 @@
 
     <div class="flex flex-col h-full">
       <div class="bg-shadeL200 dark:bg-shadeD400 p-3 lg:p-4 rounded-md flex-grow">
-        <span class="text-xs text-shadeL900 dark:text-shadeL700 block mb-1">Payload</span>
+        <span class="text-xs text-shadeL900 dark:text-shadeL700 block mb-1">Payload (Base64)</span>
         <span class="text-sm text-color font-medium font-mono whitespace-pre-wrap break-all">
           {message?.payload ?? ''}
         </span>
