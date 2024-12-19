@@ -1,36 +1,45 @@
+import { formatDateWithMicroseconds } from '$lib/utils/formatters/dateFormatter';
+
+export type MessagePartition = {
+  partitionId: number;
+  currentOffset: number;
+  messages: Message[];
+};
+
 export type Message = {
   checksum: number;
-  header: Record<string, string>;
+  headers: Record<string, string>;
   id: number;
   offset: number;
   payload: string;
-  truncatedPayload: string
-  state: "available";
+  truncatedPayload: string;
+  state: 'available';
   timestamp: number;
+  formattedTimestamp: string;
 };
 
 export function messageMapper(item: any): Message {
-  let payload = "";
-
-  try {
-    payload = atob(item.payload)
-  } catch {
-    payload = "[NOT DECODABLE]"
-  }
-
-  let truncatedPayload = payload;
-  if (payload.length > 100) {
-    truncatedPayload = `${payload.slice(0, 100)} [...]`
-  }
+  const payload = item.payload;
+  const truncatedPayload = payload.length > 30 ? `${payload.slice(0, 30)} [...]` : payload;
+  const formattedTimestamp = formatDateWithMicroseconds(item.timestamp);
 
   return {
     id: item.id,
-    header: item.header,
+    headers: item.headers,
     offset: item.offset,
-    payload,
     state: item.state,
     timestamp: item.timestamp,
+    formattedTimestamp,
     checksum: item.checksum,
-    truncatedPayload,
+    payload,
+    truncatedPayload
+  };
+}
+
+export function messagePartitionMapper(item: any): MessagePartition {
+  return {
+    partitionId: item.partition_id,
+    currentOffset: item.current_offset,
+    messages: item.messages.map(messageMapper)
   };
 }

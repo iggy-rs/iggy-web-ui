@@ -5,12 +5,10 @@
   import { goto } from '$app/navigation';
   import { typedRoute } from '$lib/types/appRoutes.js';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
-
   import SortableList from '$lib/components/SortableList.svelte';
 
   export let data;
   $: topic = data.topic;
-
   $: prevPage = $page.url.pathname.split('/').slice(0, 4).join('/') + '/';
 </script>
 
@@ -61,8 +59,10 @@
   emptyDataMessage="No partitions found."
   rowClass="grid grid-cols-[150px_1fr_1fr_1fr_1fr_1fr]"
   data={topic.partitions}
-  hrefBuilder={() =>
-    typedRoute(`/dashboard/streams/${+$page.params.streamId}/topics/${topic.id}/messages`)}
+  hrefBuilder={(partition) =>
+    typedRoute(
+      `/dashboard/streams/${+$page.params.streamId}/topics/${topic.id}/partitions/${partition.id}/messages`
+    )}
   colNames={{
     id: 'ID',
     currentOffset: 'Offset',

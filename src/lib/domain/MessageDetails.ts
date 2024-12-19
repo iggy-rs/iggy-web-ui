@@ -1,11 +1,11 @@
-import { Message, messageMapper } from './Message';
+import { Message, MessagePartition, messagePartitionMapper } from './Message';
 
 type Payload = {
-  partition_id: number,
-  current_offset: number,
-  messages: Array<Message>,
-}
+  partition_id: number;
+  current_offset: number;
+  messages: Array<Message>;
+};
 
-export function messageDetailsMapper(payload: Payload): Array<Message> {
-  return payload.messages.map(messageMapper);
+export function partitionMessagesDetailsMapper(payload: Payload): MessagePartition {
+  return messagePartitionMapper(payload);
 }
