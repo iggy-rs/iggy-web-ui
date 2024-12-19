@@ -6,7 +6,7 @@
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import Button from '$lib/components/Button.svelte';
 
-  import { typedRoute } from '$lib/types/appRoutes.js';
+  import { typedRoute } from '$lib/types/appRoutes.ts';
   import { arrayMax } from '$lib/utils/arrayMax';
   import { onMount } from 'svelte';
   import { noTypeCheck } from '$lib/utils/noTypeCheck.js';

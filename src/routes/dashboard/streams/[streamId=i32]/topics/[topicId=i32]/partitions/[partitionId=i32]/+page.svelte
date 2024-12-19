@@ -1,6 +1,6 @@
 <script>
   import { goto } from '$app/navigation';
-  import { typedRoute } from '$lib/types/appRoutes.js';
+  import { typedRoute } from '$lib/types/appRoutes.ts';
   import { onMount } from 'svelte';
 
   onMount(() => {

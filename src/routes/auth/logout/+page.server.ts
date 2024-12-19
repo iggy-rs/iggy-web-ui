@@ -1,4 +1,4 @@
-import { typedRoute } from '$lib/types/appRoutes.js';
+import { typedRoute } from '$lib/types/appRoutes.ts';
 import { tokens } from '$lib/utils/constants/tokens.js';
 import { redirect, type Actions } from '@sveltejs/kit';
 

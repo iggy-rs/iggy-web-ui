@@ -3,7 +3,7 @@
   import type { iconType } from '$lib/components/Icon.svelte';
   import Icon from '$lib/components/Icon.svelte';
 
-  import { typedRoute } from '$lib/types/appRoutes.js';
+  import { typedRoute } from '$lib/types/appRoutes.ts';
   import { page } from '$app/stores';
 
   type Tabs = 'server' | 'users' | 'webUI' | 'terminal';
