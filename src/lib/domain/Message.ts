@@ -19,18 +19,9 @@ export type Message = {
 };
 
 export function messageMapper(item: any): Message {
-  let payload = '';
-
-  try {
-    payload = atob(item.payload);
-  } catch {
-    payload = '[NOT DECODABLE]';
-  }
-
-  let truncatedPayload = payload;
-  if (payload.length > 100) {
-    truncatedPayload = `${payload.slice(0, 100)} [...]`;
-  }
+  const payload = item.payload;
+  const truncatedPayload = payload.length > 30 ? `${payload.slice(0, 30)} [...]` : payload;
+  const formattedTimestamp = formatDateWithMicroseconds(item.timestamp);
 
   return {
     id: item.id,
@@ -38,7 +29,7 @@ export function messageMapper(item: any): Message {
     offset: item.offset,
     state: item.state,
     timestamp: item.timestamp,
-    formattedTimestamp: formatDateWithMicroseconds(item.timestamp),
+    formattedTimestamp,
     checksum: item.checksum,
     payload,
     truncatedPayload
