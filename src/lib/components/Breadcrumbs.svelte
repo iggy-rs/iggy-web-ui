@@ -5,33 +5,55 @@
   import { isNumber } from '$lib/utils/parsers';
   import { twMerge } from 'tailwind-merge';
 
-  $: parts = $page.url.pathname
-    .split('/')
-    .filter((item) => item !== '')
-    //remove dashboard
-    .slice(1);
+  type Crumb = {
+    path: string;
+    label: string;
+  };
 
-  $: crumbs = parts.map((s, i) => {
-    const path = `/dashboard/${parts.slice(0, i + 1).join('/')}`;
+  const MAX_NAME_LENGTH = 20;
 
-    if (isNumber(parts[i])) {
-      return {
-        path,
-        label: `${parts[i - 1].slice(0, -1)}-${parts[i]}`
-      };
+  $: streams = $page.data.streams ?? [];
+  $: currentStream = $page.data.streamDetails;
+  $: currentTopic = $page.data.topic;
+
+  function truncateName(name: string): string {
+    return name.length > MAX_NAME_LENGTH ? `${name.slice(0, MAX_NAME_LENGTH)}...` : name;
+  }
+
+  function formatStreamName(streamId: string): string {
+    const stream = currentStream || streams?.find((str: any) => str.id.toString() === streamId);
+    return stream ? truncateName(stream.name) : streamId;
+  }
+
+  function formatTopicName(topicId: string): string {
+    return currentTopic ? truncateName(currentTopic.name) : topicId;
+  }
+
+  function formatPathSegment(segment: string, index: number, parts: string[]): Crumb {
+    const path = `/dashboard/${parts.slice(0, index + 1).join('/')}`;
+
+    if (isNumber(segment)) {
+      const prevSegment = parts[index - 1];
+      switch (prevSegment) {
+        case 'streams':
+          return { path, label: formatStreamName(segment) };
+        case 'topics':
+          return { path, label: formatTopicName(segment) };
+      }
     }
 
-    return {
-      path,
-      label: s
-    };
-  });
+    return { path, label: segment };
+  }
+
+  $: parts = $page.url.pathname.split('/').filter(Boolean).slice(1);
+
+  $: crumbs = parts.map((segment, index) => formatPathSegment(segment, index, parts));
 </script>
 
 <div class="flex items-center">
-  <a href={typedRoute('/dashboard/overview')}
-    ><Icon name="home" class="dark:fill-shadeD900 dark:stroke-white  mr-2" /></a
-  >
+  <a href={typedRoute('/dashboard/overview')}>
+    <Icon name="home" class="dark:fill-shadeD900 dark:stroke-white mr-2" />
+  </a>
 
   <span class="flex mr-2">
     <span class="text-shadeL800">/</span>
@@ -47,9 +69,7 @@
     {:else}
       <a href={path} class="flex ml-1">
         <span class={twMerge('font-medium text-gray-600 dark:text-shadeL800')}>{label}</span>
-        <span class="font-medium text-shadeL800 w-[10px] flex items-center justify-center ml-1"
-          >/</span
-        >
+        <span class="font-medium text-shadeL800 w-[10px] flex items-center justify-center ml-1">/</span>
       </a>
     {/if}
   {/each}
