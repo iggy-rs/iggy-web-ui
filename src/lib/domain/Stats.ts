@@ -42,7 +42,7 @@ export function statsMapper(item: any): Stats {
   );
 
   const formattedStartTime = formatDuration(
-    intervalToDuration({ start: 0, end: item.start_time * 1000 }),
+    intervalToDuration({ start: 0, end: item.start_time }),
     {
       format: ['hours', 'minutes', 'seconds'],
       zero: true,
@@ -102,8 +102,8 @@ export function statsMapper(item: any): Stats {
     },
     messagesSizeBytes: {
       name: 'Messages Size',
-      value: item.messages_size,
-      rawValue: item.messages_size
+      value: item.messages_size_bytes,
+      rawValue: item.messages_size_bytes
     },
     streamsCount: {
       name: 'Streams',
