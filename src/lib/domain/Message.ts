@@ -8,7 +8,7 @@ export type MessagePartition = {
 
 export type Message = {
   checksum: number;
-  headers: Record<string, string>;
+  headers: Record<string, HeaderField>;
   id: number;
   offset: number;
   payload: string;
@@ -16,6 +16,11 @@ export type Message = {
   state: 'available';
   timestamp: number;
   formattedTimestamp: string;
+};
+
+export type HeaderField = {
+  kind: string;
+  value: string;
 };
 
 export function messageMapper(item: any): Message {

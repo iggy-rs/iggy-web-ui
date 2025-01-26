@@ -53,7 +53,7 @@
 
     <select bind:value on:input {...inputProps}>
       {#each options as option}
-      <option>{option}</option>
+        <option class="dark:bg-shadeD400 dark:text-white bg-white text-black">{option}</option>
       {/each}
     </select>
 
