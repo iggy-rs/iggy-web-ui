@@ -23,6 +23,10 @@ class DecoderRegistry {
   public get(name: string): Decoder | undefined {
     return this.decoders.get(name.toLowerCase());
   }
+
+  public getNames(): string[] {
+    return Array.from(this.decoders.keys());
+  }
 }
 
 export const decoderRegistry = new DecoderRegistry();

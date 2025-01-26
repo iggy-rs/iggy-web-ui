@@ -1,10 +1,11 @@
 <script lang="ts">
   import Button from '../Button.svelte';
+  import Select from '../Select.svelte';
   import { decoderRegistry } from './decoders/utils/decoderRegistry';
   import { decodeBase64 } from '$lib/utils/base64Utils';
 
   export let payload: string | undefined = undefined;
-  export let codec: string | undefined = undefined;
+  export let codec: string | undefined | null = undefined;
 
   type ErrorState = { title: string; message: string };
   type DecodedState =
@@ -14,30 +15,24 @@
 
   let state: DecodedState = { status: 'idle' };
   let showRaw = false;
+  let selectedDecoder = codec || 'string';
 
-  function getError(
-    type: 'no_payload' | 'no_codec' | 'unsupported_codec' | 'invalid_format'
-  ): ErrorState {
+  function getError(type: 'no_payload' | 'unsupported_codec' | 'invalid_format'): ErrorState {
     switch (type) {
       case 'no_payload':
         return {
           title: 'No payload',
           message: 'This message has no payload to decode'
         };
-      case 'no_codec':
-        return {
-          title: 'No codec specified',
-          message: 'Add "codec" header with one of supported formats: string, json, xml'
-        };
       case 'unsupported_codec':
         return {
           title: 'Unsupported codec',
-          message: `The specified codec ${codec} is not supported`
+          message: `The specified codec ${codec} is not supported. Select another decoder from the dropdown below.`
         };
       case 'invalid_format':
         return {
           title: 'Invalid format',
-          message: `The payload is not valid ${codec?.toUpperCase()}`
+          message: `The payload is not valid ${selectedDecoder.toUpperCase()}`
         };
     }
   }
@@ -48,18 +43,13 @@
       return;
     }
 
-    if (!codec) {
-      state = { status: 'error', error: getError('no_codec') };
-      return;
-    }
-
     const decodedPayload = decodeBase64(payload);
     if (!decodedPayload) {
       state = { status: 'error', error: getError('invalid_format') };
       return;
     }
 
-    const decoder = decoderRegistry.get(codec);
+    const decoder = decoderRegistry.get(selectedDecoder);
     if (!decoder) {
       state = { status: 'error', error: getError('unsupported_codec') };
       return;
@@ -76,6 +66,16 @@
 </script>
 
 {#if state.status === 'idle'}
+  {#if !codec || !decoderRegistry.get(codec)}
+    <div class="mb-4">
+      <Select
+        label="Select decoder"
+        name="decoder"
+        options={decoderRegistry.getNames()}
+        bind:value={selectedDecoder}
+      />
+    </div>
+  {/if}
   <Button variant="contained" on:click={decode}>Decode</Button>
 {:else}
   {#if state.status === 'error'}
@@ -86,7 +86,10 @@
   {/if}
 
   {#if state.status === 'success'}
-    <p class="font-bold">Codec: {codec}</p>
+    <div class="flex items-center gap-3">
+      <p class="font-bold">Codec: {selectedDecoder}</p>
+      <Button variant="text" on:click={() => (state = { status: 'idle' })}>Change decoder</Button>
+    </div>
     <div class="w-full mt-2">
       <pre class="bg-gray-100 dark:bg-gray-800 p-1 rounded-md overflow-auto"><code
           >{state.content}</code
