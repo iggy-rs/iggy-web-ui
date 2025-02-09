@@ -3,7 +3,7 @@
   import type { iconType } from './Icon.svelte';
   import { page } from '$app/stores';
   import { twMerge } from 'tailwind-merge';
-  import logo from '$lib/assets/logo.png';
+  import logo from '$lib/assets/logo_nav.png';
   import { tooltip } from '$lib/actions/tooltip';
   import { typedRoute } from '$lib/types/appRoutes';
 
