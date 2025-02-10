@@ -50,6 +50,6 @@ export const actions = {
       expires: new Date(1000 * access_token.expiry)
     });
 
-    throw redirect(302, typedRoute('/dashboard/overview'));
+    redirect(302, typedRoute('/dashboard/overview'));
   }
 } satisfies Actions;

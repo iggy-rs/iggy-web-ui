@@ -1,4 +1,4 @@
-import { typedRoute } from '$lib/types/appRoutes.ts';
+import { typedRoute } from '$lib/types/appRoutes';
 import { tokens } from '$lib/utils/constants/tokens.js';
 import { redirect, type Actions } from '@sveltejs/kit';
 
@@ -13,6 +13,6 @@ export const actions = {
     console.log('deleting cookie');
 
     // redirect the user
-    throw redirect(302, typedRoute('/auth/sign-in'));
+    redirect(302, typedRoute('/auth/sign-in'));
   }
 } satisfies Actions;

@@ -40,13 +40,13 @@ const handleAuth: Handle = async ({ event, resolve }) => {
     if (isPublicPath) {
       return resolve(event);
     } else {
-      throw redirect(302, typedRoute('/auth/sign-in'));
+      redirect(302, typedRoute('/auth/sign-in'));
     }
   }
 
   const invalidPathRedirect = accessTokenOkRedirects.find((r) => r.from === event.url.pathname);
   if (invalidPathRedirect) {
-    throw redirect(302, invalidPathRedirect.to)
+    redirect(302, invalidPathRedirect.to);
   }
 
   return resolve(event);

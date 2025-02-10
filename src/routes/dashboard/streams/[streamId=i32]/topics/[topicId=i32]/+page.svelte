@@ -3,7 +3,7 @@
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import { goto } from '$app/navigation';
-  import { typedRoute } from '$lib/types/appRoutes.ts';
+  import { typedRoute } from '$lib/types/appRoutes';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import SortableList from '$lib/components/SortableList.svelte';
 

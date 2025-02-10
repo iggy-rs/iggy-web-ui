@@ -1,4 +1,4 @@
-import { Message, MessagePartition, messagePartitionMapper } from './Message';
+import { type Message, type MessagePartition, messagePartitionMapper } from './Message';
 
 type Payload = {
   partition_id: number;

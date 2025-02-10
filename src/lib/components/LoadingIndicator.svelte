@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { browser } from '$app/environment';
   import { navigating } from '$app/stores';
   import { tweened } from 'svelte/motion';
   import { cubicInOut } from 'svelte/easing';
@@ -15,7 +16,7 @@
 
     await progress.set(16, { duration: 250, easing: cubicInOut });
 
-    if ($navigating) {
+    if (browser && $navigating) {
       timer = setInterval(() => {
         progress.update((v) => (v < 90 ? v + Math.floor(Math.random() * (10 - 4 + 1) + 4) : v), {
           duration: 300,
@@ -30,13 +31,11 @@
     opacity.set(0, { duration: 200, delay: 300 });
   }
 
-  $: $navigating ? start() : stop();
+  $: if (browser) {
+    $navigating ? start() : stop();
+  }
 </script>
 
 <div class="fixed left-0 right-0 top-0 pointer-events-none z-[999]">
-  <!-- <div
-      class="bg-gradient-to-r from-green to-primary h-[2px]"
-      style="width: {$progress}%; opacity:{$opacity};"
-    /> -->
   <div class="bg-green500 h-[2px]" style="width: {$progress}%; opacity:{$opacity};" />
 </div>

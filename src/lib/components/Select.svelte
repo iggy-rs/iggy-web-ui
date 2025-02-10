@@ -17,7 +17,6 @@
   export let name: string;
   export let errorMessage: string | undefined = undefined;
   export let value: string | number;
-  export let type: HTMLInputTypeAttribute = 'text';
   export let options: Array<string>;
 
   const inputProps = {

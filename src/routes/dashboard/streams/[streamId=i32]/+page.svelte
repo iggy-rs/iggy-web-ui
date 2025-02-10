@@ -4,7 +4,7 @@
   import Icon from '$lib/components/Icon.svelte';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import SortableList from '$lib/components/SortableList.svelte';
-  import { typedRoute } from '$lib/types/appRoutes.ts';
+  import { typedRoute } from '$lib/types/appRoutes';
   import { arrayMax } from '$lib/utils/arrayMax';
 
   export let data;

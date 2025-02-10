@@ -8,9 +8,9 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
   if (!path || !method) {
     const message = `routes/api/proxy/+server.ts no path or body or method provided`;
     console.error(message);
-    throw error(500, {
-      message
-    });
+    error(500, {
+            message
+          });
   }
 
   const result = await fetchApi({ body, path, method, cookies, queryParams });
