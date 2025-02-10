@@ -5,10 +5,10 @@
   import { invalidateIntervalDuration } from '$lib/components/PeriodicInvalidator.svelte';
   import { durationFormatter } from '$lib/utils/formatters/durationFormatter';
 
-  let intervalValue = $invalidateIntervalDuration;
+  let intervalValue = $state($invalidateIntervalDuration);
 
-  $: saveDisabled =
-    intervalValue < 500 || intervalValue > 3600000 || intervalValue === $invalidateIntervalDuration;
+  let saveDisabled =
+    $derived(intervalValue < 500 || intervalValue > 3600000 || intervalValue === $invalidateIntervalDuration);
 </script>
 
 <SettingsLayout>

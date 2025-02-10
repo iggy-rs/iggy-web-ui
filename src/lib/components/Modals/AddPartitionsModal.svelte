@@ -13,7 +13,11 @@
   import Button from '../Button.svelte';
   import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
 
-  export let closeModal: CloseModalFn;
+  interface Props {
+    closeModal: CloseModalFn;
+  }
+
+  let { closeModal }: Props = $props();
 
   const schema = z.object({
     partitions_count: z.number().min(1).max(numberSizes.max.u32).default(1)
@@ -31,7 +35,7 @@
         method: 'POST',
         path: `/streams/${+$page.params.streamId}/topics/${+$page.params.topicId}/partitions`,
         body: {
-          partitions_count: $form.partitions_count
+          partitions_count: form.data.partitions_count
         }
       });
 
@@ -44,9 +48,8 @@
           await customInvalidateAll();
           showToast({
             type: 'success',
-            description:
-              $form.partitions_count > 1
-                ? `${$form.partitions_count} partitions have been added.`
+            description: form.data.partitions_count > 1
+                ? `${form.data.partitions_count} partitions have been added.`
                 : '1 partition has been added.',
             duration: 3500
           });

@@ -7,13 +7,24 @@
     big: '[&::-webkit-slider-thumb]:w-[20px] [&::-webkit-slider-thumb]:h-[20px] h-[8px]'
   };
 
-  export let min: number;
-  export let max: number;
-  export let initValue: number;
-  export let className = '';
-  export let size: keyof typeof sizes = 'medium';
 
-  export let value = initValue;
+  interface Props {
+    min: number;
+    max: number;
+    initValue: number;
+    className?: string;
+    size?: keyof typeof sizes;
+    value?: any;
+  }
+
+  let {
+    min,
+    max,
+    initValue,
+    className = '',
+    size = 'medium',
+    value = $bindable(initValue)
+  }: Props = $props();
 </script>
 
 <div class=" w-fit relative flex items-center justify-center">

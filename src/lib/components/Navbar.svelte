@@ -8,7 +8,7 @@
   import LogoType from '$lib/components/Logo/LogoType.svelte';
   import LogoMark from '$lib/components/Logo/LogoMark.svelte';
 
-  $: navItems = [
+  let navItems = $derived([
     {
       name: 'Overview',
       icon: 'home',
@@ -39,7 +39,7 @@
       href: typedRoute('/dashboard/settings/webUI'),
       active: $page.url.pathname.includes('/dashboard/settings')
     }
-  ] satisfies { name: string; icon: iconType; href: string; active: boolean }[];
+  ] satisfies { name: string; icon: iconType; href: string; active: boolean }[]);
 </script>
 
 <nav

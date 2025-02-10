@@ -18,10 +18,14 @@
   import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
   import { arraySum } from '$lib/utils/arraySum';
 
-  export let stream: StreamDetails;
-  export let closeModal: CloseModalFn;
+  interface Props {
+    stream: StreamDetails;
+    closeModal: CloseModalFn;
+  }
 
-  let confirmationOpen = false;
+  let { stream, closeModal }: Props = $props();
+
+  let confirmationOpen = $state(false);
 
   const schema = z.object({
     name: z
@@ -58,7 +62,7 @@
             await customInvalidateAll();
             showToast({
               type: 'success',
-              description: `Stream ${$form.name} has been updated.`,
+              description: `Stream ${form.data.name} has been updated.`,
               duration: 3500
             });
           });
@@ -100,16 +104,18 @@
     deleteButtonTitle="Delete Stream"
     on:result={onConfirmationResult}
   >
-    <svelte:fragment slot="message">
-      Deleting the stream "<span class="font-semibold">{stream.name}</span>" will permenently remove
-      all associated
-      <span class="font-semibold">topics ({stream.topicsCount})</span>,
-      <span class="font-semibold"
-        >partitions ({arraySum(stream.topics.map((t) => t.partitionsCount))})</span
-      >
-      and
-      <span class="font-semibold">messages ({stream.messagesCount})</span>.
-    </svelte:fragment>
+    {#snippet message()}
+      
+        Deleting the stream "<span class="font-semibold">{stream.name}</span>" will permenently remove
+        all associated
+        <span class="font-semibold">topics ({stream.topicsCount})</span>,
+        <span class="font-semibold"
+          >partitions ({arraySum(stream.topics.map((t) => t.partitionsCount))})</span
+        >
+        and
+        <span class="font-semibold">messages ({stream.messagesCount})</span>.
+      
+      {/snippet}
   </ModalConfirmation>
 
   <div class="h-[350px] flex flex-col">
@@ -133,7 +139,7 @@
     </form>
 
     <div class="relative w-full flex-1">
-      <div class="h-[1px] border-b absolute -left-7 -right-7" />
+      <div class="h-[1px] border-b absolute -left-7 -right-7"></div>
       <h2 class="text-xl text-color font-semibold mb-7 mt-5">Delete stream</h2>
 
       <form class="w-full">

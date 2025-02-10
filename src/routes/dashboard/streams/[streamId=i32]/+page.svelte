@@ -7,8 +7,12 @@
   import { typedRoute } from '$lib/types/appRoutes';
   import { arrayMax } from '$lib/utils/arrayMax';
 
-  export let data;
-  $: stream = data.streamDetails;
+  interface Props {
+    data: any;
+  }
+
+  let { data }: Props = $props();
+  let stream = $derived(data.streamDetails);
 </script>
 
 <div class="h-[80px] flex flex-row text-xs items-center px-7">
@@ -22,7 +26,9 @@
     on:click={() => openModal('StreamSettingsModal', { stream })}
   >
     <Icon name="settings" class="dark:text-white" />
-    <div slot="tooltip">Settings</div>
+    {#snippet tooltip()}
+        <div >Settings</div>
+      {/snippet}
   </Button>
 
   <div class="flex gap-3 ml-7">

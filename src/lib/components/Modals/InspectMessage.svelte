@@ -5,8 +5,12 @@
   import MessageDecoder from '$lib/components/MessageDecoder/MessageDecoder.svelte';
   import { decodeBase64 } from '$lib/utils/base64Utils';
 
-  export let closeModal: CloseModalFn;
-  export let message: Message;
+  interface Props {
+    closeModal: CloseModalFn;
+    message: Message;
+  }
+
+  let { closeModal, message }: Props = $props();
 
   const formatHeaders = (headers: Record<string, HeaderField> | null | undefined) => {
     if (!headers || Object.keys(headers).length === 0) {
@@ -20,9 +24,9 @@
   };
 
   // TODO: whether all header values should be decoded?
-  $: codec = message?.headers?.['codec']?.value
+  let codec = $derived(message?.headers?.['codec']?.value
     ? decodeBase64(message.headers['codec'].value)
-    : undefined;
+    : undefined);
 </script>
 
 <ModalBase {closeModal} title="Message details" class="w-full max-w-[90vw] lg:max-w-[80vw]">

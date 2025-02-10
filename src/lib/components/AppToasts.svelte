@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { flip } from 'svelte/animate';
   import { writable } from 'svelte/store';
   import { fly, fade } from 'svelte/transition';
@@ -87,7 +87,7 @@
             name={icons[type]}
           />
 
-          <button class="rounded-full p-1 absolute top-3 right-3" on:click={remove}>
+          <button class="rounded-full p-1 absolute top-3 right-3" onclick={remove}>
             <Icon name="close" class="w-[16px] h-[16px]" />
           </button>
 

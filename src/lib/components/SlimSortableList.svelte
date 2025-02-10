@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   type Ordering<T> = { key: keyof T; asc: boolean } | { key: undefined; asc: undefined };
 
   function orderData<T>(data: T[], key: keyof T, asc: boolean) {
@@ -11,6 +11,8 @@
 </script>
 
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { asConst } from '$lib/utils/asConst';
 
   import Icon from './Icon.svelte';
@@ -22,23 +24,38 @@
     | { slot: true; sortable?: undefined; key?: undefined; label?: undefined }
     | { label: string; slot?: false; key: keyof T; sortable: boolean };
 
-  export let data: Array<T>;
-  export let columns: Array<Column>;
-  export let emptyDataMessage: string;
-  export let gridColsClass: string;
+  interface Props {
+    data: Array<T>;
+    columns: Array<Column>;
+    emptyDataMessage: string;
+    gridColsClass: string;
+    header?: import('svelte').Snippet<[any]>;
+    children?: import('svelte').Snippet<[any]>;
+  }
 
-  let ordering: Ordering<T> = {
+  let {
+    data,
+    columns,
+    emptyDataMessage,
+    gridColsClass,
+    header,
+    children
+  }: Props = $props();
+
+  let ordering: Ordering<T> = $state({
     key: 'id',
     asc: true
-  };
+  });
 
-  $: orderedData = ordering.key ? orderData(data, ordering.key, ordering.asc!) : data;
+  let orderedData = $derived(ordering.key ? orderData(data, ordering.key, ordering.asc!) : data);
 
-  let isBodyOverflowing = false;
-  let bodyElem: HTMLDivElement | null = null;
-  $: if (bodyElem && bodyElem.scrollHeight > bodyElem.offsetHeight) {
-    isBodyOverflowing = true;
-  }
+  let isBodyOverflowing = $state(false);
+  let bodyElem: HTMLDivElement | null = $state(null);
+  run(() => {
+    if (bodyElem && bodyElem.scrollHeight > bodyElem.offsetHeight) {
+      isBodyOverflowing = true;
+    }
+  });
 </script>
 
 <div class="overflow-auto flex-1">
@@ -52,10 +69,10 @@
     <div class="w-full grid {gridColsClass}">
       {#each columns as { label, slot, key, sortable }, idx (idx)}
         {#if slot}
-          <slot name="header" index={idx} />
+          {@render header?.({ index: idx, })}
         {:else}
           <button
-            on:click={() => {
+            onclick={() => {
               if (!sortable || !key) return;
               ordering = {
                 key: key,
@@ -103,10 +120,7 @@
     {/if}
 
     {#each orderedData as item (item.id)}
-      <slot
-        {item}
-        baseClass={`grid ${gridColsClass} items-center h-[65px] border-b hoverable dark:text-white`}
-      />
+      {@render children?.({ item, baseClass: `grid ${gridColsClass} items-center h-[65px] border-b hoverable dark:text-white`, })}
     {/each}
   </div>
 </div>

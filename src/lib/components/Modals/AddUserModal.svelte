@@ -11,8 +11,12 @@
 
   import type { Stream } from '$lib/domain/Stream';
 
-  export let closeModal: CloseModalFn;
-  export let streams: Stream[];
+  interface Props {
+    closeModal: CloseModalFn;
+    streams: Stream[];
+  }
+
+  let { closeModal, streams }: Props = $props();
 
   const schema = z.object({
     username: z.string().min(1).trim(),

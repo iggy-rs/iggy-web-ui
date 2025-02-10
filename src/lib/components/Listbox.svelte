@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { createEventDispatcher } from 'svelte';
 
   import { createListbox } from 'svelte-headlessui';
@@ -8,16 +10,29 @@
 
   type T = $$Generic<{ value: string; name: string }>;
 
-  export let options: readonly T[];
-  export let selectedValue: T['value'];
-  export let selectedOptionPrefix = '';
-  export let label: string | undefined = undefined;
-  export let id: string | undefined = undefined;
-  export let errorMessage: string | undefined = undefined;
+  interface Props {
+    options: readonly T[];
+    selectedValue: T['value'];
+    selectedOptionPrefix?: string;
+    label?: string | undefined;
+    id?: string | undefined;
+    errorMessage?: string | undefined;
+  }
 
-  $: selectedOption = options.find((option) => option.value === selectedValue)!;
+  let {
+    options,
+    selectedValue = $bindable(),
+    selectedOptionPrefix = '',
+    label = undefined,
+    id = undefined,
+    errorMessage = undefined
+  }: Props = $props();
+
+  let selectedOption = $derived(options.find((option) => option.value === selectedValue)!);
   const listbox = createListbox({ label: 'Actions', selected: selectedOption });
-  $: listbox.set({ selected: selectedOption });
+  run(() => {
+    listbox.set({ selected: selectedOption });
+  });
 
   const dispatch = createEventDispatcher<{ selectedValue: T['value'] }>();
   function onSelect(e: Event) {
@@ -37,7 +52,7 @@
   <div class="relative w-full">
     <button
       use:listbox.button
-      on:select={onSelect}
+      onselect={onSelect}
       class={twMerge(
         'rounded-md dark:bg-shadeD400 w-full px-4  ring-1 ring-gray-300 dark:ring-gray-500 flex items-center h-[40px] text-color focus-within:ring-2 focus-within:ring-gray-400 transition group relative',
         $listbox.expanded && 'ring-creator-gray4',

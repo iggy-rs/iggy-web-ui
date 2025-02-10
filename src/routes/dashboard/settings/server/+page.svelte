@@ -7,11 +7,15 @@
   import Toggler from '$lib/components/Toggler.svelte';
   import type { Stats } from '$lib/domain/Stats';
 
-  export let data;
+  interface Props {
+    data: any;
+  }
 
-  let cacheEnabled = false;
+  let { data }: Props = $props();
 
-  let cacheValue = 0;
+  let cacheEnabled = $state(false);
+
+  let cacheValue = $state(0);
 </script>
 
 <SettingsLayout>

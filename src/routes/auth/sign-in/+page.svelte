@@ -9,7 +9,11 @@
   import { onMount } from 'svelte';
   import { superForm } from 'sveltekit-superforms/client';
 
-  export let data;
+  interface Props {
+    data: any;
+  }
+
+  let { data }: Props = $props();
   const { form, constraints, errors, message, reset } = superForm(data.form, {});
 
   const remember = persistedStore('rememberMe', { rememberMe: true, username: '', password: '' });
@@ -24,7 +28,7 @@
 
 <form
   method="POST"
-  on:submit={() => {
+  onsubmit={() => {
     if ($remember.rememberMe) {
       $remember.username = $form.username;
       $remember.password = $form.password;
@@ -69,5 +73,5 @@
     <Icon name="login" class="w-[23px] h-[23px]" />
   </Button>
 
-  <span />
+  <span></span>
 </form>

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { browser } from '$app/environment';
   import { navigating } from '$app/stores';
   import { tweened } from 'svelte/motion';
@@ -31,11 +33,13 @@
     opacity.set(0, { duration: 200, delay: 300 });
   }
 
-  $: if (browser) {
-    $navigating ? start() : stop();
-  }
+  run(() => {
+    if (browser) {
+      $navigating ? start() : stop();
+    }
+  });
 </script>
 
 <div class="fixed left-0 right-0 top-0 pointer-events-none z-[999]">
-  <div class="bg-green500 h-[2px]" style="width: {$progress}%; opacity:{$opacity};" />
+  <div class="bg-green500 h-[2px]" style="width: {$progress}%; opacity:{$opacity};"></div>
 </div>

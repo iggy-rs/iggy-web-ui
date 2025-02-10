@@ -26,9 +26,11 @@
       <span class="text-sm text-color-gray"> {$usersCount} users </span>
       <div class="max-w-[170px]">
         <Input bind:value={$searchQuery} placeholder="Search" name="search">
-          <span slot="prefix">
-            <Icon name="search" />
-          </span>
+          {#snippet prefix()}
+                    <span >
+              <Icon name="search" />
+            </span>
+                  {/snippet}
         </Input>
       </div>
       <!-- 

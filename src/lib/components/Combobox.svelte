@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { noTypeCheck } from '$lib/utils/noTypeCheck';
   import Icon from './Icon.svelte';
   import { createEventDispatcher, onMount, tick } from 'svelte';
@@ -10,34 +12,48 @@
 
   type T = $$Generic<{ id: number; name: string }>;
 
-  export let label: string | undefined = undefined;
-  export let items: T[];
-  export let isLoading: boolean = false;
-  export let selectedValue: T | undefined = undefined;
-  export let formatter: ((item: T) => string) | undefined = undefined;
+  interface Props {
+    label?: string | undefined;
+    items: T[];
+    isLoading?: boolean;
+    selectedValue?: T | undefined;
+    formatter?: ((item: T) => string) | undefined;
+  }
+
+  let {
+    label = undefined,
+    items,
+    isLoading = false,
+    selectedValue = $bindable(undefined),
+    formatter = undefined
+  }: Props = $props();
 
   const combobox = createCombobox({ label: label || 'Actions' });
   const dispatch = createEventDispatcher<{ select: T }>();
 
-  let mounted = false;
+  let mounted = $state(false);
   onMount(() => (mounted = true));
 
-  $: if (items.length > 0 && selectedValue === undefined) {
-    selectedValue = items[0];
-  }
-
-  $: (async () => {
-    if (selectedValue !== undefined) {
-      combobox.set({
-        selected: formatter ? { ...selectedValue, name: formatter(selectedValue) } : selectedValue
-      });
-
-      if (!mounted) await tick();
-      dispatch('select', selectedValue);
+  run(() => {
+    if (items.length > 0 && selectedValue === undefined) {
+      selectedValue = items[0];
     }
-  })();
+  });
 
-  $: filtered = (() => {
+  run(() => {
+    (async () => {
+      if (selectedValue !== undefined) {
+        combobox.set({
+          selected: formatter ? { ...selectedValue, name: formatter(selectedValue) } : selectedValue
+        });
+
+        if (!mounted) await tick();
+        dispatch('select', selectedValue);
+      }
+    })();
+  });
+
+  let filtered = $derived((() => {
     const value = $combobox.filter.toLowerCase().replace(/\s+/g, '');
     return items.filter((item) => {
       if (formatter) {
@@ -46,7 +62,7 @@
       const rawName = item.name.toLowerCase().replace(/\s+/g, '');
       return rawName.includes(value);
     });
-  })();
+  })());
 </script>
 
 <div class="flex flex-col gap-2">
@@ -62,7 +78,7 @@
     >
       <input
         use:combobox.input
-        on:select={(e) => {
+        onselect={(e) => {
           selectedValue = noTypeCheck(e).detail.selected;
         }}
         disabled={isLoading}

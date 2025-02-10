@@ -16,9 +16,13 @@
   import { showToast } from '../AppToasts.svelte';
   import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
 
-  export let closeModal: CloseModalFn;
-  export let streamDetails: StreamDetails;
-  export let nextTopicId: number;
+  interface Props {
+    closeModal: CloseModalFn;
+    streamDetails: StreamDetails;
+    nextTopicId: number;
+  }
+
+  let { closeModal, streamDetails, nextTopicId }: Props = $props();
 
   const schema = z.object({
     topic_id: z.number().min(0).max(numberSizes.max.u32).default(nextTopicId),
@@ -61,7 +65,7 @@
           await customInvalidateAll();
           showToast({
             type: 'success',
-            description: `Topic ${$form.name} has been added.`,
+            description: `Topic ${form.data.name} has been added.`,
             duration: 3500
           });
         });
@@ -104,11 +108,11 @@
       {...$constraints.message_expiry}
       errorMessage={$errors.message_expiry?.join(',')}
     />
-    
+
     <span class="-mt-1 text-xs text-shadeD200 dark:text-shadeL700">
       {durationFormatter(+$form.message_expiry || 0)}
     </span>
-    
+
     <Select
       label="Compression Algorithm"
       type="text"

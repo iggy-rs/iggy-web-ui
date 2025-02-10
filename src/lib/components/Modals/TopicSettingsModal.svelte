@@ -20,11 +20,15 @@
   import { page } from '$app/stores';
   import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
 
-  export let topic: TopicDetails;
-  export let closeModal: CloseModalFn;
-  export let onDeleteRedirectPath: string;
+  interface Props {
+    topic: TopicDetails;
+    closeModal: CloseModalFn;
+    onDeleteRedirectPath: string;
+  }
 
-  let confirmationOpen = false;
+  let { topic, closeModal, onDeleteRedirectPath }: Props = $props();
+
+  let confirmationOpen = $state(false);
 
   const schema = z.object({
     name: z
@@ -63,7 +67,7 @@
             await customInvalidateAll();
             showToast({
               type: 'success',
-              description: `Stream ${$form.name} has been updated.`,
+              description: `Stream ${form.data.name} has been updated.`,
               duration: 3500
             });
           });
@@ -105,11 +109,13 @@
     deleteButtonTitle="Delete Topic"
     on:result={onConfirmationResult}
   >
-    <svelte:fragment slot="message">
-      Deleting the topic "<span class="font-semibold">{topic.name}</span>" will permenently remove
-      all associated <span class="font-semibold">partitions ({topic.partitionsCount})</span> and
-      <span class="font-semibold">messages ({topic.messagesCount})</span>.
-    </svelte:fragment>
+    {#snippet message()}
+      
+        Deleting the topic "<span class="font-semibold">{topic.name}</span>" will permenently remove
+        all associated <span class="font-semibold">partitions ({topic.partitionsCount})</span> and
+        <span class="font-semibold">messages ({topic.messagesCount})</span>.
+      
+      {/snippet}
   </ModalConfirmation>
 
   <div class="h-[400px] flex flex-col">
@@ -142,7 +148,7 @@
     </form>
 
     <div class="relative w-full flex-1">
-      <div class="h-[1px] border-b absolute -left-7 -right-7" />
+      <div class="h-[1px] border-b absolute -left-7 -right-7"></div>
       <h2 class="text-xl text-color font-semibold mb-7 mt-5">Delete topic</h2>
 
       <form class="w-full">

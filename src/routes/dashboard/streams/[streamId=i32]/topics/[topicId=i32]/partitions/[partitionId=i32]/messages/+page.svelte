@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { page } from '$app/stores';
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
@@ -7,14 +9,21 @@
   import SortableList from '$lib/components/SortableList.svelte';
   import Paginator from '$lib/components/Paginator.svelte';
 
-  export let data;
-  $: topic = data.topic;
-  $: partitionMessages = data.partitionMessages;
-  $: prevPage = $page.url.pathname.split('/').slice(0, 6).join('/') + '/';
-  $: direction = $page.url.searchParams.get('direction') || 'desc';
+  interface Props {
+    data: any;
+  }
 
-  let currentPage = 1;
-  $: totalPages = Math.ceil(partitionMessages.currentOffset / data.pagination.count);
+  let { data }: Props = $props();
+  let topic = $derived(data.topic);
+  let partitionMessages = $derived(data.partitionMessages);
+  let prevPage = $derived($page.url.pathname.split('/').slice(0, 6).join('/') + '/');
+  let direction;
+  run(() => {
+    direction = $page.url.searchParams.get('direction') || 'desc';
+  });
+
+  let currentPage = $state(1);
+  let totalPages = $derived(Math.ceil(partitionMessages.currentOffset / data.pagination.count));
 
   async function loadPage(page: number) {
     const messagesPerPage = data.pagination.count;

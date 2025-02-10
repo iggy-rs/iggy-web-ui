@@ -7,9 +7,13 @@
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import SortableList from '$lib/components/SortableList.svelte';
 
-  export let data;
-  $: topic = data.topic;
-  $: prevPage = $page.url.pathname.split('/').slice(0, 4).join('/') + '/';
+  interface Props {
+    data: any;
+  }
+
+  let { data }: Props = $props();
+  let topic = $derived(data.topic);
+  let prevPage = $derived($page.url.pathname.split('/').slice(0, 4).join('/') + '/');
 </script>
 
 <div class="h-[80px] flex text-xs items-center pl-2 pr-5">
@@ -25,7 +29,9 @@
     on:click={() => openModal('TopicSettingsModal', { topic, onDeleteRedirectPath: prevPage })}
   >
     <Icon name="settings" />
-    <div slot="tooltip">Settings</div>
+    {#snippet tooltip()}
+        <div >Settings</div>
+      {/snippet}
   </Button>
 
   <div class="flex gap-3 ml-7">

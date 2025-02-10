@@ -12,8 +12,12 @@
   import { numberSizes } from '$lib/utils/constants/numberSizes';
   import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
 
-  export let closeModal: CloseModalFn;
-  export let nextStreamId: number;
+  interface Props {
+    closeModal: CloseModalFn;
+    nextStreamId: number;
+  }
+
+  let { closeModal, nextStreamId }: Props = $props();
 
   const schema = z.object({
     stream_id: z.number().min(0).max(numberSizes.max.u32).default(nextStreamId),
@@ -51,7 +55,7 @@
             await customInvalidateAll();
             showToast({
               type: 'success',
-              description: `Stream ${$form.name} has been added.`,
+              description: `Stream ${form.data.name} has been added.`,
               duration: 3500
             });
           });

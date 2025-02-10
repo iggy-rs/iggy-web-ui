@@ -1,8 +1,12 @@
 <script lang="ts">
   import { twMerge } from 'tailwind-merge';
 
-  export let checked = false;
-  export let value = '1';
+  interface Props {
+    checked?: boolean;
+    value?: string;
+  }
+
+  let { checked = $bindable(false), value = '1' }: Props = $props();
 </script>
 
 <label
@@ -18,5 +22,5 @@
       'absolute left-[1px] top-1/2 -translate-y-1/2 w-[26px] h-[26px] bg-white  rounded-full border border-shadeL700 dark:border-shadeD100 transition-transform ease-in-out duration-200',
       checked && 'translate-x-[24px]'
     )}
-  />
+></div>
 </label>

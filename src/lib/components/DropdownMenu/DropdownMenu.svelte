@@ -2,23 +2,32 @@
   import { tooltip } from '$lib/actions/tooltip';
   import type { Placement } from '@floating-ui/dom';
 
-  let className = '';
-  export { className as class };
-  export let placement: Placement;
 
-  let tooltipRef: HTMLDivElement;
+  interface Props {
+    class?: string;
+    placement: Placement;
+    trigger?: import('svelte').Snippet;
+    children?: import('svelte').Snippet<[any]>;
+  }
+
+  let {
+    class: className = '',
+    placement,
+    trigger,
+    children
+  }: Props = $props();
+
+  let tooltipRef: HTMLDivElement = $state();
 
   const closeTooltip = () => tooltipRef.dispatchEvent(new Event('closeTooltip'));
 </script>
 
 <div class={className} use:tooltip={{ placement, clickable: true }}>
-  <button data-trigger>
-    <slot name="trigger" />
-  </button>
+  {@render trigger?.()}
 
   <div class="tooltip" bind:this={tooltipRef}>
     <div class="z-50">
-      <slot close={closeTooltip} />
+      {@render children?.({ close: closeTooltip, })}
     </div>
   </div>
 </div>

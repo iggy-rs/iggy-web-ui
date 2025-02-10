@@ -13,11 +13,16 @@
   import { slide } from 'svelte/transition';
   import { bytesFormatter } from '$lib/utils/formatters/bytesFormatter';
 
-  export let data;
+  interface Props {
+    data: any;
+    children?: import('svelte').Snippet;
+  }
 
-  let searchQuery = '';
+  let { data, children }: Props = $props();
 
-  $: filteredData = data.streams.filter((stream) => stream.name.includes(searchQuery));
+  let searchQuery = $state('');
+
+  let filteredData = $derived(data.streams.filter((stream) => stream.name.includes(searchQuery)));
 
   if (data.streams.length > 0 && $page.url.pathname === typedRoute('/dashboard/streams')) {
     goto(typedRoute(`/dashboard/streams/${data.streams[0].id}`));
@@ -91,6 +96,6 @@
     </div>
   </div>
   <div class="w-[calc(100%-290px)] h-full overflow-hidden flex flex-col">
-    <slot />
+    {@render children?.()}
   </div>
 </div>

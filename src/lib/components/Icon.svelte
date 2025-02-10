@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
   const icons = {
     menu: `<path stroke="none" d="M0 0h24v24H0z" fill="none"></path><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="20" y2="18"></line>`,
     home: `<path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <polyline points="5 12 3 12 12 3 21 12 19 12"></polyline> <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path> <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>`,
@@ -61,10 +61,14 @@
 <script lang="ts">
   import { twMerge } from 'tailwind-merge';
 
-  export let strokeWidth = 1.7;
-  export let name: iconType;
-  let className = '';
-  export { className as class };
+  interface Props {
+    strokeWidth?: number;
+    name: iconType;
+    class?: string;
+  }
+
+  let { strokeWidth = 1.7, name, class: className = '' }: Props = $props();
+  
 </script>
 
 <svg

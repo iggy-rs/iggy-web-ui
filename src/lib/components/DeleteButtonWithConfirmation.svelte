@@ -1,12 +1,14 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { tooltip } from '$lib/actions/tooltip';
   import { fade } from 'svelte/transition';
   import Button from './Button.svelte';
 
-  let isTooltipOpen = false;
-  let wrapperRef: HTMLDivElement | null;
+  let isTooltipOpen = $state(false);
+  let wrapperRef: HTMLDivElement | null = $state();
 
-  let counter = 7;
+  let counter = $state(7);
   let interval: number | undefined = undefined;
 
   function startCountingDown() {
@@ -23,7 +25,9 @@
     counter = 7;
   }
 
-  $: isTooltipOpen ? startCountingDown() : clearCounterState();
+  run(() => {
+    isTooltipOpen ? startCountingDown() : clearCounterState();
+  });
 </script>
 
 <div bind:this={wrapperRef} use:tooltip={{ placement: 'top' }}>

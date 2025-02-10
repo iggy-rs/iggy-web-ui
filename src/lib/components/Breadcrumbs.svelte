@@ -12,9 +12,9 @@
 
   const MAX_NAME_LENGTH = 20;
 
-  $: streams = $page.data.streams ?? [];
-  $: currentStream = $page.data.streamDetails;
-  $: currentTopic = $page.data.topic;
+  let streams = $derived($page.data.streams ?? []);
+  let currentStream = $derived($page.data.streamDetails);
+  let currentTopic = $derived($page.data.topic);
 
   function truncateName(name: string): string {
     return name.length > MAX_NAME_LENGTH ? `${name.slice(0, MAX_NAME_LENGTH)}...` : name;
@@ -45,9 +45,9 @@
     return { path, label: segment };
   }
 
-  $: parts = $page.url.pathname.split('/').filter(Boolean).slice(1);
+  let parts = $derived($page.url.pathname.split('/').filter(Boolean).slice(1));
 
-  $: crumbs = parts.map((segment, index) => formatPathSegment(segment, index, parts));
+  let crumbs = $derived(parts.map((segment, index) => formatPathSegment(segment, index, parts)));
 </script>
 
 <div class="flex items-center">

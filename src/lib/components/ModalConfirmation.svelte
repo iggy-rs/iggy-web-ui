@@ -5,11 +5,21 @@
   import Input from './Input.svelte';
   import Icon from './Icon.svelte';
 
-  export let open: boolean;
-  export let retypeText: string;
-  export let deleteButtonTitle: string;
+  interface Props {
+    open: boolean;
+    retypeText: string;
+    deleteButtonTitle: string;
+    message?: import('svelte').Snippet;
+  }
 
-  let retypedText = '';
+  let {
+    open,
+    retypeText,
+    deleteButtonTitle,
+    message
+  }: Props = $props();
+
+  let retypedText = $state('');
 
   const dispatch = createEventDispatcher<{ result: boolean }>();
 </script>
@@ -18,12 +28,12 @@
   <div
     transition:fade={{ duration: 100 }}
     class="absolute z-40 bg-black opacity-40 backdrop-blur-xs rounded-2xl inset-0"
-  />
+></div>
   <div
     transition:fade={{ duration: 100 }}
-    on:click={() => dispatch('result', false)}
+    onclick={() => dispatch('result', false)}
     class="absolute z-40 backdrop-blur-xs rounded-2xl inset-3"
-  />
+></div>
   <div
     transition:slide={{ duration: 300 }}
     class="absolute bottom-0 left-0 right-0 flex flex-col z-50 items-center bg-shadeL100 dark:bg-shadeD700 rounded-tl-2xl rounded-tr-2xl"
@@ -38,9 +48,9 @@
       </Button>
 
       <h2 class=" font-semibold text-xl">Are you sure?</h2>
-      {#if $$slots.message}
+      {#if message}
         <span class="text-sm block w-full text-center my-1">
-          <slot name="message" />
+          {@render message?.()}
         </span>
       {/if}
     </div>

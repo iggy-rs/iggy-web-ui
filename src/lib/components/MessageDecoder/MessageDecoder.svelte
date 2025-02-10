@@ -4,8 +4,12 @@
   import { decoderRegistry } from './decoders/utils/decoderRegistry';
   import { decodeBase64 } from '$lib/utils/base64Utils';
 
-  export let payload: string | undefined = undefined;
-  export let codec: string | undefined | null = undefined;
+  interface Props {
+    payload?: string | undefined;
+    codec?: string | undefined | null;
+  }
+
+  let { payload = undefined, codec = undefined }: Props = $props();
 
   type ErrorState = { title: string; message: string };
   type DecodedState =
@@ -13,9 +17,9 @@
     | { status: 'error'; error: ErrorState }
     | { status: 'success'; content: string };
 
-  let state: DecodedState = { status: 'idle' };
-  let showRaw = false;
-  let selectedDecoder = codec || 'string';
+  let state: DecodedState = $state({ status: 'idle' });
+  let showRaw = $state(false);
+  let selectedDecoder = $state(codec || 'string');
 
   function getError(type: 'no_payload' | 'unsupported_codec' | 'invalid_format'): ErrorState {
     switch (type) {

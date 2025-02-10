@@ -6,7 +6,7 @@
     <span
       class="loader-animation w-[4px] h-[4px] bg-gray-400 rounded-full"
       style="animation-delay:{delay}ms "
-    />
+></span>
   {/each}
 </div>
 
