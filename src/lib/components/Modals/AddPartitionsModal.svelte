@@ -6,7 +6,7 @@
   import { numberSizes } from '$lib/utils/constants/numberSizes';
   import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
   import { fetchRouteApi } from '$lib/api/fetchRouteApi';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import { dataHas } from '$lib/utils/dataHas';
   import { invalidateAll } from '$app/navigation';
   import { showToast } from '../AppToasts.svelte';
@@ -33,7 +33,7 @@
 
       const { data, ok } = await fetchRouteApi({
         method: 'POST',
-        path: `/streams/${+$page.params.streamId}/topics/${+$page.params.topicId}/partitions`,
+        path: `/streams/${+page.params.streamId}/topics/${+page.params.topicId}/partitions`,
         body: {
           partitions_count: form.data.partitions_count
         }

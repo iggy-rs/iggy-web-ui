@@ -1,7 +1,7 @@
 <script lang="ts">
   import { run } from 'svelte/legacy';
 
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import { goto } from '$app/navigation';
@@ -16,10 +16,11 @@
   let { data }: Props = $props();
   let topic = $derived(data.topic);
   let partitionMessages = $derived(data.partitionMessages);
-  let prevPage = $derived($page.url.pathname.split('/').slice(0, 6).join('/') + '/');
+  let prevPage = $derived(page.url.pathname.split('/').slice(0, 6).join('/') + '/');
   let direction;
+
   run(() => {
-    direction = $page.url.searchParams.get('direction') || 'desc';
+    direction = page.url.searchParams.get('direction') || 'desc';
   });
 
   let currentPage = $state(1);

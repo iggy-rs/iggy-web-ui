@@ -9,7 +9,7 @@
 
   import ModalConfirmation from '../ModalConfirmation.svelte';
   import { fetchRouteApi } from '$lib/api/fetchRouteApi';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import { invalidateAll } from '$app/navigation';
   import { showToast } from '../AppToasts.svelte';
   import { dataHas } from '$lib/utils/dataHas';
@@ -51,7 +51,7 @@
 
         const { data, ok } = await fetchRouteApi({
           method: 'DELETE',
-          path: `/streams/${+$page.params.streamId}/topics/${+$page.params.topicId}/partitions`,
+          path: `/streams/${+page.params.streamId}/topics/${+page.params.topicId}/partitions`,
           queryParams: {
             partitions_count: form.data.partitions_count
           }

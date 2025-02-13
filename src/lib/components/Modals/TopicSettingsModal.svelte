@@ -17,7 +17,7 @@
   import { browser } from '$app/environment';
   import type { TopicDetails } from '$lib/domain/TopicDetails';
   import { numberSizes } from '$lib/utils/constants/numberSizes';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
 
   interface Props {
@@ -51,7 +51,7 @@
 
         const { data, ok } = await fetchRouteApi({
           method: 'PUT',
-          path: `/streams/${+$page.params.streamId}/topics/${topic.id}`,
+          path: `/streams/${+page.params.streamId}/topics/${topic.id}`,
           body: {
             name: form.data.name,
             message_expiry: form.data.message_expiry
@@ -83,7 +83,7 @@
     if (result) {
       const { data, ok } = await fetchRouteApi({
         method: 'DELETE',
-        path: `/streams/${+$page.params.streamId}/topics/${topic.id}`
+        path: `/streams/${+page.params.streamId}/topics/${topic.id}`
       });
 
       if (ok) {

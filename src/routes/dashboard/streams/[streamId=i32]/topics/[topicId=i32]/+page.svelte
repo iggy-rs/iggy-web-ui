@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import { goto } from '$app/navigation';
@@ -13,7 +13,7 @@
 
   let { data }: Props = $props();
   let topic = $derived(data.topic);
-  let prevPage = $derived($page.url.pathname.split('/').slice(0, 4).join('/') + '/');
+  let prevPage = $derived(page.url.pathname.split('/').slice(0, 4).join('/') + '/');
 </script>
 
 <div class="h-[80px] flex text-xs items-center pl-2 pr-5">
@@ -67,7 +67,7 @@
   data={topic.partitions}
   hrefBuilder={(partition) =>
     typedRoute(
-      `/dashboard/streams/${+$page.params.streamId}/topics/${topic.id}/partitions/${partition.id}/messages`
+      `/dashboard/streams/${+page.params.streamId}/topics/${topic.id}/partitions/${partition.id}/messages`
     )}
   colNames={{
     id: 'ID',

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { updated } from '$app/stores';
+  import { updated } from '$app/state';
   import Button from '$lib/components/Button.svelte';
   import Checkbox from '$lib/components/Checkbox.svelte';
   import Icon from '$lib/components/Icon.svelte';

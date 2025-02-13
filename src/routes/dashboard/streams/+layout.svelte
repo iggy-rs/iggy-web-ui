@@ -2,7 +2,7 @@
   import Icon from '$lib/components/Icon.svelte';
   import { goto, invalidateAll, onNavigate } from '$app/navigation';
   import { twMerge } from 'tailwind-merge';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import Button from '$lib/components/Button.svelte';
 
@@ -24,7 +24,7 @@
 
   let filteredData = $derived(data.streams.filter((stream) => stream.name.includes(searchQuery)));
 
-  if (data.streams.length > 0 && $page.url.pathname === typedRoute('/dashboard/streams')) {
+  if (data.streams.length > 0 && page.url.pathname === typedRoute('/dashboard/streams')) {
     goto(typedRoute(`/dashboard/streams/${data.streams[0].id}`));
   }
 </script>
@@ -48,7 +48,7 @@
 
     <ul class="flex-1 overflow-auto">
       {#each filteredData as { name, id, topicsCount, messagesCount, sizeBytes } (id)}
-        {@const isActive = $page.params.streamId === id.toString()}
+        {@const isActive = page.params.streamId === id.toString()}
         <li class="last:mb-6">
           <a
             href={typedRoute(`/dashboard/streams/${id}`)}

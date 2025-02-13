@@ -4,7 +4,7 @@
   import Icon from '$lib/components/Icon.svelte';
 
   import { typedRoute } from '$lib/types/appRoutes';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   interface Props {
     actions?: import('svelte').Snippet;
     children?: import('svelte').Snippet;
@@ -14,7 +14,7 @@
 
   type Tabs = 'server' | 'users' | 'webUI' | 'terminal';
 
-  let activeTab = $derived($page.url.pathname.split('/').slice(-1)[0]);
+  let activeTab = $derived(page.url.pathname.split('/').slice(-1)[0]);
 
   const tabs = [
     {
