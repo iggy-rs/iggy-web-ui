@@ -24,9 +24,12 @@
 
   let filteredData = $derived(data.streams.filter((stream) => stream.name.includes(searchQuery)));
 
-  if (data.streams.length > 0 && page.url.pathname === typedRoute('/dashboard/streams')) {
-    goto(typedRoute(`/dashboard/streams/${data.streams[0].id}`));
-  }
+  onMount(() => {
+    if (data.streams.length > 0 && page.url.pathname === typedRoute('/dashboard/streams')) {
+      goto(typedRoute(`/dashboard/streams/${data.streams[0].id}`));
+    }
+  });
+
 </script>
 
 <div class="flex h-full flex-row">
