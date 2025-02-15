@@ -4,7 +4,8 @@
   import Input from '../Input.svelte';
   import ModalBase from './ModalBase.svelte';
   import { numberSizes } from '$lib/utils/constants/numberSizes';
-  import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
+  import { setError, superForm, defaults } from 'sveltekit-superforms/client';
+  import { zod } from 'sveltekit-superforms/adapters';
   import { fetchRouteApi } from '$lib/api/fetchRouteApi';
   import { page } from '$app/state';
   import { dataHas } from '$lib/utils/dataHas';
@@ -23,9 +24,9 @@
     partitions_count: z.number().min(1).max(numberSizes.max.u32).default(1)
   });
 
-  const { form, errors, enhance, constraints } = superForm(superValidateSync(schema), {
+  const { form, errors, enhance, constraints } = superForm(defaults(zod(schema)), {
     SPA: true,
-    validators: schema,
+    validators: zod(schema),
     invalidateAll: false,
     taintedMessage: false,
     async onUpdate({ form }) {

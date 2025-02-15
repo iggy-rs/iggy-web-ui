@@ -4,7 +4,8 @@
   import Input from '../Input.svelte';
   import { z } from 'zod';
   import ModalBase from './ModalBase.svelte';
-  import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
+  import { setError, superForm, defaults } from 'sveltekit-superforms/client';
+  import { zod } from 'sveltekit-superforms/adapters';
   import Button from '../Button.svelte';
 
   import ModalConfirmation from '../ModalConfirmation.svelte';
@@ -25,14 +26,14 @@
   let { closeModal, topic }: Props = $props();
 
   let confirmationOpen = $state(false);
-  let formElement: HTMLFormElement = $state();
+  let formElement: HTMLFormElement | undefined = $state();
 
   const onConfirmationResult = (e: any) => {
     const result = e.detail as boolean;
     confirmationOpen = false;
 
     if (result) {
-      formElement.requestSubmit();
+      formElement?.requestSubmit();
     }
   };
 
@@ -40,11 +41,11 @@
     partitions_count: z.coerce.number().min(1).max(topic.partitionsCount).default(1)
   });
 
-  const { form, errors, enhance, constraints, submitting, validate } = superForm(
-    superValidateSync(schema),
+  const { form, errors, enhance, constraints, submitting, validateForm } = superForm(
+    defaults(zod(schema)),
     {
       SPA: true,
-      validators: schema,
+      validators: zod(schema),
 
       async onUpdate({ form }) {
         if (!form.valid) return;
@@ -90,12 +91,12 @@
     on:result={onConfirmationResult}
   >
     {#snippet message()}
-      
+
         Deleting the <span class="font-semibold">{$form.partitions_count}</span>
         {$form.partitions_count > 1 ? 'partitions' : 'partition'} from topic
         <span class="font-semibold">"{topic.name}"</span> will permenently remove all associated
         messages <span class="font-semibold">({messagesToDelete})</span>.
-      
+
       {/snippet}
   </ModalConfirmation>
   <div class="h-[300px] flex flex-col">
@@ -118,7 +119,7 @@
           variant="containedRed"
           class="w-2/5"
           on:click={async () => {
-            const result = await validate();
+            const result = await validateForm();
             if (result.valid) confirmationOpen = true;
           }}>Delete</Button
         >

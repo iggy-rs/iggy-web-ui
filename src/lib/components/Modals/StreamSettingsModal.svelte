@@ -7,7 +7,8 @@
   import Icon from '../Icon.svelte';
   import Input from '../Input.svelte';
   import ModalBase from './ModalBase.svelte';
-  import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
+  import { setError, superForm, defaults } from 'sveltekit-superforms/client';
+  import { zod } from 'sveltekit-superforms/adapters';
   import { fetchRouteApi } from '$lib/api/fetchRouteApi';
   import { dataHas } from '$lib/utils/dataHas';
   import { goto, invalidateAll } from '$app/navigation';
@@ -36,10 +37,10 @@
   });
 
   const { form, errors, enhance, constraints, submitting, reset, tainted } = superForm(
-    superValidateSync(schema),
+    defaults(zod(schema)),
     {
       SPA: true,
-      validators: schema,
+      validators: zod(schema),
       invalidateAll: false,
       taintedMessage: false,
       async onUpdate({ form }) {
@@ -105,7 +106,7 @@
     on:result={onConfirmationResult}
   >
     {#snippet message()}
-      
+
         Deleting the stream "<span class="font-semibold">{stream.name}</span>" will permenently remove
         all associated
         <span class="font-semibold">topics ({stream.topicsCount})</span>,
@@ -114,7 +115,7 @@
         >
         and
         <span class="font-semibold">messages ({stream.messagesCount})</span>.
-      
+
       {/snippet}
   </ModalConfirmation>
 

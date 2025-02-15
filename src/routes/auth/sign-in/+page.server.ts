@@ -1,6 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { message, superValidate } from 'sveltekit-superforms/server';
+import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
 import { typedRoute } from '$lib/types/appRoutes';
 import { fetchApi } from '$lib/api/fetchApi';
@@ -13,14 +14,14 @@ const schema = z.object({
 });
 
 export const load = async () => {
-  const form = await superValidate(schema);
+  const form = await superValidate(zod(schema));
 
   return { form };
 };
 
 export const actions = {
   default: async ({ request, cookies, locals }) => {
-    const form = await superValidate(request, schema);
+    const form = await superValidate(request, zod(schema));
 
     if (!form.valid) {
       return fail(400, { form });

@@ -4,7 +4,8 @@
   import Input from '../Input.svelte';
   import z from 'zod';
   import ModalBase from './ModalBase.svelte';
-  import { superForm, superValidateSync } from 'sveltekit-superforms/client';
+  import { superForm, defaults } from 'sveltekit-superforms/client';
+  import { zod } from 'sveltekit-superforms/adapters';
   import PasswordInput from '../PasswordInput.svelte';
   import Button from '../Button.svelte';
   import PermissionsManager from '../PermissionsManager.svelte';
@@ -23,9 +24,9 @@
     password: z.string().min(4, { message: 'Password must contain at least 4 characters' }).trim()
   });
 
-  const { form, errors, enhance, constraints } = superForm(superValidateSync(schema), {
+  const { form, errors, enhance, constraints } = superForm(defaults(zod(schema)), {
     SPA: true,
-    validators: schema,
+    validators: zod(schema),
 
     async onUpdate({ form }) {
       if (!form.valid) return;

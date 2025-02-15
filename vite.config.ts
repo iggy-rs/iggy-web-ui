@@ -12,5 +12,8 @@ export default defineConfig({
 		outDir: '../dist',
 		emptyOutDir: true,
 	},
-	plugins: [sveltekit()]
+	plugins: [sveltekit()],
+	define: {
+		SUPERFORMS_LEGACY: true
+	}
 });

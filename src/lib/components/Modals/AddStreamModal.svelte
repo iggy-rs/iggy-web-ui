@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { CloseModalFn } from '$lib/types/utilTypes';
-  import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
+  import { setError, superForm, defaults } from 'sveltekit-superforms/client';
+  import { zod } from 'sveltekit-superforms/adapters';
   import { z } from 'zod';
   import Button from '../Button.svelte';
   import Input from '../Input.svelte';
@@ -28,10 +29,10 @@
   });
 
   const { form, errors, enhance, constraints, submitting, reset } = superForm(
-    superValidateSync(schema),
+    defaults(zod(schema)),
     {
       SPA: true,
-      validators: schema,
+      validators: zod(schema),
       invalidateAll: false,
       taintedMessage: false,
       async onUpdate({ form }) {
