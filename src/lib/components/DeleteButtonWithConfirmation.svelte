@@ -6,7 +6,7 @@
   import Button from './Button.svelte';
 
   let isTooltipOpen = $state(false);
-  let wrapperRef: HTMLDivElement | null = $state();
+  let wrapperRef: HTMLDivElement | null = $state<HTMLDivElement | null>(null);
 
   let counter = $state(7);
   let interval: number | undefined = undefined;

@@ -44,7 +44,7 @@
   <Input
     label="Username"
     name="username"
-    errorMessage={$errors.username?.join(',')}
+    errorMessage={$errors?.username?.join(',')}
     bind:value={$form.username}
     {...$constraints.username}
   />

@@ -1,16 +1,13 @@
 <script lang="ts">
-  import { run } from 'svelte/legacy';
-
   import { createEventDispatcher } from 'svelte';
-
   import { createListbox } from 'svelte-headlessui';
-  import { fade, slide } from 'svelte/transition';
+  import { fade } from 'svelte/transition';
   import Icon from './Icon.svelte';
   import { twMerge } from 'tailwind-merge';
 
-  type T = $$Generic<{ value: string; name: string }>;
+  type GenericOption = { value: string; name: string };
 
-  interface Props {
+  interface Props<T extends GenericOption> {
     options: readonly T[];
     selectedValue: T['value'];
     selectedOptionPrefix?: string;
@@ -26,15 +23,22 @@
     label = undefined,
     id = undefined,
     errorMessage = undefined
-  }: Props = $props();
+  }: Props<GenericOption> = $props();
 
-  let selectedOption = $derived(options.find((option) => option.value === selectedValue)!);
-  const listbox = createListbox({ label: 'Actions', selected: selectedOption });
-  run(() => {
-    listbox.set({ selected: selectedOption });
+  let listbox = $state(createListbox({
+    label: 'Actions',
+    selected: options.find((option) => option.value === selectedValue) ?? options[0]
+  }));
+
+  $effect(() => {
+    const newSelectedOption = options.find((option) => option.value === selectedValue);
+    if (newSelectedOption) {
+      listbox.set({ selected: newSelectedOption });
+    }
   });
 
-  const dispatch = createEventDispatcher<{ selectedValue: T['value'] }>();
+  const dispatch = createEventDispatcher<{ selectedValue: string }>();
+
   function onSelect(e: Event) {
     const selected = (e as CustomEvent).detail.selected.value;
     selectedValue = selected;

@@ -6,9 +6,15 @@
   import { typedRoute } from '$lib/types/appRoutes';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import SortableList from '$lib/components/SortableList.svelte';
+  import type { Topic } from '$lib/domain/Topic';
+  import type { Partition } from '$lib/domain/Partition';
 
   interface Props {
-    data: any;
+    data: {
+      topic: Topic & {
+        partitions: Partition[];
+      };
+    }
   }
 
   let { data }: Props = $props();
@@ -55,7 +61,7 @@
         >Delete partitions</Button
       >
     {/if}
-    <Button variant="contained" on:click={() => openModal('AddPartitionsModal')}
+    <Button variant="contained" on:click={() => openModal('AddPartitionsModal', {})}
       >Add partitions</Button
     >
   </div>

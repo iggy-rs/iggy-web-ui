@@ -7,7 +7,6 @@
     big: '[&::-webkit-slider-thumb]:w-[20px] [&::-webkit-slider-thumb]:h-[20px] h-[8px]'
   };
 
-
   interface Props {
     min: number;
     max: number;
@@ -46,6 +45,7 @@
     outline: none;
     transition: background 450ms ease-in;
     -webkit-appearance: none;
+    appearance: none;
   }
 
   .progress::-webkit-slider-thumb {
@@ -54,10 +54,6 @@
     cursor: ew-resize;
     background: var(--shadeL500);
     border: 1px solid var(--shadeL800);
-  }
-
-  .dark .progress::-webkit-slider-thumb {
-    background: white !important;
   }
 
   .progress::-webkit-slider-thumb:hover {

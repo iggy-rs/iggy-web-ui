@@ -6,6 +6,7 @@
   import { quintOut } from 'svelte/easing';
   import Button from '../Button.svelte';
   import type { CloseModalFn } from '$lib/types/utilTypes';
+
   interface Props {
     closeModal: CloseModalFn;
     title?: string;
@@ -39,9 +40,9 @@
     };
   }
 
-  
 
-  const { class: className, closeModal, title, ...rest } = rest_1 as $$Props;
+
+  const { class: className, closeModal, title, ...rest } = rest_1 as Props;
 </script>
 
 <div

@@ -17,9 +17,9 @@
     children
   }: Props = $props();
 
-  let tooltipRef: HTMLDivElement = $state();
+  let tooltipRef = $state<HTMLDivElement | null>(null);
 
-  const closeTooltip = () => tooltipRef.dispatchEvent(new Event('closeTooltip'));
+  const closeTooltip = () => tooltipRef?.dispatchEvent(new Event('closeTooltip'));
 </script>
 
 <div class={className} use:tooltip={{ placement, clickable: true }}>

@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { run } from 'svelte/legacy';
-
   import { page } from '$app/state';
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
@@ -17,12 +15,8 @@
   let topic = $derived(data.topic);
   let partitionMessages = $derived(data.partitionMessages);
   let prevPage = $derived(page.url.pathname.split('/').slice(0, 6).join('/') + '/');
-  let direction;
 
-  run(() => {
-    direction = page.url.searchParams.get('direction') || 'desc';
-  });
-
+  let direction = $state(page.url.searchParams.get('direction') || 'desc');
   let currentPage = $state(1);
   let totalPages = $derived(Math.ceil(partitionMessages.currentOffset / data.pagination.count));
 

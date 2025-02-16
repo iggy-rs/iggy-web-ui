@@ -6,9 +6,12 @@
   import SortableList from '$lib/components/SortableList.svelte';
   import { typedRoute } from '$lib/types/appRoutes';
   import { arrayMax } from '$lib/utils/arrayMax';
+  import type { StreamDetails } from '$lib/domain/StreamDetails';
 
   interface Props {
-    data: any;
+    data: {
+      streamDetails: StreamDetails
+    };
   }
 
   let { data }: Props = $props();

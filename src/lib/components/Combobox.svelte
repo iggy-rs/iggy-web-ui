@@ -25,7 +25,7 @@
     items,
     isLoading = false,
     selectedValue = $bindable(undefined),
-    formatter = undefined
+    formatter = undefined,
   }: Props = $props();
 
   const combobox = createCombobox({ label: label || 'Actions' });

@@ -40,6 +40,6 @@
   };
 
   run(() => {
-    $theme, setAppTheme();
+    setAppTheme();
   });
 </script>
