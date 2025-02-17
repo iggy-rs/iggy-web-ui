@@ -3,9 +3,10 @@
   import type { iconType } from './Icon.svelte';
   import { page } from '$app/stores';
   import { twMerge } from 'tailwind-merge';
-  import logo from '$lib/assets/logo_nav.png';
   import { tooltip } from '$lib/actions/tooltip';
   import { typedRoute } from '$lib/types/appRoutes';
+  import LogoType from '$lib/components/Logo/LogoType.svelte';
+  import LogoMark from '$lib/components/Logo/LogoMark.svelte';
 
   $: navItems = [
     {
@@ -45,10 +46,8 @@
   class="fixed z-10 left-0 top-0 bottom-0 min-w-[90px] max-w-[90px] pb-7 pt-4 border-r flex flex-col items-center bg-shadeL300 dark:bg-shadeD1000"
 >
   <a href={typedRoute('/dashboard/overview')} class="flex flex-col items-center gap-5 mb-5">
-    <span class="font-extrabold text-xl tracking-wide text-black dark:text-white"> IGGY </span>
-    <div class="w-[50px] h-[45px]">
-      <img src={logo} class="w-[50px]" alt="iggy" />
-    </div>
+    <LogoType class="w-[51px] h-[28px] pointer-events-none" />
+    <LogoMark class="w-[50px] h-[45px]" />
   </a>
 
   <ul class="flex flex-col gap-7">
