@@ -4,18 +4,22 @@
   import { decoderRegistry } from './decoders/utils/decoderRegistry';
   import { decodeBase64 } from '$lib/utils/base64Utils';
 
-  export let payload: string | undefined = undefined;
-  export let codec: string | undefined | null = undefined;
+  interface Props {
+    payload?: string | undefined;
+    codec?: string | undefined | null;
+  }
+
+  let { payload = undefined, codec = undefined }: Props = $props();
 
   type ErrorState = { title: string; message: string };
   type DecodedState =
-    | { status: 'idle' }
+    | { status: 'idle'; forceChangeDecoder: boolean }
     | { status: 'error'; error: ErrorState }
     | { status: 'success'; content: string };
 
-  let state: DecodedState = { status: 'idle' };
-  let showRaw = false;
-  let selectedDecoder = codec || 'string';
+  let decodeState = $state<DecodedState>({ status: 'idle', forceChangeDecoder: false });
+  let showRaw = $state(false);
+  let selectedDecoder = $state(codec || 'string');
 
   function getError(type: 'no_payload' | 'unsupported_codec' | 'invalid_format'): ErrorState {
     switch (type) {
@@ -39,34 +43,34 @@
 
   function decode() {
     if (!payload) {
-      state = { status: 'error', error: getError('no_payload') };
+      decodeState = { status: 'error', error: getError('no_payload') };
       return;
     }
 
     const decodedPayload = decodeBase64(payload);
     if (!decodedPayload) {
-      state = { status: 'error', error: getError('invalid_format') };
+      decodeState = { status: 'error', error: getError('invalid_format') };
       return;
     }
 
     const decoder = decoderRegistry.get(selectedDecoder);
     if (!decoder) {
-      state = { status: 'error', error: getError('unsupported_codec') };
+      decodeState = { status: 'error', error: getError('unsupported_codec') };
       return;
     }
 
     const content = decoder.decode(decodedPayload);
     if (!content) {
-      state = { status: 'error', error: getError('invalid_format') };
+      decodeState = { status: 'error', error: getError('invalid_format') };
       return;
     }
 
-    state = { status: 'success', content };
+    decodeState = { status: 'success', content };
   }
 </script>
 
-{#if state.status === 'idle'}
-  {#if !codec || !decoderRegistry.get(codec)}
+{#if decodeState.status === 'idle'}
+  {#if !codec || !decoderRegistry.get(codec) || decodeState.forceChangeDecoder}
     <div class="mb-4">
       <Select
         label="Select decoder"
@@ -78,21 +82,21 @@
   {/if}
   <Button variant="contained" on:click={decode}>Decode</Button>
 {:else}
-  {#if state.status === 'error'}
+  {#if decodeState.status === 'error'}
     <div class="bg-red-100 dark:bg-red-900 p-4 rounded-md w-full">
-      <p class="font-bold">{state.error.title}</p>
-      <p>{state.error.message}</p>
+      <p class="font-bold">{decodeState.error.title}</p>
+      <p>{decodeState.error.message}</p>
     </div>
   {/if}
 
-  {#if state.status === 'success'}
+  {#if decodeState.status === 'success'}
     <div class="flex items-center gap-3">
       <p class="font-bold">Codec: {selectedDecoder}</p>
-      <Button variant="text" on:click={() => (state = { status: 'idle' })}>Change decoder</Button>
+      <Button variant="text" on:click={() => (decodeState = { status: 'idle', forceChangeDecoder: true })}>Change decoder</Button>
     </div>
     <div class="w-full mt-2">
       <pre class="bg-gray-100 dark:bg-gray-800 p-1 rounded-md overflow-auto"><code
-          >{state.content}</code
+          >{decodeState.content}</code
         ></pre>
     </div>
   {/if}

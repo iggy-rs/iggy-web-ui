@@ -3,7 +3,11 @@
 
   import ModalBase from './ModalBase.svelte';
 
-  export let closeModal: CloseModalFn;
+  interface Props {
+    closeModal: CloseModalFn;
+  }
+
+  let { closeModal }: Props = $props();
 </script>
 
 <ModalBase {closeModal} title="Delete user">

@@ -7,7 +7,8 @@
   import Icon from '../Icon.svelte';
   import Input from '../Input.svelte';
   import ModalBase from './ModalBase.svelte';
-  import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
+  import { setError, superForm, defaults } from 'sveltekit-superforms/client';
+  import { zod } from 'sveltekit-superforms/adapters';
   import { fetchRouteApi } from '$lib/api/fetchRouteApi';
   import { dataHas } from '$lib/utils/dataHas';
   import { goto, invalidateAll } from '$app/navigation';
@@ -17,14 +18,18 @@
   import { browser } from '$app/environment';
   import type { TopicDetails } from '$lib/domain/TopicDetails';
   import { numberSizes } from '$lib/utils/constants/numberSizes';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
 
-  export let topic: TopicDetails;
-  export let closeModal: CloseModalFn;
-  export let onDeleteRedirectPath: string;
+  interface Props {
+    topic: TopicDetails;
+    closeModal: CloseModalFn;
+    onDeleteRedirectPath: string;
+  }
 
-  let confirmationOpen = false;
+  let { topic, closeModal, onDeleteRedirectPath }: Props = $props();
+
+  let confirmationOpen = $state(false);
 
   const schema = z.object({
     name: z
@@ -36,10 +41,10 @@
   });
 
   const { form, errors, enhance, constraints, submitting, reset, tainted } = superForm(
-    superValidateSync(schema),
+    defaults(zod(schema)),
     {
       SPA: true,
-      validators: schema,
+      validators: zod(schema),
       invalidateAll: false,
       taintedMessage: false,
       async onUpdate({ form }) {
@@ -47,7 +52,7 @@
 
         const { data, ok } = await fetchRouteApi({
           method: 'PUT',
-          path: `/streams/${+$page.params.streamId}/topics/${topic.id}`,
+          path: `/streams/${+page.params.streamId}/topics/${topic.id}`,
           body: {
             name: form.data.name,
             message_expiry: form.data.message_expiry
@@ -63,7 +68,7 @@
             await customInvalidateAll();
             showToast({
               type: 'success',
-              description: `Stream ${$form.name} has been updated.`,
+              description: `Stream ${form.data.name} has been updated.`,
               duration: 3500
             });
           });
@@ -79,7 +84,7 @@
     if (result) {
       const { data, ok } = await fetchRouteApi({
         method: 'DELETE',
-        path: `/streams/${+$page.params.streamId}/topics/${topic.id}`
+        path: `/streams/${+page.params.streamId}/topics/${topic.id}`
       });
 
       if (ok) {
@@ -105,11 +110,13 @@
     deleteButtonTitle="Delete Topic"
     on:result={onConfirmationResult}
   >
-    <svelte:fragment slot="message">
-      Deleting the topic "<span class="font-semibold">{topic.name}</span>" will permenently remove
-      all associated <span class="font-semibold">partitions ({topic.partitionsCount})</span> and
-      <span class="font-semibold">messages ({topic.messagesCount})</span>.
-    </svelte:fragment>
+    {#snippet message()}
+
+        Deleting the topic "<span class="font-semibold">{topic.name}</span>" will permenently remove
+        all associated <span class="font-semibold">partitions ({topic.partitionsCount})</span> and
+        <span class="font-semibold">messages ({topic.messagesCount})</span>.
+
+      {/snippet}
   </ModalConfirmation>
 
   <div class="h-[400px] flex flex-col">
@@ -142,7 +149,7 @@
     </form>
 
     <div class="relative w-full flex-1">
-      <div class="h-[1px] border-b absolute -left-7 -right-7" />
+      <div class="h-[1px] border-b absolute -left-7 -right-7"></div>
       <h2 class="text-xl text-color font-semibold mb-7 mt-5">Delete topic</h2>
 
       <form class="w-full">

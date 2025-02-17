@@ -8,7 +8,7 @@ export const handleFetchErrors = async (
   cookies: Cookies
 ): Promise<{ response: Response; data: unknown }> => {
   if (!(fetchResult instanceof Response)) {
-    throw error(500, 'handleFetchErrors: noResponse');
+    error(500, 'handleFetchErrors: noResponse');
   }
 
   const response = fetchResult;
@@ -41,18 +41,18 @@ export const handleFetchErrors = async (
       // TODO: Refresh token
       console.log(`handleErrorStatus: 401 ${response.url}`);
       removeCookies();
-      throw redirect(302, typedRoute('/auth/sign-in'));
+      redirect(302, typedRoute('/auth/sign-in'));
     },
     403: () => {
       console.log(`handleErrorStatus: 403 ${response.url}`);
       removeCookies();
-      throw redirect(302, typedRoute('/auth/sign-in'));
+      redirect(302, typedRoute('/auth/sign-in'));
     },
     404: () => {
       console.log(`handleErrorStatus: 404 ${response.url}`);
-      throw error(404, {
-        message: 'Not Found'
-      });
+      error(404, {
+                message: 'Not Found'
+              });
     }
   };
 
@@ -61,7 +61,7 @@ export const handleFetchErrors = async (
 
   console.log(`handleErrorStatus: 500 ${response.url}`);
 
-  throw error(500, {
-    message: 'handleErrorStatus: Internal server error'
-  });
+  error(500, {
+        message: 'handleErrorStatus: Internal server error'
+      });
 };

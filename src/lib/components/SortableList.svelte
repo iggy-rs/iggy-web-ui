@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   type ListItem = {
     id: string | number;
   };
@@ -14,6 +14,8 @@
 </script>
 
 <script lang="ts" generics="T extends ListItem">
+  import { run } from 'svelte/legacy';
+
   import { asConst } from '$lib/utils/asConst';
 
   import { onNavigate } from '$app/navigation';
@@ -25,13 +27,9 @@
   import { twMerge } from 'tailwind-merge';
   import { noTypeCheck } from '$lib/utils/noTypeCheck';
 
-  export let data: T[];
-  export let emptyDataMessage: string;
-  export let colNames: Partial<Record<keyof T, string | undefined>>;
-  export let rowClass: string;
 
-  let animationEnabled = true;
-  let isAnimating = false;
+  let animationEnabled = $state(true);
+  let isAnimating = $state(false);
   let timeout: number;
 
   onNavigate(() => {
@@ -45,29 +43,49 @@
     };
   });
 
-  export let hrefBuilder: ((item: T) => string) | undefined = undefined;
-  export let onclickAction: ((index: number) => any) | undefined = undefined;
-  export let ariaRoleDescription: string | undefined = undefined;
+  interface Props {
+    data: T[];
+    emptyDataMessage: string;
+    colNames: Partial<Record<keyof T, string | undefined>>;
+    rowClass: string;
+    hrefBuilder?: ((item: T) => string) | undefined;
+    onclickAction?: ((index: number) => any) | undefined;
+    ariaRoleDescription?: string | undefined;
+    children?: import('svelte').Snippet<[any]>;
+  }
 
-  let ordering: Ordering<T> = {
+  let {
+    data,
+    emptyDataMessage,
+    colNames,
+    rowClass,
+    hrefBuilder = undefined,
+    onclickAction = undefined,
+    ariaRoleDescription = undefined,
+    children
+  }: Props = $props();
+
+  let ordering: Ordering<T> = $state({
     key: undefined,
     asc: undefined
-  };
+  });
 
-  $: columns = Object.keys(colNames)
+  let columns = $derived(Object.keys(colNames)
     .filter((k) => colNames[k as string])
     .map((key) => ({
       columnDisplayedName: colNames[key as keyof T],
       columnName: key
-    })) as { columnDisplayedName: string; columnName: keyof T }[];
+    })) as { columnDisplayedName: string; columnName: keyof T }[]);
 
-  $: orderedData = ordering.key ? orderData(data, ordering.key, ordering.asc!) : data;
+  let orderedData = $derived(ordering.key ? orderData(data, ordering.key, ordering.asc!) : data);
 
-  let isBodyOverflowing = false;
-  let bodyElem: HTMLDivElement | null = null;
-  $: if (bodyElem && bodyElem.scrollHeight > bodyElem.offsetHeight) {
-    isBodyOverflowing = true;
-  }
+  let isBodyOverflowing = $state(false);
+  let bodyElem: HTMLDivElement | null = $state(null);
+  run(() => {
+    if (bodyElem && bodyElem.scrollHeight > bodyElem.offsetHeight) {
+      isBodyOverflowing = true;
+    }
+  });
 </script>
 
 <div class="flex-1 overflow-auto">
@@ -81,7 +99,7 @@
     <div class="w-full {rowClass}">
       {#each columns as { columnName, columnDisplayedName } (columnName)}
         <button
-          on:click={() =>
+          onclick={() =>
             (ordering = {
               key: columnName,
               asc: ordering.key !== columnName ? true : !ordering.asc
@@ -130,24 +148,24 @@
         role="button"
         tabindex={index}
         aria-roledescription={ariaRoleDescription}
-        on:click={onclickAction && onclickAction(index)}
-        on:introstart={noTypeCheck((e) => {
+        onclick={() => onclickAction?.(index)}
+        onintrostart={noTypeCheck((e) => {
           if (!animationEnabled) return;
           e.target.style.backgroundColor = 'rgb(74, 222, 128)';
           isAnimating = true;
         })}
-        on:introend={(e) => {
+        onintroend={(e) => {
           setTimeout(() => {
             if (!animationEnabled) return;
             e.target.style = '';
           }, 800);
         }}
-        on:outrostart={(e) => {
+        onoutrostart={(e) => {
           if (!animationEnabled) return;
           e.target.style.backgroundColor = 'rgb(239 68 68)';
           isAnimating = true;
         }}
-        on:outroend={(e) => {
+        onoutroend={(e) => {
           isAnimating = false;
         }}
         in:slide={{ duration: animationEnabled ? 300 : 0 }}
@@ -157,7 +175,7 @@
         )}
       >
         <div class="flex items-center w-full {rowClass}">
-          <slot {item}>
+          {#if children}{@render children({ item, })}{:else}
             {#each columns as { columnName }, idx (idx)}
               <div class={twMerge('px-5')}>
                 <span class={columnName === 'id' ? 'font-semibold' : ''}>
@@ -165,7 +183,7 @@
                 </span>
               </div>
             {/each}
-          </slot>
+          {/if}
         </div>
       </svelte:element>
     {/each}

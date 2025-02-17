@@ -7,6 +7,20 @@
   import Button from '../Button.svelte';
   import type { CloseModalFn } from '$lib/types/utilTypes';
 
+  interface Props {
+    closeModal: CloseModalFn;
+    title?: string;
+    titleSuffix?: import('svelte').Snippet;
+    children?: import('svelte').Snippet;
+    [key: string]: any
+  }
+
+  let {
+    titleSuffix,
+    children,
+    ...rest_1
+  }: Props = $props();
+
   function modalTransition(node: Element): TransitionConfig {
     const style = getComputedStyle(node);
     const transform = style.transform === 'none' ? '' : style.transform;
@@ -26,12 +40,9 @@
     };
   }
 
-  interface $$Props extends HTMLAttributes<HTMLDivElement> {
-    closeModal: CloseModalFn;
-    title?: string;
-  }
 
-  const { class: className, closeModal, title, ...rest } = $$restProps as $$Props;
+
+  const { class: className, closeModal, title, ...rest } = rest_1 as Props;
 </script>
 
 <div
@@ -50,10 +61,10 @@
     {#if title}
       <div class="flex items-center gap-2">
         <h2 class="text-xl font-semibold text-color mb-7">{title}</h2>
-        <slot name="titleSuffix" />
+        {@render titleSuffix?.()}
       </div>
     {/if}
   </div>
 
-  <slot />
+  {@render children?.()}
 </div>

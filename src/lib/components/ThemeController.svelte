@@ -1,10 +1,12 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   export type Theme = 'dark' | 'light' | 'system';
 
   export const theme = persistedStore<Theme>('theme', 'system');
 </script>
 
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { browser } from '$app/environment';
   import { persistedStore } from '$lib/utils/persistedStore';
 
@@ -37,5 +39,7 @@
     }
   };
 
-  $: $theme, setAppTheme();
+  run(() => {
+    setAppTheme();
+  });
 </script>

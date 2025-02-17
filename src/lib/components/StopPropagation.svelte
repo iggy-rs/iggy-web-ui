@@ -1,13 +1,18 @@
 <script lang="ts">
-  let className: string | undefined = undefined;
-  export { className as class };
+  interface Props {
+    class?: string | undefined;
+    children?: import('svelte').Snippet;
+  }
+
+  let { class: className = undefined, children }: Props = $props();
+  
 </script>
 
 <div
   class={className}
-  on:click={(e) => {
+  onclick={(e) => {
     e.stopPropagation();
   }}
 >
-  <slot />
+  {@render children?.()}
 </div>

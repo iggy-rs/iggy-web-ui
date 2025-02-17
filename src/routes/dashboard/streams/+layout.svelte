@@ -2,26 +2,34 @@
   import Icon from '$lib/components/Icon.svelte';
   import { goto, invalidateAll, onNavigate } from '$app/navigation';
   import { twMerge } from 'tailwind-merge';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import Button from '$lib/components/Button.svelte';
 
-  import { typedRoute } from '$lib/types/appRoutes.ts';
+  import { typedRoute } from '$lib/types/appRoutes';
   import { arrayMax } from '$lib/utils/arrayMax';
   import { onMount } from 'svelte';
   import { noTypeCheck } from '$lib/utils/noTypeCheck.js';
   import { slide } from 'svelte/transition';
   import { bytesFormatter } from '$lib/utils/formatters/bytesFormatter';
 
-  export let data;
-
-  let searchQuery = '';
-
-  $: filteredData = data.streams.filter((stream) => stream.name.includes(searchQuery));
-
-  if (data.streams.length > 0 && $page.url.pathname === typedRoute('/dashboard/streams')) {
-    goto(typedRoute(`/dashboard/streams/${data.streams[0].id}`));
+  interface Props {
+    data: any;
+    children?: import('svelte').Snippet;
   }
+
+  let { data, children }: Props = $props();
+
+  let searchQuery = $state('');
+
+  let filteredData = $derived(data.streams.filter((stream) => stream.name.includes(searchQuery)));
+
+  onMount(() => {
+    if (data.streams.length > 0 && page.url.pathname === typedRoute('/dashboard/streams')) {
+      goto(typedRoute(`/dashboard/streams/${data.streams[0].id}`));
+    }
+  });
+
 </script>
 
 <div class="flex h-full flex-row">
@@ -43,7 +51,7 @@
 
     <ul class="flex-1 overflow-auto">
       {#each filteredData as { name, id, topicsCount, messagesCount, sizeBytes } (id)}
-        {@const isActive = $page.params.streamId === id.toString()}
+        {@const isActive = page.params.streamId === id.toString()}
         <li class="last:mb-6">
           <a
             href={typedRoute(`/dashboard/streams/${id}`)}
@@ -91,6 +99,6 @@
     </div>
   </div>
   <div class="w-[calc(100%-290px)] h-full overflow-hidden flex flex-col">
-    <slot />
+    {@render children?.()}
   </div>
 </div>

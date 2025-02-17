@@ -4,24 +4,29 @@
   import Input from '../Input.svelte';
   import z from 'zod';
   import ModalBase from './ModalBase.svelte';
-  import { superForm, superValidateSync } from 'sveltekit-superforms/client';
+  import { superForm, defaults } from 'sveltekit-superforms/client';
+  import { zod } from 'sveltekit-superforms/adapters';
   import PasswordInput from '../PasswordInput.svelte';
   import Button from '../Button.svelte';
   import PermissionsManager from '../PermissionsManager.svelte';
 
   import type { Stream } from '$lib/domain/Stream';
 
-  export let closeModal: CloseModalFn;
-  export let streams: Stream[];
+  interface Props {
+    closeModal: CloseModalFn;
+    streams: Stream[];
+  }
+
+  let { closeModal, streams }: Props = $props();
 
   const schema = z.object({
     username: z.string().min(1).trim(),
     password: z.string().min(4, { message: 'Password must contain at least 4 characters' }).trim()
   });
 
-  const { form, errors, enhance, constraints } = superForm(superValidateSync(schema), {
+  const { form, errors, enhance, constraints } = superForm(defaults(zod(schema)), {
     SPA: true,
-    validators: schema,
+    validators: zod(schema),
 
     async onUpdate({ form }) {
       if (!form.valid) return;

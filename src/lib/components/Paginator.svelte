@@ -3,11 +3,14 @@
   import Icon from '$lib/components/Icon.svelte';
   import { createEventDispatcher } from 'svelte';
 
-  export let currentPage: number;
-  export let totalPages: number;
-  export let maxVisiblePages = 5;
+  interface Props {
+    currentPage: number;
+    totalPages: number;
+    maxVisiblePages?: number;
+  }
 
-  $: visiblePages = getVisiblePages(currentPage, totalPages, maxVisiblePages);
+  let { currentPage, totalPages, maxVisiblePages = 5 }: Props = $props();
+
 
   const dispatch = createEventDispatcher<{ pageChange: number }>();
 
@@ -39,6 +42,7 @@
   function emitPageChange(page: number) {
     dispatch('pageChange', page);
   }
+  let visiblePages = $derived(getVisiblePages(currentPage, totalPages, maxVisiblePages));
 </script>
 
 <div class="flex justify-center items-center space-x-2">

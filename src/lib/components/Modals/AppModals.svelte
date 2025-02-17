@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import type { ComponentProps, ComponentType, SvelteComponent } from 'svelte';
   import AddPartitionsModal from './AddPartitionsModal.svelte';
   import AddStreamModal from './AddStreamModal.svelte';
@@ -67,7 +67,7 @@
 </script>
 
 <svelte:window
-  on:keydown={(e) => {
+  onkeydown={(e) => {
     if (e.key === 'Escape' && $openedModal) {
       $openedModal.props.closeModal();
     }
@@ -75,9 +75,9 @@
 />
 
 {#if $openedModal}
-  <div transition:fade={{ duration: 100 }} class="fixed inset-0 bg-black/40 z-[500]" on:click={$openedModal.props.closeModal} role="button" tabindex={1} />
-  <svelte:component
-    this={noTypeCheck(modals[$openedModal.modal])}
+  <div transition:fade={{ duration: 100 }} class="fixed inset-0 bg-black/40 z-[500]" onclick={$openedModal.props.closeModal} role="button" tabindex={1}></div>
+  {@const SvelteComponent_1 = noTypeCheck(modals[$openedModal.modal])}
+  <SvelteComponent_1
     {...$openedModal.props}
     closeModal={$openedModal.props.closeModal}
   />

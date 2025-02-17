@@ -4,21 +4,27 @@
   import Icon from './Icon.svelte';
   import Button from './Button.svelte';
 
-  interface $$Props extends HTMLInputAttributes {
+  
+
+  interface Props {
     label: string;
     id?: string;
     name: string;
     errorMessage?: string;
     value: string | number;
+    [key: string]: any
   }
 
-  export let label: string;
-  export let id: string | undefined = undefined;
-  export let name: string;
-  export let errorMessage: string | undefined = undefined;
-  export let value: string | number;
+  let {
+    label,
+    id = undefined,
+    name,
+    errorMessage = undefined,
+    value = $bindable(),
+    ...rest
+  }: Props = $props();
 
-  let isVisible = false;
+  let isVisible = $state(false);
 </script>
 
 <Input
@@ -28,22 +34,24 @@
   type={isVisible ? 'text' : 'password'}
   bind:value
   {errorMessage}
-  {...$$restProps}
+  {...rest}
 >
-  <span slot="suffix">
-    <Button
-      variant="rounded"
-      class="w-[33px] h-[33px] p-0 flex items-center justify-center"
-      on:click={(e) => {
-        isVisible = !isVisible;
-        e.preventDefault();
-        e.stopPropagation();
-      }}
-    >
-      <Icon
-        name={isVisible ? 'eye' : 'eyeOff'}
-        class="w-[20px] h-[20px] dark:stroke-white stroke-shadeD200"
-      />
-    </Button>
-  </span>
+  {#snippet suffix()}
+    <span >
+      <Button
+        variant="rounded"
+        class="w-[33px] h-[33px] p-0 flex items-center justify-center"
+        on:click={(e) => {
+          isVisible = !isVisible;
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
+        <Icon
+          name={isVisible ? 'eye' : 'eyeOff'}
+          class="w-[20px] h-[20px] dark:stroke-white stroke-shadeD200"
+        />
+      </Button>
+    </span>
+  {/snippet}
 </Input>

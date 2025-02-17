@@ -1,45 +1,45 @@
 <script lang="ts">
   import Icon from './Icon.svelte';
   import type { iconType } from './Icon.svelte';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import { twMerge } from 'tailwind-merge';
   import { tooltip } from '$lib/actions/tooltip';
   import { typedRoute } from '$lib/types/appRoutes';
   import LogoType from '$lib/components/Logo/LogoType.svelte';
   import LogoMark from '$lib/components/Logo/LogoMark.svelte';
 
-  $: navItems = [
+  let navItems = $derived([
     {
       name: 'Overview',
       icon: 'home',
       href: typedRoute('/dashboard/overview'),
-      active: $page.url.pathname.includes(typedRoute('/dashboard/overview'))
+      active: page.url.pathname.includes(typedRoute('/dashboard/overview'))
     },
     {
       name: 'Streams',
       icon: 'stream',
       href: typedRoute('/dashboard/streams'),
-      active: $page.url.pathname.includes(typedRoute('/dashboard/streams'))
+      active: page.url.pathname.includes(typedRoute('/dashboard/streams'))
     },
     {
       name: 'Clients',
       icon: 'clients',
       href: typedRoute('/dashboard/clients'),
-      active: $page.url.pathname.includes(typedRoute('/dashboard/clients'))
+      active: page.url.pathname.includes(typedRoute('/dashboard/clients'))
     },
     {
       name: 'Logs',
       icon: 'logs',
       href: typedRoute('/dashboard/logs'),
-      active: $page.url.pathname.includes(typedRoute('/dashboard/logs'))
+      active: page.url.pathname.includes(typedRoute('/dashboard/logs'))
     },
     {
       name: 'Settings',
       icon: 'settings',
       href: typedRoute('/dashboard/settings/webUI'),
-      active: $page.url.pathname.includes('/dashboard/settings')
+      active: page.url.pathname.includes('/dashboard/settings')
     }
-  ] satisfies { name: string; icon: iconType; href: string; active: boolean }[];
+  ] satisfies { name: string; icon: iconType; href: string; active: boolean }[]);
 </script>
 
 <nav

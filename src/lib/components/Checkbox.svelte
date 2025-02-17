@@ -1,13 +1,27 @@
 <script lang="ts">
+  import { createBubbler, handlers } from 'svelte/legacy';
+
+  const bubble = createBubbler();
   import { twMerge } from 'tailwind-merge';
 
-  export let checked: boolean | undefined = undefined;
-  let isMouseDown = false;
-  export let value: string;
-  export let id: string = '';
-  export let name: string | undefined = undefined;
-  export let bindGroup: string[] | undefined = undefined;
-  export let disabled = false;
+  let isMouseDown = $state(false);
+  interface Props {
+    checked?: boolean | undefined;
+    value: string;
+    id?: string;
+    name?: string | undefined;
+    bindGroup?: string[] | undefined;
+    disabled?: boolean;
+  }
+
+  let {
+    checked = $bindable(undefined),
+    value,
+    id = '',
+    name = undefined,
+    bindGroup = $bindable(undefined),
+    disabled = false
+  }: Props = $props();
 
   function onChange(e: Event) {
     const { value: checkboxValue, checked: checkboxChecked } = e.target as HTMLInputElement;
@@ -32,13 +46,12 @@
     {value}
     {id}
     {disabled}
-    on:change={onChange}
-    on:change
-    on:mousedown={() => (isMouseDown = true)}
-    on:mouseup={() => (isMouseDown = false)}
-    on:mouseleave={() => (isMouseDown = false)}
-    on:mouseout={() => (isMouseDown = false)}
-    on:blur={() => (isMouseDown = false)}
+    onchange={handlers(onChange, bubble('change'))}
+    onmousedown={() => (isMouseDown = true)}
+    onmouseup={() => (isMouseDown = false)}
+    onmouseleave={() => (isMouseDown = false)}
+    onmouseout={() => (isMouseDown = false)}
+    onblur={() => (isMouseDown = false)}
   />
 
   <div
@@ -49,7 +62,7 @@
       'w-[18px] h-[18px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border-neutral-300 border-2 rounded transition-all pointer-events-none',
       isMouseDown && 'scale-90'
     )}
-  />
+></div>
 
   <svg
     class="w-[18px] h-[18px] pointer-events-none transition-all scale-75 opacity-0 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"

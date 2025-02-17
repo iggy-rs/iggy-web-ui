@@ -1,7 +1,11 @@
 <script lang="ts">
-  export let data;
+  interface Props {
+    data: any;
+  }
 
-  $: statsValues = Object.values(data.stats).map((val) => val);
+  let { data }: Props = $props();
+
+  let statsValues = $derived(Object.values(data.stats).map((val) => val));
 </script>
 
 <div class="h-full overflow-auto p-10">

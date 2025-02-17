@@ -3,12 +3,18 @@
   import type { iconType } from '$lib/components/Icon.svelte';
   import Icon from '$lib/components/Icon.svelte';
 
-  import { typedRoute } from '$lib/types/appRoutes.ts';
-  import { page } from '$app/stores';
+  import { typedRoute } from '$lib/types/appRoutes';
+  import { page } from '$app/state';
+  interface Props {
+    actions?: import('svelte').Snippet;
+    children?: import('svelte').Snippet;
+  }
+
+  let { actions, children }: Props = $props();
 
   type Tabs = 'server' | 'users' | 'webUI' | 'terminal';
 
-  $: activeTab = $page.url.pathname.split('/').slice(-1)[0];
+  let activeTab = $derived(page.url.pathname.split('/').slice(-1)[0]);
 
   const tabs = [
     {
@@ -41,7 +47,7 @@
 <div class="flex justify-between items-center px-10">
   <h1 class="font-semibold text-3xl text-color my-10">Settings</h1>
 
-  <slot name="actions" />
+  {@render actions?.()}
 </div>
 
 <div class="flex gap-12 border-b px-10">
@@ -64,9 +70,9 @@
             ? 'dark:bg-white bg-black'
             : 'group-hover:bg-shadeL600 dark:group-hover:bg-shadeD300'
         )}
-      />
+></div>
     </a>
   {/each}
 </div>
 
-<slot />
+{@render children?.()}

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   type GlobalPermissionsSnakeCase = keyof KeysToSnakeCase<GlobalPermissions>;
   type StreamPermissionsSnakeCase = Exclude<keyof KeysToSnakeCase<StreamPermissions>, 'topics'>;
 
@@ -27,6 +27,8 @@
 </script>
 
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import Icon from './Icon.svelte';
   import Combobox from './Combobox.svelte';
   import type { Stream } from '$lib/domain/Stream';
@@ -44,12 +46,16 @@
   import { noTypeCheck } from '$lib/utils/noTypeCheck';
   import { fade } from 'svelte/transition';
 
-  export let streams: Stream[];
+  interface Props {
+    streams: Stream[];
+  }
 
-  let topics: Topic[] = [];
-  let fetchingTopics = false;
-  let selectedStream: { id: number; name: string } | undefined = undefined;
-  let selectedTopic: { id: number; name: string } | undefined = undefined;
+  let { streams }: Props = $props();
+
+  let topics: Topic[] = $state([]);
+  let fetchingTopics = $state(false);
+  let selectedStream: { id: number; name: string } | undefined = $state(undefined);
+  let selectedTopic: { id: number; name: string } | undefined = $state(undefined);
 
   if (streams.length > 0) {
     selectedStream = { name: streams[0].name, id: streams[0].id };
@@ -121,7 +127,7 @@
     }
   };
 
-  const globalPerms: GlobalPerms = {
+  const globalPerms: GlobalPerms = $state({
     manage_servers: {
       name: 'Manage servers',
       checked: false
@@ -168,9 +174,9 @@
       relatesTo: 'send_messages',
       checked: false
     }
-  };
+  });
 
-  let streamsPerms = (() => {
+  let streamsPerms = $state((() => {
     const tempPerms: StreamsPerms = {};
 
     streams.forEach((s) => {
@@ -216,12 +222,16 @@
     });
 
     return tempPerms;
-  })() satisfies StreamsPerms;
+  })() satisfies StreamsPerms);
 
-  $: if (selectedStream) fetchTopics(selectedStream.id);
-  $: buildTopicsPerms(topics);
+  run(() => {
+    if (selectedStream) fetchTopics(selectedStream.id);
+  });
+  run(() => {
+    buildTopicsPerms(topics);
+  });
 
-  $: taintedStreams = (() => {
+  let taintedStreams = $derived((() => {
     const tainted: Set<number> = new Set([]);
 
     Object.keys(streamsPerms).forEach((streamId) => {
@@ -248,7 +258,7 @@
   })().map((taintedStreamId) => {
     const name = streams.find((stream) => stream.id === +taintedStreamId)!.name;
     return { name, id: +taintedStreamId };
-  });
+  }));
 </script>
 
 <h4 class="ml-1 text-lg text-color mt-7">Global permissions</h4>
@@ -278,7 +288,7 @@
     {#each taintedStreams as { id, name } (id)}
       <button
         type="button"
-        on:click={() => (selectedStream = { name, id })}
+        onclick={() => (selectedStream = { name, id })}
         transition:fade={{ duration: 80 }}
         class={twMerge(
           'rounded-3xl px-3 py-1 whitespace-nowrap text-xs hover:shadow-lg  hover:ring-2 transition-all dark:text-white ring-1 ring-green-500 shadow-md hover:cursor-pointer',

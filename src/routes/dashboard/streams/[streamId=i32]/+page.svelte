@@ -1,14 +1,21 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import SortableList from '$lib/components/SortableList.svelte';
-  import { typedRoute } from '$lib/types/appRoutes.ts';
+  import { typedRoute } from '$lib/types/appRoutes';
   import { arrayMax } from '$lib/utils/arrayMax';
+  import type { StreamDetails } from '$lib/domain/StreamDetails';
 
-  export let data;
-  $: stream = data.streamDetails;
+  interface Props {
+    data: {
+      streamDetails: StreamDetails
+    };
+  }
+
+  let { data }: Props = $props();
+  let stream = $derived(data.streamDetails);
 </script>
 
 <div class="h-[80px] flex flex-row text-xs items-center px-7">
@@ -22,7 +29,9 @@
     on:click={() => openModal('StreamSettingsModal', { stream })}
   >
     <Icon name="settings" class="dark:text-white" />
-    <div slot="tooltip">Settings</div>
+    {#snippet tooltip()}
+        <div >Settings</div>
+      {/snippet}
   </Button>
 
   <div class="flex gap-3 ml-7">
@@ -59,7 +68,7 @@
   rowClass="grid grid-cols-[150px_3fr_2fr_2fr_2fr_2fr_3fr]"
   data={stream.topics}
   hrefBuilder={(topic) =>
-    typedRoute(`/dashboard/streams/${+$page.params.streamId}/topics/${topic.id}`)}
+    typedRoute(`/dashboard/streams/${+page.params.streamId}/topics/${topic.id}`)}
   colNames={{
     id: 'ID',
     name: 'Name',

@@ -1,8 +1,13 @@
 <script lang="ts">
+  import { createBubbler } from 'svelte/legacy';
+
+  const bubble = createBubbler();
   import type { HTMLInputAttributes, HTMLInputTypeAttribute } from 'svelte/elements';
   import { twMerge } from 'tailwind-merge';
 
-  interface $$Props extends HTMLInputAttributes {
+  
+
+  interface Props {
     errorMessage?: string;
     id?: string;
     label?: string;
@@ -10,25 +15,32 @@
     options: Array<string>;
     type?: HTMLInputTypeAttribute;
     value: string | number;
+    prefix?: import('svelte').Snippet;
+    suffix?: import('svelte').Snippet;
+    [key: string]: any
   }
 
-  export let label: string | undefined = undefined;
-  export let id: string = crypto.randomUUID();
-  export let name: string;
-  export let errorMessage: string | undefined = undefined;
-  export let value: string | number;
-  export let type: HTMLInputTypeAttribute = 'text';
-  export let options: Array<string>;
+  let {
+    errorMessage = undefined,
+    id = crypto.randomUUID(),
+    label = undefined,
+    name,
+    options,
+    value = $bindable(),
+    prefix,
+    suffix,
+    ...rest
+  }: Props = $props();
 
   const inputProps = {
     class: twMerge(
       'w-full px-4 h-full rounded-lg outline-none bg-transparent text-color',
-      $$slots.prefix && 'pl-9',
-      $$slots.suffix && 'pr-12'
+      prefix && 'pl-9',
+      suffix && 'pr-12'
     ),
     id,
     name,
-    ...$$restProps
+    ...rest
   };
 </script>
 
@@ -45,21 +57,21 @@
       errorMessage && '!ring-red-600 ring-2 '
     )}
   >
-    {#if $$slots.prefix}
+    {#if prefix}
       <div class="absolute flex items-center justify-center -translate-y-1/2 left-2 top-1/2">
-        <slot name="prefix" />
+        {@render prefix?.()}
       </div>
     {/if}
 
-    <select bind:value on:input {...inputProps}>
+    <select bind:value oninput={bubble('input')} {...inputProps}>
       {#each options as option}
         <option class="dark:bg-shadeD400 dark:text-white bg-white text-black">{option}</option>
       {/each}
     </select>
 
-    {#if $$slots.suffix}
+    {#if suffix}
       <div class="absolute flex items-center justify-center -translate-y-1/2 right-2 top-1/2">
-        <slot name="suffix" />
+        {@render suffix?.()}
       </div>
     {/if}
   </div>

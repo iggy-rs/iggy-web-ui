@@ -61,34 +61,47 @@
 </div> -->
 
 <script lang="ts">
+  import { createBubbler } from 'svelte/legacy';
+
+  const bubble = createBubbler();
   import type { HTMLInputAttributes, HTMLInputTypeAttribute } from 'svelte/elements';
   import { twMerge } from 'tailwind-merge';
 
-  interface $$Props extends HTMLInputAttributes {
+  
+
+  interface Props {
     label?: string;
     id?: string;
     name: string;
     errorMessage?: string;
     value: string | number;
     type?: HTMLInputTypeAttribute;
+    prefix?: import('svelte').Snippet;
+    suffix?: import('svelte').Snippet;
+    [key: string]: any
   }
 
-  export let label: string | undefined = undefined;
-  export let id: string = crypto.randomUUID();
-  export let name: string;
-  export let errorMessage: string | undefined = undefined;
-  export let value: string | number;
-  export let type: HTMLInputTypeAttribute = 'text';
+  let {
+    label = undefined,
+    id = crypto.randomUUID(),
+    name,
+    errorMessage = undefined,
+    value = $bindable(),
+    type = 'text',
+    prefix,
+    suffix,
+    ...rest
+  }: Props = $props();
 
   const inputProps = {
     class: twMerge(
       'w-full px-4 h-full rounded-lg outline-none bg-transparent text-color',
-      $$slots.prefix && 'pl-9',
-      $$slots.suffix && 'pr-12'
+      prefix && 'pl-9',
+      suffix && 'pr-12'
     ),
     id,
     name,
-    ...$$restProps
+    ...rest
   };
 </script>
 
@@ -105,23 +118,23 @@
       errorMessage && '!ring-red-600 ring-2 '
     )}
   >
-    {#if $$slots.prefix}
+    {#if prefix}
       <div class="flex items-center justify-center absolute left-2 top-1/2 -translate-y-1/2">
-        <slot name="prefix" />
+        {@render prefix?.()}
       </div>
     {/if}
 
     {#if type === 'text'}
-      <input bind:value type="text" on:input {...inputProps} />
+      <input bind:value type="text" oninput={bubble('input')} {...inputProps} />
     {:else if type === 'password'}
-      <input bind:value type="password" on:input {...inputProps} />
+      <input bind:value type="password" oninput={bubble('input')} {...inputProps} />
     {:else if type === 'number'}
-      <input bind:value type="number" on:input {...inputProps} />
+      <input bind:value type="number" oninput={bubble('input')} {...inputProps} />
     {/if}
 
-    {#if $$slots.suffix}
+    {#if suffix}
       <div class="flex items-center justify-center absolute right-2 top-1/2 -translate-y-1/2">
-        <slot name="suffix" />
+        {@render suffix?.()}
       </div>
     {/if}
   </div>

@@ -7,13 +7,23 @@
     big: '[&::-webkit-slider-thumb]:w-[20px] [&::-webkit-slider-thumb]:h-[20px] h-[8px]'
   };
 
-  export let min: number;
-  export let max: number;
-  export let initValue: number;
-  export let className = '';
-  export let size: keyof typeof sizes = 'medium';
+  interface Props {
+    min: number;
+    max: number;
+    initValue: number;
+    className?: string;
+    size?: keyof typeof sizes;
+    value?: any;
+  }
 
-  export let value = initValue;
+  let {
+    min,
+    max,
+    initValue,
+    className = '',
+    size = 'medium',
+    value = $bindable(initValue)
+  }: Props = $props();
 </script>
 
 <div class=" w-fit relative flex items-center justify-center">
@@ -35,6 +45,7 @@
     outline: none;
     transition: background 450ms ease-in;
     -webkit-appearance: none;
+    appearance: none;
   }
 
   .progress::-webkit-slider-thumb {
@@ -43,10 +54,6 @@
     cursor: ew-resize;
     background: var(--shadeL500);
     border: 1px solid var(--shadeL800);
-  }
-
-  .dark .progress::-webkit-slider-thumb {
-    background: white !important;
   }
 
   .progress::-webkit-slider-thumb:hover {

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { browser } from '$app/environment';
   import { invalidateAll } from '$app/navigation';
   import { onMount } from 'svelte';
@@ -20,23 +20,27 @@
 </script>
 
 <script lang="ts">
-  let timeout: number | undefined;
+  import { run } from 'svelte/legacy';
 
-  $: if ($isInvalidating) {
-    if (timeout) clearTimeout(timeout);
-    $isInvalidatingClampMin = true;
+  let timeout: number | undefined = $state();
 
-    timeout = setTimeout(() => {
-      if (!$isInvalidating) $isInvalidatingClampMin = false;
-    }, 320);
-  }
-  let invalidateInterval: number | undefined;
-  $: {
+  run(() => {
+    if ($isInvalidating) {
+      if (timeout) clearTimeout(timeout);
+      $isInvalidatingClampMin = true;
+
+      timeout = setTimeout(() => {
+        if (!$isInvalidating) $isInvalidatingClampMin = false;
+      }, 320);
+    }
+  });
+  let invalidateInterval: number | undefined = $state();
+  run(() => {
     if (invalidateInterval) clearInterval(invalidateInterval);
     invalidateInterval = setInterval(() => {
       customInvalidateAll();
     }, $invalidateIntervalDuration);
-  }
+  });
 
   onMount(() => {
     return () => {
@@ -50,7 +54,9 @@
   <div class={twMerge($isInvalidatingClampMin && 'spin')}>
     <Icon name="refresh" class=" dark:stroke-white" />
   </div>
-  <div slot="tooltip">Refresh</div>
+  {#snippet tooltip()}
+    <div >Refresh</div>
+  {/snippet}
 </Button>
 
 <style lang="postcss">

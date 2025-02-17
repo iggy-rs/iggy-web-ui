@@ -1,15 +1,25 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import Button from '$lib/components/Button.svelte';
   import Icon from '$lib/components/Icon.svelte';
   import { goto } from '$app/navigation';
-  import { typedRoute } from '$lib/types/appRoutes.ts';
+  import { typedRoute } from '$lib/types/appRoutes';
   import { openModal } from '$lib/components/Modals/AppModals.svelte';
   import SortableList from '$lib/components/SortableList.svelte';
+  import type { Topic } from '$lib/domain/Topic';
+  import type { Partition } from '$lib/domain/Partition';
 
-  export let data;
-  $: topic = data.topic;
-  $: prevPage = $page.url.pathname.split('/').slice(0, 4).join('/') + '/';
+  interface Props {
+    data: {
+      topic: Topic & {
+        partitions: Partition[];
+      };
+    }
+  }
+
+  let { data }: Props = $props();
+  let topic = $derived(data.topic);
+  let prevPage = $derived(page.url.pathname.split('/').slice(0, 4).join('/') + '/');
 </script>
 
 <div class="h-[80px] flex text-xs items-center pl-2 pr-5">
@@ -25,7 +35,9 @@
     on:click={() => openModal('TopicSettingsModal', { topic, onDeleteRedirectPath: prevPage })}
   >
     <Icon name="settings" />
-    <div slot="tooltip">Settings</div>
+    {#snippet tooltip()}
+        <div >Settings</div>
+      {/snippet}
   </Button>
 
   <div class="flex gap-3 ml-7">
@@ -49,7 +61,7 @@
         >Delete partitions</Button
       >
     {/if}
-    <Button variant="contained" on:click={() => openModal('AddPartitionsModal')}
+    <Button variant="contained" on:click={() => openModal('AddPartitionsModal', {})}
       >Add partitions</Button
     >
   </div>
@@ -61,7 +73,7 @@
   data={topic.partitions}
   hrefBuilder={(partition) =>
     typedRoute(
-      `/dashboard/streams/${+$page.params.streamId}/topics/${topic.id}/partitions/${partition.id}/messages`
+      `/dashboard/streams/${+page.params.streamId}/topics/${topic.id}/partitions/${partition.id}/messages`
     )}
   colNames={{
     id: 'ID',

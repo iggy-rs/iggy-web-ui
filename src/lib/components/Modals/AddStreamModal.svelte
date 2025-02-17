@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { CloseModalFn } from '$lib/types/utilTypes';
-  import { setError, superForm, superValidateSync } from 'sveltekit-superforms/client';
+  import { setError, superForm, defaults } from 'sveltekit-superforms/client';
+  import { zod } from 'sveltekit-superforms/adapters';
   import { z } from 'zod';
   import Button from '../Button.svelte';
   import Input from '../Input.svelte';
@@ -12,8 +13,12 @@
   import { numberSizes } from '$lib/utils/constants/numberSizes';
   import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
 
-  export let closeModal: CloseModalFn;
-  export let nextStreamId: number;
+  interface Props {
+    closeModal: CloseModalFn;
+    nextStreamId: number;
+  }
+
+  let { closeModal, nextStreamId }: Props = $props();
 
   const schema = z.object({
     stream_id: z.number().min(0).max(numberSizes.max.u32).default(nextStreamId),
@@ -24,10 +29,10 @@
   });
 
   const { form, errors, enhance, constraints, submitting, reset } = superForm(
-    superValidateSync(schema),
+    defaults(zod(schema)),
     {
       SPA: true,
-      validators: schema,
+      validators: zod(schema),
       invalidateAll: false,
       taintedMessage: false,
       async onUpdate({ form }) {
@@ -51,7 +56,7 @@
             await customInvalidateAll();
             showToast({
               type: 'success',
-              description: `Stream ${$form.name} has been added.`,
+              description: `Stream ${form.data.name} has been added.`,
               duration: 3500
             });
           });
