@@ -7,6 +7,7 @@ export default defineConfig({
 		port: 3050,
 		strictPort: true,
 		host: true,
+		allowedHosts: true
 	},
 	build: {
 		outDir: '../dist',
