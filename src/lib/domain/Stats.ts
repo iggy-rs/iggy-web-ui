@@ -1,4 +1,4 @@
-import { intervalToDuration, formatDuration } from 'date-fns';
+import { formatDate, formatRuntime } from '$lib/utils/formatters/dateFormatter';
 
 type StatsStringItem = { name: string; value: string; rawValue: string | number };
 type StatsNumberItem = { name: string; value: number };
@@ -29,29 +29,9 @@ export type Stats = {
 };
 
 export function statsMapper(item: any): Stats {
-  const formattedRuntime = formatDuration(
-    intervalToDuration({ start: 0, end: item.run_time / 1000 }),
-    {
-      format: ['hours', 'minutes', 'seconds'],
-      zero: true,
-      delimiter: ':',
-      locale: {
-        formatDistance: (_token, count) => String(count).padStart(2, '0')
-      }
-    }
-  );
+  const formattedRuntime = formatRuntime(item.run_time);
 
-  const formattedStartTime = formatDuration(
-    intervalToDuration({ start: 0, end: item.start_time }),
-    {
-      format: ['hours', 'minutes', 'seconds'],
-      zero: true,
-      delimiter: ':',
-      locale: {
-        formatDistance: (_token, count) => String(count).padStart(2, '0')
-      }
-    }
-  );
+  const formattedStartTime = formatDate(item.start_time);
 
   return {
     processId: {
