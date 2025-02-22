@@ -1,4 +1,3 @@
-import { bytesFormatter } from '$lib/utils/formatters/bytesFormatter';
 import { intervalToDuration, formatDuration } from 'date-fns';
 
 type StatsStringItem = { name: string; value: string; rawValue: string | number };
@@ -42,7 +41,7 @@ export function statsMapper(item: any): Stats {
   );
 
   const formattedStartTime = formatDuration(
-    intervalToDuration({ start: 0, end: item.start_time * 1000 }),
+    intervalToDuration({ start: 0, end: item.start_time }),
     {
       format: ['hours', 'minutes', 'seconds'],
       zero: true,
