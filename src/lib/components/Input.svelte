@@ -64,10 +64,10 @@
   import { createBubbler } from 'svelte/legacy';
 
   const bubble = createBubbler();
-  import type { HTMLInputAttributes, HTMLInputTypeAttribute } from 'svelte/elements';
+  import type { HTMLInputTypeAttribute } from 'svelte/elements';
   import { twMerge } from 'tailwind-merge';
 
-  
+
 
   interface Props {
     label?: string;

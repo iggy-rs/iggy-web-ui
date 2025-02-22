@@ -84,30 +84,8 @@
   background: #555;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  transition: background-color 5000s ease-in-out 0s;
-}
-
-input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 50px white inset; /* Change the color to your own background color */
-  -webkit-text-fill-color: black;
-}
-
-.dark input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 50px white inset; /* Change the color to your own background color */
-  -webkit-text-fill-color: white;
-}
-
-input:-webkit-autofill:focus {
-  -webkit-text-fill-color: white;
-}
-
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  text-indent: 1px;
-  text-overflow: '';
+.dark :-webkit-autofill,
+.dark :-webkit-autofill:hover,
+.dark :-webkit-autofill:focus {
+  color-scheme: dark;
 }
