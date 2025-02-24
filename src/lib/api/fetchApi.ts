@@ -3,7 +3,7 @@ import type { ApiSchema } from '$lib/api/ApiSchema';
 import { tokens } from '$lib/utils/constants/tokens';
 import { type Cookies } from '@sveltejs/kit';
 
-export async function fetchApi(
+export async function fetchIggyBackendApi(
   args: ApiSchema & { queryParams?: Record<string, string>; cookies?: Cookies }
 ): Promise<Response | unknown> {
   const { path, method, queryParams, cookies } = args;
