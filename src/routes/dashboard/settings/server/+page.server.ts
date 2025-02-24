@@ -1,10 +1,10 @@
-import { fetchApi } from '$lib/api/fetchApi';
+import { fetchIggyBackendApi } from '$lib/api/fetchApi';
 import { handleFetchErrors } from '$lib/api/handleFetchErrors';
 import { statsMapper } from '$lib/domain/Stats';
 
 export const load = async ({ cookies }) => {
   const getStats = async () => {
-    const result = await fetchApi({
+    const result = await fetchIggyBackendApi({
       method: 'GET',
       path: '/stats',
       cookies
