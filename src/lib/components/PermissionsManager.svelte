@@ -48,9 +48,10 @@
 
   interface Props {
     streams: Stream[];
+    value?: any;
   }
 
-  let { streams }: Props = $props();
+  let { streams, value = $bindable() }: Props = $props();
 
   let topics: Topic[] = $state([]);
   let fetchingTopics = $state(false);
@@ -259,6 +260,80 @@
     const name = streams.find((stream) => stream.id === +taintedStreamId)!.name;
     return { name, id: +taintedStreamId };
   }));
+
+  $effect(() => {
+    function formatGlobalPermissions() {
+      return Object.keys(globalPerms).reduce((result, key) => {
+        result[key] = globalPerms[key].checked;
+        return result;
+      }, {});
+    }
+
+    function hasAnyPermissionChecked(permissionsObj: Record<string, any>, excludeKeys: string[] = []) {
+      return Object.keys(permissionsObj)
+        .filter(key => !excludeKeys.includes(key))
+        .some(key => permissionsObj[key].checked);
+    }
+
+    function formatTopicPermissions(topicPerms: Record<string, any>) {
+      const result = {};
+
+      Object.keys(topicPerms).forEach(topicId => {
+        const topicPerm = topicPerms[topicId];
+
+        if (!hasAnyPermissionChecked(topicPerm)) {
+          return;
+        }
+
+        result[topicId] = {
+          manage_topic: topicPerm.manageTopic.checked,
+          read_topic: topicPerm.readTopic.checked,
+          poll_messages: topicPerm.pollMessages.checked,
+          send_messages: topicPerm.sendMessages.checked
+        };
+      });
+
+      return result;
+    }
+
+    function formatStreamPermissions() {
+      const result = {};
+
+      Object.keys(streamsPerms).forEach(streamId => {
+        const streamPerm = streamsPerms[streamId];
+        const topicPerms = streamPerm.topicPerms;
+
+        const hasStreamPermissions = hasAnyPermissionChecked(streamPerm, ["topicPerms"]);
+
+        const formattedTopics = formatTopicPermissions(topicPerms);
+        const hasTopicPermissions = Object.keys(formattedTopics).length > 0;
+
+        if (!hasStreamPermissions && !hasTopicPermissions) {
+          return;
+        }
+
+        result[streamId] = {
+          manage_stream: streamPerm.manage_stream.checked,
+          read_stream: streamPerm.read_stream.checked,
+          manage_topics: streamPerm.manage_topics.checked,
+          read_topics: streamPerm.read_topics.checked,
+          poll_messages: streamPerm.poll_messages.checked,
+          send_messages: streamPerm.send_messages.checked
+        };
+
+        if (hasTopicPermissions) {
+          result[streamId].topics = formattedTopics;
+        }
+      });
+
+      return result;
+    }
+
+    value = {
+      global: formatGlobalPermissions(),
+      streams: formatStreamPermissions()
+    };
+  });
 </script>
 
 <h4 class="ml-1 text-lg text-color mt-7">Global permissions</h4>
