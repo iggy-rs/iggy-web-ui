@@ -32,7 +32,7 @@
       .min(1, 'Name must contain at least 1 character')
       .max(255, 'Name must not exceed 255 characters'),
     partitions_count: z.number().min(0).max(numberSizes.max.u32).default(1),
-    message_expiry: z.number().min(0).max(numberSizes.max.u32),
+    message_expiry: z.number().min(0).max(numberSizes.max.u32).default(0),
     compression_algorithm: z.enum(["none", "gzip"]).default("none"),
     max_topic_size: z.number().min(0).max(numberSizes.max.u32).default(1_000_000_000),
   });
