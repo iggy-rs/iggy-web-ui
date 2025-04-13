@@ -111,7 +111,13 @@
     />
 
     <span class="-mt-1 text-xs text-shadeD200 dark:text-shadeL700">
-      {durationFormatter(+$form.message_expiry || 0)}
+      {#if !$form.message_expiry || $form.message_expiry > numberSizes.max.u32}
+        {#if $form.message_expiry === 0}
+          never
+        {/if}
+      {:else}
+        {durationFormatter(+$form.message_expiry)}
+      {/if}
     </span>
 
     <Select
