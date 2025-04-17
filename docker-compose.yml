@@ -1,6 +1,6 @@
 services:
   iggy-server:
-    image: iggyrs/iggy:0.4.72
+    image: apache/iggy:edge
     environment:
       IGGY_ROOT_USERNAME: admin
       IGGY_ROOT_PASSWORD: admin
