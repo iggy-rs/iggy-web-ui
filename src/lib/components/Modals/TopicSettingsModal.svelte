@@ -20,6 +20,7 @@
   import { numberSizes } from '$lib/utils/constants/numberSizes';
   import { page } from '$app/state';
   import { customInvalidateAll } from '../PeriodicInvalidator.svelte';
+  import { durationFormatter } from '$lib/utils/formatters/durationFormatter';
 
   interface Props {
     topic: TopicDetails;
@@ -136,6 +137,16 @@
         {...$constraints.message_expiry}
         errorMessage={$errors.message_expiry?.join(',')}
       />
+
+      <span class="-mt-1 text-xs text-shadeD200 dark:text-shadeL700">
+        {#if !$form.message_expiry || $form.message_expiry > numberSizes.max.u32}
+          {#if $form.message_expiry === 0}
+            never
+          {/if}
+        {:else}
+          {durationFormatter(+$form.message_expiry)}
+        {/if}
+      </span>
 
       <div class="flex justify-end gap-3 w-full mt-auto">
         <Button type="button" variant="text" class="w-2/5" on:click={() => closeModal()}

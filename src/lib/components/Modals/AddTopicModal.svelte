@@ -32,7 +32,7 @@
       .min(1, 'Name must contain at least 1 character')
       .max(255, 'Name must not exceed 255 characters'),
     partitions_count: z.number().min(0).max(numberSizes.max.u32).default(1),
-    message_expiry: z.number().min(0).max(numberSizes.max.u32),
+    message_expiry: z.number().min(0).max(numberSizes.max.u32).default(0),
     compression_algorithm: z.enum(["none", "gzip"]).default("none"),
     max_topic_size: z.number().min(0).max(numberSizes.max.u32).default(1_000_000_000),
   });
@@ -111,7 +111,13 @@
     />
 
     <span class="-mt-1 text-xs text-shadeD200 dark:text-shadeL700">
-      {durationFormatter(+$form.message_expiry || 0)}
+      {#if !$form.message_expiry || $form.message_expiry > numberSizes.max.u32}
+        {#if $form.message_expiry === 0}
+          never
+        {/if}
+      {:else}
+        {durationFormatter(+$form.message_expiry)}
+      {/if}
     </span>
 
     <Select
