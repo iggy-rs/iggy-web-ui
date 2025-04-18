@@ -24,8 +24,8 @@
   };
 
   // TODO: whether all header values should be decoded?
-  let codec = $derived(message?.headers?.['codec']?.value
-    ? decodeBase64(message.headers['codec'].value)
+  let codec = $derived(message?.user_headers?.['codec']?.value
+    ? decodeBase64(message.user_headers['codec'].value)
     : undefined);
 </script>
 
@@ -40,11 +40,6 @@
       <div class="bg-shadeL200 dark:bg-shadeD400 p-3 lg:p-4 rounded-md">
         <span class="text-xs text-shadeL900 dark:text-shadeL700 block mb-1">Offset</span>
         <div class="text-sm text-color font-medium">{message?.offset ?? 'N/A'}</div>
-      </div>
-
-      <div class="bg-shadeL200 dark:bg-shadeD400 p-3 lg:p-4 rounded-md">
-        <span class="text-xs text-shadeL900 dark:text-shadeL700 block mb-1">State</span>
-        <div class="text-sm text-color font-medium">{message?.state ?? 'N/A'}</div>
       </div>
 
       <div class="bg-shadeL200 dark:bg-shadeD400 p-3 lg:p-4 rounded-md">
@@ -65,7 +60,7 @@
       <div class="bg-shadeL200 dark:bg-shadeD400 p-3 lg:p-4 rounded-md">
         <span class="text-xs text-shadeL900 dark:text-shadeL700 block mb-1">Headers</span>
         <div class="text-sm text-color font-medium font-mono whitespace-pre-wrap">
-          {formatHeaders(message?.headers)}
+          {formatHeaders(message?.user_headers)}
         </div>
       </div>
     </div>
