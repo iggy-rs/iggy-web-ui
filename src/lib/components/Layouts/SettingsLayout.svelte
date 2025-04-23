@@ -35,12 +35,12 @@
       name: 'Users',
       href: typedRoute('/dashboard/settings/users')
     },
-    {
-      name: 'Terminal',
-      icon: 'terminal',
-      tab: 'terminal',
-      href: typedRoute('/dashboard/settings/terminal')
-    }
+    // {
+    //   name: 'Terminal',
+    //   icon: 'terminal',
+    //   tab: 'terminal',
+    //   href: typedRoute('/dashboard/settings/terminal')
+    // }
   ] satisfies { tab: Tabs; name: string; icon: iconType; href: string }[];
 </script>
 
