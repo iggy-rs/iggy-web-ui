@@ -8,14 +8,16 @@ export type MessagePartition = {
 
 export type Message = {
   checksum: number;
-  headers: Record<string, HeaderField>;
   id: number;
   offset: number;
+  timestamp: number;
+  origin_timestamp: number;
+  user_headers_length: number;
+  payload_length: number;
+  formattedTimestamp: string;
+  user_headers: Record<string, HeaderField>;
   payload: string;
   truncatedPayload: string;
-  state: 'available';
-  timestamp: number;
-  formattedTimestamp: string;
 };
 
 export type HeaderField = {
@@ -26,16 +28,18 @@ export type HeaderField = {
 export function messageMapper(item: any): Message {
   const payload = item.payload;
   const truncatedPayload = payload.length > 30 ? `${payload.slice(0, 30)} [...]` : payload;
-  const formattedTimestamp = formatDateWithMicroseconds(item.timestamp);
+  const formattedTimestamp = formatDateWithMicroseconds(item.header.timestamp);
 
   return {
-    id: item.id,
-    headers: item.headers,
-    offset: item.offset,
-    state: item.state,
-    timestamp: item.timestamp,
-    formattedTimestamp,
-    checksum: item.checksum,
+    checksum: item.header.checksum,
+    id: item.header.id,
+    offset: item.header.offset,
+    timestamp: item.header.timestamp,
+    origin_timestamp: item.header.origin_timestamp,
+    user_headers_length: item.header.user_headers_length,
+    payload_length: item.header.payload_length,
+    formattedTimestamp: formattedTimestamp,
+    user_headers: item.user_headers,
     payload,
     truncatedPayload
   };
