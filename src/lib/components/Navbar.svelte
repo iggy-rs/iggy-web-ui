@@ -21,18 +21,18 @@
       href: typedRoute('/dashboard/streams'),
       active: page.url.pathname.includes(typedRoute('/dashboard/streams'))
     },
-    {
-      name: 'Clients',
-      icon: 'clients',
-      href: typedRoute('/dashboard/clients'),
-      active: page.url.pathname.includes(typedRoute('/dashboard/clients'))
-    },
-    {
-      name: 'Logs',
-      icon: 'logs',
-      href: typedRoute('/dashboard/logs'),
-      active: page.url.pathname.includes(typedRoute('/dashboard/logs'))
-    },
+    // {
+    //   name: 'Clients',
+    //   icon: 'clients',
+    //   href: typedRoute('/dashboard/clients'),
+    //   active: page.url.pathname.includes(typedRoute('/dashboard/clients'))
+    // },
+    // {
+    //   name: 'Logs',
+    //   icon: 'logs',
+    //   href: typedRoute('/dashboard/logs'),
+    //   active: page.url.pathname.includes(typedRoute('/dashboard/logs'))
+    // },
     {
       name: 'Settings',
       icon: 'settings',
