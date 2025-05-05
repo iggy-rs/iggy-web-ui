@@ -4,7 +4,7 @@ import { message, superValidate } from 'sveltekit-superforms/server';
 import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
 import { typedRoute } from '$lib/types/appRoutes';
-import { fetchApi } from '$lib/api/fetchApi';
+import { fetchIggyApi } from '$lib/api/fetchApi';
 import { tokens } from '$lib/utils/constants/tokens';
 import { getJson } from '$lib/api/getJson';
 
@@ -20,7 +20,7 @@ export const load = async () => {
 };
 
 export const actions = {
-  default: async ({ request, cookies, locals }) => {
+  default: async ({ request, cookies }) => {
     const form = await superValidate(request, zod(schema));
 
     if (!form.valid) {
@@ -29,7 +29,7 @@ export const actions = {
 
     const { password, username } = form.data;
 
-    const result = await fetchApi({
+    const result = await fetchIggyApi({
       method: 'POST',
       path: '/users/login',
       body: { username, password }

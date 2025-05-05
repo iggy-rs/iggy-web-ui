@@ -1,4 +1,4 @@
-import { fetchApi } from '$lib/api/fetchApi';
+import { fetchIggyApi } from '$lib/api/fetchApi';
 import { handleFetchErrors } from '$lib/api/handleFetchErrors';
 import { partitionMessagesDetailsMapper } from '$lib/domain/MessageDetails';
 import { topicDetailsMapper } from '$lib/domain/TopicDetails';
@@ -10,7 +10,7 @@ export const load = async ({ params, cookies, url }) => {
   const direction = url.searchParams.get('direction') || 'desc';
 
   const getPartitionMessages = async () => {
-    const initialResult = await fetchApi({
+    const initialResult = await fetchIggyApi({
       method: 'GET',
       path: `/streams/${+params.streamId}/topics/${+params.topicId}/messages`,
       cookies,
@@ -31,7 +31,7 @@ export const load = async ({ params, cookies, url }) => {
       url.searchParams.get('offset') ??
       (direction === 'desc' ? Math.max(0, totalMessages - MESSAGES_PER_PAGE) : '0');
 
-    const result = await fetchApi({
+    const result = await fetchIggyApi({
       method: 'GET',
       path: `/streams/${+params.streamId}/topics/${+params.topicId}/messages`,
       cookies,
@@ -49,7 +49,7 @@ export const load = async ({ params, cookies, url }) => {
   };
 
   const getTopic = async () => {
-    const result = await fetchApi({
+    const result = await fetchIggyApi({
       method: 'GET',
       path: `/streams/${+params.streamId}/topics/${+params.topicId}`,
       cookies

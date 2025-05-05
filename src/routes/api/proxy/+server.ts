@@ -1,4 +1,4 @@
-import { fetchApi } from '$lib/api/fetchApi';
+import { fetchIggyApi } from '$lib/api/fetchApi';
 import { handleFetchErrors } from '$lib/api/handleFetchErrors';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 import { convertBigIntsToStrings } from '$lib/api/convertBigIntsToStrings';
@@ -14,7 +14,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
           });
   }
 
-  const result = await fetchApi({ body, path, method, cookies, queryParams });
+  const result = await fetchIggyApi({ body, path, method, cookies, queryParams });
 
   const { data, response } = await handleFetchErrors(result, cookies);
 

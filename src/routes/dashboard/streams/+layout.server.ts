@@ -1,10 +1,10 @@
-import { fetchApi } from '$lib/api/fetchApi';
+import { fetchIggyApi } from '$lib/api/fetchApi';
 import { handleFetchErrors } from '$lib/api/handleFetchErrors';
 import { streamMapper, type Stream } from '$lib/domain/Stream';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
-  const result = await fetchApi({
+  const result = await fetchIggyApi({
     method: 'GET',
     path: '/streams',
     cookies
