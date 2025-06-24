@@ -1,4 +1,6 @@
-# Apache Iggy (Incubating) Web UI
+# The source code has been moved to [Apache Iggy](https://github.com/apache/iggy/)
+
+## Apache Iggy (Incubating) Web UI
 
 This repository hosts the web user interface for [Iggy](https://github.com/iggy-rs/iggy), a persistent message streaming platform written in Rust. The web UI is built using SvelteKit.
 
